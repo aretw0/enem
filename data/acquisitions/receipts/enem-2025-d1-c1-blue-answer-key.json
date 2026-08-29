@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "collectionId": "enem-2025-regular-national-blue",
+  "artifactId": "enem-2025-d1-c1-blue-answer-key",
+  "sourceId": "inep-enem-2025-d1-c1-blue-answer-key",
+  "sourceUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+  "capturedAt": "2026-08-29T13:18:17.417Z",
+  "transport": {
+    "scheme": "https",
+    "tlsVerified": true,
+    "extraCertificateFingerprint": "e10747d4da7bab09cba9952f019d3534cb9fba070bf13d8791b1699cd2ff59dd"
+  },
+  "response": {
+    "finalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+    "status": 200,
+    "mediaType": "application/pdf",
+    "declaredSize": 132331
+  },
+  "materialized": {
+    "localPath": ".local/acquisitions/enem-2025-regular-national-blue/2025_GB_impresso_D1_CD1.pdf",
+    "filename": "2025_GB_impresso_D1_CD1.pdf",
+    "sha256": "583ac1950cd1927c42c971c270f96c0e33816844084fd5866a13bf94d8e08a81",
+    "sizeBytes": 132331
+  },
+  "engine": {
+    "package": "@refarm.dev/source-web",
+    "version": "0.1.0",
+    "primitive": "downloadAttachment"
+  }
+}
