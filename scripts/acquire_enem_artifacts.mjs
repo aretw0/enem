@@ -13,7 +13,9 @@ function parseArgs(argv) {
   const options = { manifest: DEFAULT_MANIFEST, artifact: null, force: false };
   for (let index = 0; index < argv.length; index++) {
     const argument = argv[index];
-    if (argument === '--manifest' || argument === '--artifact') {
+    if (argument === '--') {
+      continue;
+    } else if (argument === '--manifest' || argument === '--artifact') {
       const value = argv[++index];
       if (!value) throw new Error(`${argument} exige um valor`);
       options[argument.slice(2)] = value;
@@ -33,7 +35,11 @@ function assertAllowedUrl(rawUrl, allowedHosts) {
   return url;
 }
 
-function secureGet(url, { allowedHosts, allowedMediaTypes, ca, headers, maxBytes, redirects = 0 }) {
+function transientNetworkError(error) {
+  return ['EAI_AGAIN', 'ECONNRESET', 'ENOTFOUND', 'ETIMEDOUT'].includes(error?.code);
+}
+
+function secureGet(url, { allowedHosts, allowedMediaTypes, ca, headers, maxBytes, redirects = 0, attempts = 0 }) {
   if (redirects > 5) return Promise.reject(new Error('excesso de redirecionamentos'));
   const target = assertAllowedUrl(url, allowedHosts);
   return new Promise((resolveRequest, rejectRequest) => {
@@ -41,6 +47,8 @@ function secureGet(url, { allowedHosts, allowedMediaTypes, ca, headers, maxBytes
       ca,
       family: 4,
       headers,
+      minVersion: 'TLSv1.2',
+      maxVersion: 'TLSv1.2',
       rejectUnauthorized: true,
       servername: target.hostname,
     }, (response) => {
@@ -49,7 +57,7 @@ function secureGet(url, { allowedHosts, allowedMediaTypes, ca, headers, maxBytes
       if ([301, 302, 303, 307, 308].includes(status) && location) {
         response.resume();
         const redirected = new URL(location, target).href;
-        secureGet(redirected, { allowedHosts, allowedMediaTypes, ca, headers, maxBytes, redirects: redirects + 1 })
+        secureGet(redirected, { allowedHosts, allowedMediaTypes, ca, headers, maxBytes, redirects: redirects + 1, attempts })
           .then(resolveRequest, rejectRequest);
         return;
       }
@@ -95,6 +103,10 @@ function secureGet(url, { allowedHosts, allowedMediaTypes, ca, headers, maxBytes
       });
     });
     request.on('error', rejectRequest);
+  }).catch(async (error) => {
+    if (!transientNetworkError(error) || attempts >= 3) throw error;
+    await new Promise((resolveDelay) => setTimeout(resolveDelay, 250 * (attempts + 1)));
+    return secureGet(url, { allowedHosts, allowedMediaTypes, ca, headers, maxBytes, redirects, attempts: attempts + 1 });
   });
 }
 
