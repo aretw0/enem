@@ -11,8 +11,10 @@ evidência de aprendizagem. O conteúdo público, o site e as automações vivem
 ## Comece em 15 minutos
 
 1. Abra [`Comece aqui`](00%20-%20Entrada/Comece%20aqui.md) e faça o diagnóstico mínimo.
-2. No site, abra `/simulado/`, faça um bloco oficial e baixe o registro Markdown da tentativa.
-3. Converta cada erro relevante com o [`Template - Erro de Questão`](90%20-%20Modelos/Template%20-%20Erro%20de%20Questão.md).
+2. No site, abra `/simulado/`, faça um bloco oficial e deixe erros e acertos frágeis entrarem na fila
+   local de retomada.
+3. Baixe o registro Markdown e aprofunde os casos relevantes com o
+   [`Template - Erro de Questão`](90%20-%20Modelos/Template%20-%20Erro%20de%20Questão.md).
 4. Acompanhe o ciclo em [`Plano ENEM 2026`](20%20-%20Projetos/Plano%20ENEM%202026.md).
 5. Use a calculadora para médias ponderadas e metas, sem confundir o resultado com nota TRI.
 
@@ -37,15 +39,17 @@ intenções — começar, planejar, estudar, praticar e revisar — e não repro
 - Técnicas de estudo apontam para estudos ou revisões identificáveis; limitações fazem parte da nota.
 - Questões entram em `data/questions/` somente com prova e gabarito oficiais capturados, dois
   checksums, páginas, ferramenta de extração e revisão explícita.
-- O primeiro lote contém 10 itens verificados de Ciências da Natureza do Caderno 7 Azul de 2025.
+- O acervo inicial contém 20 itens verificados — 10 de Ciências da Natureza e 10 de Matemática — do
+  Caderno 7 Azul de 2025. É uma amostra de itens autossuficientes em texto, não a prova completa.
 - `pnpm run validate:enem` rejeita registros órfãos, checksums divergentes e dados anuais vencidos.
 - PDFs brutos ficam no cache local; manifestos e recibos reproduzíveis ficam versionados.
 
 ## Blocos de SDK
 
 `packages/enem-domain` é um pacote publicável consumido pelo próprio site. Ele fornece seleção por
-seed, avaliação com confiança, exportação de tentativa para Markdown e validação de freshness anual.
-Aquisição web, política binária e SHA-256 continuam vindo de `@refarm.dev/source-web`.
+seed, balanceamento entre grupos disponíveis, avaliação com confiança, fila de retomada, exportação
+de tentativa para Markdown e validação de freshness anual. Aquisição web, política binária e
+SHA-256 continuam vindo de `@refarm.dev/source-web`.
 
 ## Desenvolvimento
 

@@ -44,9 +44,9 @@ de correção também não deve ser usada como série comparável.
 | Fatia                     | Estado em 29/08/2026                       | Próxima prova de valor                                        |
 | ------------------------- | ------------------------------------------ | ------------------------------------------------------------- |
 | Fundação e primeiro ciclo | entregue                                   | observar tempo até a primeira sessão                          |
-| Banco oficial             | em andamento: 10 itens de Natureza de 2025 | ampliar áreas sem reduzir o nível de revisão                  |
-| Simulados                 | bloco reproduzível de 5/10 itens entregue  | balancear por matriz quando houver classificação auditada     |
-| Revisão                   | registro Markdown por tentativa entregue   | derivar fila dos erros e intervalos escolhidos pelo estudante |
+| Banco oficial             | 20 itens: Natureza e Matemática de 2025    | cobrir Linguagens e Humanas com a mesma revisão               |
+| Simulados                 | blocos por área ou mistos equilibrados     | classificar habilidades antes de alegar balanço por matriz    |
+| Revisão                   | Markdown e fila local de retomada entregues | permitir ao estudante escolher e registrar seus intervalos    |
 | Planejamento por curso    | não iniciado                               | schema de pesos com edital, campus, turno e modalidade        |
 | Atualização anual         | gate e endpoint 2026 entregues             | snapshot e promoção da edição 2027                            |
 
