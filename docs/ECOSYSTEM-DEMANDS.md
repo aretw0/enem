@@ -45,6 +45,10 @@ auditoria de arquitetura de informação, Lab, RSS, frontmatter e scripts de qua
 - O loader de `vault.config.json` resolvia a raiz apenas por `import.meta.url`. Depois do bundle, a
   URL aponta para o chunk em `dist`, a configuração virava `{}` e as pastas públicas ficavam vazias.
   O consumidor passou a preferir o diretório de trabalho quando ele contém o manifesto.
+- O exportador de notebooks materializado lê diretamente
+  `node_modules/@refarm.dev/ds/src/themes/verde-jardim.css`, mas o payload não inclui esse pacote nem
+  declara o handoff correspondente. `site:responsive` para antes do browser em um clone instalado;
+  temas consumidos pelo exportador precisam vir no payload ou por uma release declarada.
 
 Esses pontos devem ser corrigidos no gerador/manifesto e cobertos por um `pnpm install
 --frozen-lockfile` executado sobre o vault gerado, não apenas sobre fixtures mínimas.
