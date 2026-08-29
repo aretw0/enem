@@ -23,6 +23,7 @@ const pages = [
   { path: "/lab/", label: "lab-index", type: "site" },
   { path: "/explorar/", label: "explorar", type: "site" },
   { path: "/explorar/intencoes/", label: "explorar-intencoes", type: "site" },
+  { path: "/simulado/?seed=smoke-responsive&size=5", label: "simulado", type: "site", simulator: true },
   {
     path: "/meta-e-anexos/workflows/usando-o-lab-notebooks-marimo/",
     label: "lab-doc",
@@ -282,6 +283,29 @@ async function assertVisibleContent(page, target, viewport, label) {
     .catch(() => false);
   if (!hasMainContent) {
     fail(`${label}: main static page content is not visible`);
+  }
+}
+
+async function assertSimulatorJourney(page, target, label) {
+  if (!target.simulator) return;
+
+  await page.locator('[data-simulator-setup] button[type="submit"]').click();
+  const questions = page.locator('.enem-question');
+  const questionCount = await questions.count();
+  if (questionCount !== 5) {
+    fail(`${label}: expected 5 questions for the seeded block, got ${questionCount}`);
+    return;
+  }
+  for (let index = 0; index < questionCount; index++) {
+    const question = questions.nth(index);
+    await question.locator('input[type="radio"]').first().check();
+    await question.locator('select').selectOption('low');
+  }
+  await page.locator('[data-question-form] > button[type="submit"]').click();
+  const resultVisible = await page.locator('[data-simulator-result]').isVisible().catch(() => false);
+  const metricCount = await page.locator('[data-result-metrics] > div').count();
+  if (!resultVisible || metricCount !== 5) {
+    fail(`${label}: submission did not expose the five feedback metrics`);
   }
 }
 
@@ -726,6 +750,7 @@ async function run() {
         }
 
         await assertVisibleContent(page, target, viewport, label);
+        await assertSimulatorJourney(page, target, label);
         await assertNoHorizontalOverflow(page, label);
         await assertStaticGridAlignment(page, target, label);
         await assertMobileGraphTypography(page, target, viewport, label);

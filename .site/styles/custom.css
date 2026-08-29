@@ -92,6 +92,189 @@
   }
 }
 
+.enem-simulator {
+  max-width: 68rem;
+  margin-inline: auto;
+  padding: clamp(1rem, 2vw, 2rem);
+}
+
+.enem-simulator__title {
+  color: var(--sl-color-white);
+  font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-block: 0.35rem 1rem;
+}
+
+.enem-simulator__status,
+.enem-simulator__notice,
+.enem-simulator__setup,
+.enem-simulator__session,
+.enem-simulator__result {
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 0.85rem;
+  background: var(--sl-color-bg-nav);
+  padding: clamp(1rem, 2vw, 1.5rem);
+  margin-block: 1.25rem;
+}
+
+.enem-simulator__status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  justify-content: space-between;
+}
+
+.enem-simulator__status span,
+.enem-simulator__notice {
+  color: var(--sl-color-gray-2);
+}
+
+.enem-simulator__notice {
+  border-inline-start: 0.3rem solid var(--sl-color-accent);
+}
+
+.enem-simulator__setup {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.5fr) minmax(15rem, 1fr) auto;
+  gap: 1rem;
+  align-items: end;
+}
+
+.enem-simulator__setup label,
+.enem-question__confidence {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--sl-color-gray-2);
+  font-size: var(--sl-text-sm);
+  font-weight: 650;
+}
+
+.enem-simulator input,
+.enem-simulator select {
+  min-height: 2.5rem;
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 0.5rem;
+  background: var(--sl-color-bg);
+  color: var(--sl-color-text);
+  font: inherit;
+  padding: 0.45rem 0.65rem;
+}
+
+.enem-simulator__session-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: start;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--sl-color-hairline);
+  margin-block-end: 1.25rem;
+}
+
+.enem-question {
+  min-width: 0;
+  border: 0;
+  border-bottom: 1px solid var(--sl-color-hairline);
+  padding: 0 0 1.5rem;
+  margin: 0 0 1.5rem;
+}
+
+.enem-question legend {
+  color: var(--sl-color-white);
+  font-size: 1.2rem;
+  font-weight: 800;
+  padding: 0;
+}
+
+.enem-question p {
+  max-width: 75ch;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+
+.enem-question__alternatives {
+  display: grid;
+  gap: 0.55rem;
+  margin-block: 1rem;
+}
+
+.enem-question__alternatives label {
+  display: grid;
+  grid-template-columns: auto 1.5rem minmax(0, 1fr);
+  gap: 0.55rem;
+  align-items: start;
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 0.65rem;
+  padding: 0.75rem;
+  cursor: pointer;
+}
+
+.enem-question__alternatives label:has(input:checked) {
+  border-color: var(--sl-color-accent);
+  background: color-mix(in srgb, var(--sl-color-accent) 10%, transparent);
+}
+
+.enem-question__alternatives input {
+  min-height: auto;
+  margin-block-start: 0.22rem;
+}
+
+.enem-question__confidence {
+  max-width: 15rem;
+}
+
+.enem-simulator__metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 0.75rem;
+  margin-block: 1rem 1.5rem;
+}
+
+.enem-simulator__metrics > div {
+  display: grid;
+  gap: 0.2rem;
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 0.65rem;
+  padding: 0.85rem;
+}
+
+.enem-simulator__metrics strong {
+  color: var(--sl-color-white);
+  font-size: 1.35rem;
+}
+
+.enem-simulator__metrics span {
+  color: var(--sl-color-gray-3);
+  font-size: var(--sl-text-sm);
+}
+
+.enem-review {
+  border-inline-start: 0.3rem solid var(--sl-color-red-high);
+  background: color-mix(in srgb, var(--sl-color-red) 8%, transparent);
+  padding: 0.75rem 1rem;
+  margin-block: 0.75rem;
+}
+
+.enem-review--fragile {
+  border-inline-start-color: var(--sl-color-orange-high);
+  background: color-mix(in srgb, var(--sl-color-orange) 8%, transparent);
+}
+
+.enem-review h3 {
+  font-size: 1rem;
+  margin-block: 0 0.35rem;
+}
+
+.enem-review p {
+  margin-block: 0.35rem;
+}
+
+@media (max-width: 42rem) {
+  .enem-simulator__setup {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Skip link — visible only on keyboard focus (WCAG 2.1 AA 2.4.1) */
 .vault-skip-link {
   position: absolute;

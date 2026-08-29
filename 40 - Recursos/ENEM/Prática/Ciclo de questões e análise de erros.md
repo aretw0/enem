@@ -21,6 +21,9 @@ sidebar:
 - não escolha apenas questões do assunto que acabou de ler;
 - registre se é treino, diagnóstico ou simulado.
 
+Para começar sem preparação adicional, abra o [bloco de questões verificadas](/simulado/). Ele
+preserva um identificador reproduzível na URL e só mostra o gabarito depois da entrega.
+
 ## Durante
 
 Marque resposta, confiança baixa/média/alta e tempo aproximado. Não abra a resolução entre itens se

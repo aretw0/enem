@@ -127,6 +127,7 @@ const REQUIRED_DIST_PATHS = [
   "explorar",
   "explorar/intencoes",
   "calculadora",
+  "simulado",
   "entrada/comece-aqui",
   "projetos/plano-enem-2026",
   "areas/enem-mapa-do-estudante",

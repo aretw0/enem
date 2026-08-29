@@ -25,6 +25,7 @@
     "site:build": "pnpm --filter @aretw0/dgk-astro-plugins build && astro build",
     "site:preview": "astro preview",
     "site:check": "node scripts/smoke_site.js",
+    "site:check:simulator": "pnpm run site:build && node scripts/smoke_simulator.mjs",
     "site:responsive": "pnpm run site:build && pnpm run notebooks:export && node scripts/smoke_responsive.mjs",
     "site:audit:sidebar": "node scripts/audit_sidebar.js",
     "audit:ia": "node scripts/audit_information_architecture.mjs",

@@ -1,0 +1,253 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import sources from '../../data/sources.json';
+
+const questionFiles = import.meta.glob('../../data/questions/*.json', {
+  eager: true,
+  import: 'default',
+}) as Record<string, any[]>;
+const sourceById = new Map(sources.map((source) => [source.id, source]));
+const bank = Object.values(questionFiles)
+  .flat()
+  .filter((question) => question.provenance?.reviewStatus === 'verified')
+  .map((question) => ({
+    id: question.id,
+    item: question.item,
+    year: question.year,
+    area: question.area,
+    prompt: question.prompt,
+    alternatives: question.alternatives,
+    answer: question.answer,
+    sourceUrl: sourceById.get(question.sourceId)?.url,
+    sourceFile: question.provenance.sourceFile,
+    sourcePage: question.provenance.page,
+  }));
+const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
+---
+
+<StarlightPage frontmatter={{ title: 'Simulado ENEM', description: 'Bloco reproduzível de questões oficiais verificadas, com confiança e análise após a entrega.' }}>
+  <main class="enem-simulator" data-enem-simulator>
+    <header>
+      <p class="vault-section-label">Prática de recuperação</p>
+      <p class="enem-simulator__title">Bloco de questões verificadas</p>
+      <p class="vault-lead">
+        Responda sem consultar material e receba feedback somente ao entregar. Registre também sua
+        confiança: um acerto de baixa confiança continua sendo candidato a revisão.
+      </p>
+      <div class="enem-simulator__status" role="status">
+        <strong>{bank.length} questões disponíveis</strong>
+        <span>2025 · Ciências da Natureza · aplicação regular · Caderno 7 Azul</span>
+      </div>
+    </header>
+
+    <aside class="enem-simulator__notice">
+      Este primeiro acervo cobre apenas Ciências da Natureza e ainda não representa um simulado
+      completo ou balanceado do ENEM. O resultado é acerto bruto; não é nota TRI.
+    </aside>
+
+    <form class="enem-simulator__setup" data-simulator-setup>
+      <label>
+        Tamanho do bloco
+        <select name="size">
+          <option value="5">5 questões</option>
+          <option value="10" selected>10 questões</option>
+        </select>
+      </label>
+      <label>
+        Identificador reproduzível
+        <input name="seed" value="enem-2025-natureza-1" autocomplete="off" />
+      </label>
+      <button class="vault-button" type="submit">Montar bloco</button>
+    </form>
+
+    <section class="enem-simulator__session" data-simulator-session hidden aria-labelledby="session-title">
+      <div class="enem-simulator__session-header">
+        <div>
+          <p class="vault-section-label">Sessão em andamento</p>
+          <h2 id="session-title" data-session-title>Bloco</h2>
+        </div>
+        <p data-progress aria-live="polite"></p>
+      </div>
+      <form data-question-form>
+        <div data-question-list></div>
+        <button class="vault-button" type="submit">Entregar e corrigir</button>
+      </form>
+    </section>
+
+    <section class="enem-simulator__result" data-simulator-result hidden aria-labelledby="result-title" aria-live="polite">
+      <p class="vault-section-label">Feedback do bloco</p>
+      <h2 id="result-title">Resultado bruto</h2>
+      <div class="enem-simulator__metrics" data-result-metrics></div>
+      <div data-result-review></div>
+      <div class="vault-actions">
+        <button class="vault-button" type="button" data-new-block>Novo embaralhamento</button>
+        <a class="vault-button vault-button--secondary" href="../recursos/enem/pratica/ciclo-de-questoes-e-analise-de-erros/">Analisar os erros</a>
+      </div>
+    </section>
+
+    <noscript>Ative JavaScript para montar e corrigir o bloco localmente no navegador.</noscript>
+    <script id="enem-question-bank" type="application/json" set:html={serializedBank}></script>
+  </main>
+</StarlightPage>
+
+<script>
+  import { evaluateAttempt, selectQuestions } from '../lib/enem-simulator.mjs';
+
+  const root = document.querySelector('[data-enem-simulator]');
+  const bankNode = document.querySelector('#enem-question-bank');
+  if (root instanceof HTMLElement && bankNode) {
+    const bank = JSON.parse(bankNode.textContent || '[]');
+    const setup = root.querySelector('[data-simulator-setup]');
+    const session = root.querySelector('[data-simulator-session]');
+    const questionForm = root.querySelector('[data-question-form]');
+    const questionList = root.querySelector('[data-question-list]');
+    const resultSection = root.querySelector('[data-simulator-result]');
+    let selected = [];
+    let startedAt = 0;
+
+    const letter = (index) => String.fromCharCode(65 + index);
+    const storageKey = (seed, size) => `enem-vault:simulado:${seed}:${size}`;
+    const safeStored = (key) => {
+      try { return JSON.parse(localStorage.getItem(key) || '{}'); } catch { return {}; }
+    };
+
+    function renderQuestion(question, index, stored) {
+      const fieldset = document.createElement('fieldset');
+      fieldset.className = 'enem-question';
+      fieldset.dataset.questionId = question.id;
+      const legend = document.createElement('legend');
+      legend.textContent = `${index + 1}. Questão ${question.item}`;
+      fieldset.append(legend);
+      for (const paragraphText of question.prompt.split(/\n\n+/)) {
+        const paragraph = document.createElement('p');
+        paragraph.textContent = paragraphText;
+        fieldset.append(paragraph);
+      }
+      const alternatives = document.createElement('div');
+      alternatives.className = 'enem-question__alternatives';
+      question.alternatives.forEach((text, alternativeIndex) => {
+        const label = document.createElement('label');
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = `answer-${question.id}`;
+        input.value = letter(alternativeIndex);
+        input.checked = stored?.answer === input.value;
+        const marker = document.createElement('strong');
+        marker.textContent = input.value;
+        const content = document.createElement('span');
+        content.textContent = text;
+        label.append(input, marker, content);
+        alternatives.append(label);
+      });
+      fieldset.append(alternatives);
+      const confidence = document.createElement('label');
+      confidence.className = 'enem-question__confidence';
+      confidence.append('Confiança ');
+      const select = document.createElement('select');
+      select.name = `confidence-${question.id}`;
+      for (const [value, text] of [['', 'não informada'], ['low', 'baixa'], ['medium', 'média'], ['high', 'alta']]) {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = text;
+        option.selected = stored?.confidence === value;
+        select.append(option);
+      }
+      confidence.append(select);
+      fieldset.append(confidence);
+      return fieldset;
+    }
+
+    function responses() {
+      return Object.fromEntries(selected.map((question) => ({
+        question,
+        answer: questionForm.elements.namedItem(`answer-${question.id}`)?.value || null,
+        confidence: questionForm.elements.namedItem(`confidence-${question.id}`)?.value || null,
+      })).map(({ question, answer, confidence }) => [question.id, { answer, confidence }]));
+    }
+
+    function updateProgress() {
+      const answered = Object.values(responses()).filter((response) => response.answer).length;
+      root.querySelector('[data-progress]').textContent = `${answered}/${selected.length} respondidas`;
+      const size = Number(setup.elements.namedItem('size').value);
+      const seed = setup.elements.namedItem('seed').value.trim();
+      localStorage.setItem(storageKey(seed, size), JSON.stringify(responses()));
+    }
+
+    function mountBlock() {
+      const size = Number(setup.elements.namedItem('size').value);
+      const seed = setup.elements.namedItem('seed').value.trim() || 'enem-2025-natureza-1';
+      setup.elements.namedItem('seed').value = seed;
+      selected = selectQuestions(bank, { seed, size });
+      const stored = safeStored(storageKey(seed, size));
+      questionList.replaceChildren(...selected.map((question, index) => renderQuestion(question, index, stored[question.id])));
+      root.querySelector('[data-session-title]').textContent = `${selected.length} questões · seed ${seed}`;
+      session.hidden = false;
+      resultSection.hidden = true;
+      startedAt = performance.now();
+      updateProgress();
+      history.replaceState(null, '', `${location.pathname}?seed=${encodeURIComponent(seed)}&size=${selected.length}`);
+      session.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    setup.addEventListener('submit', (event) => { event.preventDefault(); mountBlock(); });
+    questionForm.addEventListener('change', updateProgress);
+    questionForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const attempt = evaluateAttempt(selected, responses());
+      const elapsedMinutes = Math.max(1, Math.round((performance.now() - startedAt) / 60000));
+      const metrics = root.querySelector('[data-result-metrics]');
+      metrics.replaceChildren();
+      for (const [value, label] of [
+        [`${attempt.correct}/${attempt.total}`, 'acertos'],
+        [String(attempt.incorrect), 'erros'],
+        [String(attempt.unanswered), 'em branco'],
+        [String(attempt.fragile), 'acertos frágeis'],
+        [`${elapsedMinutes} min`, 'tempo nesta tela'],
+      ]) {
+        const card = document.createElement('div');
+        const strong = document.createElement('strong');
+        strong.textContent = value;
+        const span = document.createElement('span');
+        span.textContent = label;
+        card.append(strong, span);
+        metrics.append(card);
+      }
+      const review = root.querySelector('[data-result-review]');
+      review.replaceChildren();
+      for (const item of attempt.items.filter((entry) => !entry.correct || entry.fragile)) {
+        const row = document.createElement('article');
+        row.className = `enem-review ${item.correct ? 'enem-review--fragile' : 'enem-review--error'}`;
+        const title = document.createElement('h3');
+        title.textContent = `Questão ${item.item}: ${item.correct ? 'acerto de baixa confiança' : item.unanswered ? 'em branco' : 'resposta incorreta'}`;
+        const detail = document.createElement('p');
+        detail.textContent = `Sua resposta: ${item.selected ?? '—'} · Gabarito oficial: ${item.answer} · Confiança: ${item.confidence ?? 'não informada'}`;
+        const sourceQuestion = selected.find((question) => question.id === item.id);
+        const source = document.createElement('a');
+        source.href = sourceQuestion.sourceUrl;
+        source.target = '_blank';
+        source.rel = 'noreferrer';
+        source.textContent = `Abrir prova oficial · página ${sourceQuestion.sourcePage}`;
+        row.append(title, detail, source);
+        review.append(row);
+      }
+      if (!review.children.length) {
+        const message = document.createElement('p');
+        message.textContent = 'Nenhum erro ou acerto de baixa confiança neste bloco.';
+        review.append(message);
+      }
+      questionForm.querySelectorAll('input, select, button').forEach((control) => { control.disabled = true; });
+      resultSection.hidden = false;
+      resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    root.querySelector('[data-new-block]').addEventListener('click', () => {
+      setup.elements.namedItem('seed').value = `enem-${Date.now().toString(36)}`;
+      questionForm.querySelectorAll('input, select, button').forEach((control) => { control.disabled = false; });
+      mountBlock();
+    });
+
+    const params = new URLSearchParams(location.search);
+    if (params.get('seed')) setup.elements.namedItem('seed').value = params.get('seed');
+    if (['5', '10'].includes(params.get('size'))) setup.elements.namedItem('size').value = params.get('size');
+  }
+</script>
