@@ -23,6 +23,17 @@ const bank = Object.values(questionFiles)
     sourceFile: question.provenance.sourceFile,
     sourcePage: question.provenance.page,
   }));
+const areaCounts = bank.reduce<Record<string, number>>((counts, question) => {
+  counts[question.area] = (counts[question.area] ?? 0) + 1;
+  return counts;
+}, {});
+const areaSummary = [
+  ['natureza', 'Natureza'],
+  ['matematica', 'Matemática'],
+]
+  .filter(([area]) => areaCounts[area])
+  .map(([area, label]) => `${areaCounts[area]} de ${label}`)
+  .join(' · ');
 const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
 ---
 
@@ -37,13 +48,13 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
       </p>
       <div class="enem-simulator__status" role="status">
         <strong>{bank.length} questões disponíveis</strong>
-        <span>2025 · Ciências da Natureza · aplicação regular · Caderno 7 Azul</span>
+        <span>{areaSummary} · 2025 · aplicação regular · Caderno 7 Azul</span>
       </div>
     </header>
 
     <aside class="enem-simulator__notice">
-      Este primeiro acervo cobre apenas Ciências da Natureza e ainda não representa um simulado
-      completo ou balanceado do ENEM. O resultado é acerto bruto; não é nota TRI.
+      Este acervo cobre parte de Ciências da Natureza e Matemática; ainda não representa um simulado
+      completo nem a distribuição oficial do ENEM. O resultado é acerto bruto; não é nota TRI.
     </aside>
 
     <form class="enem-simulator__setup" data-simulator-setup>
@@ -56,7 +67,7 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
       </label>
       <label>
         Identificador reproduzível
-        <input name="seed" value="enem-2025-natureza-1" autocomplete="off" />
+        <input name="seed" value="enem-2025-d2-1" autocomplete="off" />
       </label>
       <button class="vault-button" type="submit">Montar bloco</button>
     </form>
@@ -178,7 +189,7 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
 
     function mountBlock() {
       const size = Number(setup.elements.namedItem('size').value);
-      const seed = setup.elements.namedItem('seed').value.trim() || 'enem-2025-natureza-1';
+      const seed = setup.elements.namedItem('seed').value.trim() || 'enem-2025-d2-1';
       setup.elements.namedItem('seed').value = seed;
       selected = selectQuestions(bank, { seed, size });
       const stored = safeStored(storageKey(seed, size));
