@@ -93,7 +93,7 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
 </StarlightPage>
 
 <script>
-  import { attemptToMarkdown, evaluateAttempt, selectQuestions } from '../lib/enem-simulator.mjs';
+  import { attemptToMarkdown, evaluateAttempt, selectQuestions } from '@aretw0/enem-domain/simulator';
 
   const root = document.querySelector('[data-enem-simulator]');
   const bankNode = document.querySelector('#enem-question-bank');

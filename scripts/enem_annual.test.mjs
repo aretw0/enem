@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { validateAnnualData } from './validate_enem_annual.mjs';
+import { validateAnnualData } from '@aretw0/enem-domain/annual';
 
 const model = {
   edition: 2026,

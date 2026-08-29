@@ -1,0 +1,21 @@
+{
+  "name": "@aretw0/enem-domain",
+  "version": "0.1.0",
+  "description": "Primitivas puras para prática, registro e atualização anual de produtos ENEM.",
+  "type": "module",
+  "exports": {
+    "./simulator": "./src/simulator.mjs",
+    "./annual": "./src/annual.mjs"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}

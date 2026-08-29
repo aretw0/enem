@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { attemptToMarkdown, evaluateAttempt, selectQuestions } from '../.site/lib/enem-simulator.mjs';
+import { attemptToMarkdown, evaluateAttempt, selectQuestions } from '@aretw0/enem-domain/simulator';
 
 const questions = Array.from({ length: 10 }, (_, index) => ({
   id: `q${index + 1}`,
