@@ -141,6 +141,13 @@
   align-items: end;
 }
 
+.enem-simulator__queue-status {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--sl-color-gray-2);
+  font-size: 0.88rem;
+}
+
 .enem-simulator__setup label,
 .enem-question__confidence {
   display: grid;

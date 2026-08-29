@@ -5,6 +5,7 @@ import {
   evaluateAttempt,
   selectBalancedQuestions,
   selectQuestions,
+  updateReviewQueue,
 } from '@aretw0/enem-domain/simulator';
 
 const questions = Array.from({ length: 10 }, (_, index) => ({
@@ -57,6 +58,26 @@ test('avalia erro, omissão e acerto de baixa confiança separadamente', () => {
     { total: result.total, correct: result.correct, incorrect: result.incorrect, unanswered: result.unanswered, fragile: result.fragile },
     { total: 3, correct: 1, incorrect: 1, unanswered: 1, fragile: 1 },
   );
+});
+
+test('mantém foco frágil na fila e remove após acerto com confiança suficiente', () => {
+  const selected = [
+    { id: 'q1', item: 1, area: 'natureza', answer: 'A' },
+    { id: 'q2', item: 2, area: 'matematica', answer: 'B' },
+  ];
+  const firstAttempt = evaluateAttempt(selected, {
+    q1: { answer: 'A', confidence: 'low' },
+    q2: { answer: 'A', confidence: 'high' },
+  });
+  const flagged = updateReviewQueue([], firstAttempt, selected, { at: '2026-08-29T12:00:00.000Z' });
+  assert.deepEqual(flagged.map(({ id, reason }) => ({ id, reason })), [
+    { id: 'q1', reason: 'acerto de baixa confiança' },
+    { id: 'q2', reason: 'erro' },
+  ]);
+
+  const repeated = evaluateAttempt([selected[0]], { q1: { answer: 'A', confidence: 'medium' } });
+  const remaining = updateReviewQueue(flagged, repeated, [selected[0]], { at: '2026-08-29T13:00:00.000Z' });
+  assert.deepEqual(remaining.map((entry) => entry.id), ['q2']);
 });
 
 test('exporta registro Markdown com resultado, confiança e fonte', () => {

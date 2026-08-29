@@ -65,6 +65,7 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
           <option value="mixed" selected>Misto equilibrado</option>
           <option value="natureza">Ciências da Natureza</option>
           <option value="matematica">Matemática</option>
+          <option value="review">Minha fila de retomada</option>
         </select>
       </label>
       <label>
@@ -79,6 +80,7 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
         <input name="seed" value="enem-2025-misto-1" autocomplete="off" />
       </label>
       <button class="vault-button" type="submit">Montar bloco</button>
+      <p class="enem-simulator__queue-status" data-review-queue-status aria-live="polite"></p>
     </form>
 
     <section class="enem-simulator__session" data-simulator-session hidden aria-labelledby="session-title">
@@ -118,6 +120,7 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
     evaluateAttempt,
     selectBalancedQuestions,
     selectQuestions,
+    updateReviewQueue,
   } from '@aretw0/enem-domain/simulator';
 
   const root = document.querySelector('[data-enem-simulator]');
@@ -138,11 +141,27 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
       mixed: 'Misto equilibrado',
       natureza: 'Ciências da Natureza',
       matematica: 'Matemática',
+      review: 'Fila de retomada',
     };
+    const reviewQueueKey = 'enem-vault:review-queue:v1';
     const storageKey = (seed, size, area) => `enem-vault:simulado:${area}:${seed}:${size}`;
-    const safeStored = (key) => {
-      try { return JSON.parse(localStorage.getItem(key) || '{}'); } catch { return {}; }
+    const safeStored = (key, fallback = {}) => {
+      try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); } catch { return fallback; }
     };
+
+    function reviewQueue() {
+      const queue = safeStored(reviewQueueKey, []);
+      return Array.isArray(queue) ? queue : [];
+    }
+
+    function refreshQueueStatus(message) {
+      const count = reviewQueue().length;
+      root.querySelector('[data-review-queue-status]').textContent = message ?? (
+        count
+          ? `${count} ${count === 1 ? 'questão aguarda' : 'questões aguardam'} retomada. A fila fica somente neste navegador.`
+          : 'A fila de retomada está vazia. Erros, omissões e acertos de baixa confiança entram nela automaticamente.'
+      );
+    }
 
     function renderQuestion(question, index, stored) {
       const fieldset = document.createElement('fieldset');
@@ -212,10 +231,21 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
       const area = setup.elements.namedItem('area').value;
       const seed = setup.elements.namedItem('seed').value.trim() || 'enem-2025-misto-1';
       setup.elements.namedItem('seed').value = seed;
-      const scopedBank = area === 'mixed' ? bank : bank.filter((question) => question.area === area);
+      const queuedIds = new Set(reviewQueue().map((entry) => entry.id));
+      const scopedBank = area === 'mixed'
+        ? bank
+        : area === 'review'
+          ? bank.filter((question) => queuedIds.has(question.id))
+          : bank.filter((question) => question.area === area);
       selected = area === 'mixed'
         ? selectBalancedQuestions(scopedBank, { seed, size })
         : selectQuestions(scopedBank, { seed, size });
+      if (!selected.length) {
+        session.hidden = true;
+        resultSection.hidden = true;
+        refreshQueueStatus('A fila está vazia. Conclua um bloco para registrar pontos de retomada.');
+        return;
+      }
       const stored = safeStored(storageKey(seed, size, area));
       questionList.replaceChildren(...selected.map((question, index) => renderQuestion(question, index, stored[question.id])));
       root.querySelector('[data-session-title]').textContent = `${areaLabels[area]} · ${selected.length} questões · seed ${seed}`;
@@ -234,6 +264,9 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
       const attempt = evaluateAttempt(selected, responses());
       const elapsedMinutes = Math.max(1, Math.round((performance.now() - startedAt) / 60000));
       completed = { attempt, elapsedMinutes };
+      const updatedQueue = updateReviewQueue(reviewQueue(), attempt, selected, { at: new Date().toISOString() });
+      localStorage.setItem(reviewQueueKey, JSON.stringify(updatedQueue));
+      refreshQueueStatus();
       const metrics = root.querySelector('[data-result-metrics]');
       metrics.replaceChildren();
       for (const [value, label] of [
@@ -305,10 +338,11 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
     });
 
     const params = new URLSearchParams(location.search);
-    if (['mixed', 'natureza', 'matematica'].includes(params.get('area'))) {
+    if (['mixed', 'natureza', 'matematica', 'review'].includes(params.get('area'))) {
       setup.elements.namedItem('area').value = params.get('area');
     }
     if (params.get('seed')) setup.elements.namedItem('seed').value = params.get('seed');
     if (['5', '10'].includes(params.get('size'))) setup.elements.namedItem('size').value = params.get('size');
+    refreshQueueStatus();
   }
 </script>

@@ -97,6 +97,43 @@ export function evaluateAttempt(questions, responses) {
   };
 }
 
+function reviewReason(item) {
+  if (item.unanswered) return 'em branco';
+  if (!item.correct) return 'erro';
+  if (item.fragile) return 'acerto de baixa confiança';
+  return null;
+}
+
+export function updateReviewQueue(queue, attempt, questions, { at }) {
+  if (!Array.isArray(queue) || !Array.isArray(attempt?.items) || !Array.isArray(questions)) {
+    throw new TypeError('fila, tentativa e questões devem ser válidas');
+  }
+  const questionById = new Map(questions.map((question) => [question.id, question]));
+  const next = new Map(queue.map((entry) => [entry.id, entry]));
+  for (const item of attempt.items) {
+    const reason = reviewReason(item);
+    if (!reason) {
+      next.delete(item.id);
+      continue;
+    }
+    const question = questionById.get(item.id) ?? {};
+    const previous = next.get(item.id);
+    next.set(item.id, {
+      id: item.id,
+      item: item.item,
+      area: question.area ?? previous?.area ?? null,
+      reason,
+      sourceUrl: question.sourceUrl ?? previous?.sourceUrl ?? null,
+      sourcePage: question.sourcePage ?? previous?.sourcePage ?? null,
+      flaggedAt: previous?.flaggedAt ?? at,
+      lastAttemptAt: at,
+      attemptCount: (previous?.attemptCount ?? 0) + 1,
+    });
+  }
+  return [...next.values()].sort((first, second) =>
+    String(second.lastAttemptAt).localeCompare(String(first.lastAttemptAt)) || first.item - second.item);
+}
+
 function markdownCell(value) {
   return String(value ?? '—').replaceAll('|', '\\|').replaceAll('\n', ' ');
 }

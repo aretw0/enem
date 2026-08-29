@@ -66,6 +66,9 @@ try {
     await page.locator('[data-question-form] > button[type="submit"]').click();
     if (!await page.locator('[data-simulator-result]').isVisible()) errors.push(`${viewport.width}px: resultado oculto`);
     if (await page.locator('[data-result-metrics] > div').count() !== 5) errors.push(`${viewport.width}px: métricas incompletas`);
+    if (!await page.locator('[data-review-queue-status]').textContent().then((text) => (text ?? '').includes('5 questões aguardam'))) {
+      errors.push(`${viewport.width}px: tentativa não alimentou a fila de retomada`);
+    }
     if (!await page.locator('[data-download-session]').isEnabled()) {
       errors.push(`${viewport.width}px: exportação Markdown indisponível`);
     } else {
@@ -74,6 +77,11 @@ try {
       const download = await downloadPromise;
       if (!download.suggestedFilename().endsWith('.md')) errors.push(`${viewport.width}px: download não gerou Markdown`);
       await download.delete();
+    }
+    await page.locator('[data-simulator-setup] select[name="area"]').selectOption('review');
+    await page.locator('[data-new-block]').click();
+    if (await page.locator('.enem-question').count() !== 5) {
+      errors.push(`${viewport.width}px: fila de retomada não montou o novo bloco`);
     }
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     if (overflow > 2) errors.push(`${viewport.width}px: overflow horizontal de ${overflow}px`);
