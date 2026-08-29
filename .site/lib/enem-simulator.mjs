@@ -56,3 +56,78 @@ export function evaluateAttempt(questions, responses) {
     fragile: items.filter((item) => item.fragile).length,
   };
 }
+
+function markdownCell(value) {
+  return String(value ?? '—').replaceAll('|', '\\|').replaceAll('\n', ' ');
+}
+
+function statusFor(item) {
+  if (item.unanswered) return 'em branco';
+  if (!item.correct) return 'erro';
+  if (item.fragile) return 'acerto frágil';
+  return 'acerto';
+}
+
+const CONFIDENCE_LABELS = { low: 'baixa', medium: 'média', high: 'alta' };
+
+export function attemptToMarkdown({ attempt, questions, seed, date, elapsedMinutes }) {
+  if (!attempt?.items || !Array.isArray(questions)) throw new TypeError('tentativa inválida');
+  const questionById = new Map(questions.map((question) => [question.id, question]));
+  const focus = attempt.items.filter((item) => !item.correct || item.fragile);
+  const safeSeed = String(seed).replaceAll('\n', ' ').replaceAll(':', '-');
+  const lines = [
+    '---',
+    `title: Sessão ENEM — ${date} — ${safeSeed}`,
+    `created: "${date}"`,
+    'tags:',
+    '  - enem/sessao',
+    '  - enem/questoes',
+    'status: draft',
+    'category: workflow',
+    'audience: pessoal',
+    '---',
+    '',
+    `# Sessão ENEM — ${date}`,
+    '',
+    `- Bloco reproduzível: \`${safeSeed}\``,
+    `- Tempo nesta tela: ${elapsedMinutes} min`,
+    `- Resultado bruto: ${attempt.correct}/${attempt.total}`,
+    `- Erros: ${attempt.incorrect}; em branco: ${attempt.unanswered}; acertos frágeis: ${attempt.fragile}`,
+    '- Condições e interrupções:',
+    '',
+    '## Respostas',
+    '',
+    '| Questão | Minha resposta | Gabarito | Confiança | Estado | Fonte |',
+    '|---:|:---:|:---:|---|---|---|',
+    ...attempt.items.map((item) => {
+      const question = questionById.get(item.id) ?? {};
+      const source = question.sourceUrl
+        ? `[PDF p. ${question.sourcePage}](${question.sourceUrl})`
+        : `${question.sourceFile ?? 'fonte não informada'} p. ${question.sourcePage ?? '—'}`;
+      return `| ${markdownCell(item.item)} | ${markdownCell(item.selected)} | ${markdownCell(item.answer)} | ${markdownCell(CONFIDENCE_LABELS[item.confidence] ?? 'não informada')} | ${markdownCell(statusFor(item))} | ${markdownCell(source)} |`;
+    }),
+    '',
+    '## Foco da correção',
+    '',
+    ...(focus.length
+      ? focus.flatMap((item) => [
+          `### Questão ${item.item} — ${statusFor(item)}`,
+          '',
+          '- Causa principal:',
+          '- Primeira decisão incorreta ou raciocínio frágil:',
+          '- Correção em minhas palavras:',
+          '- Nova tentativa sem consulta:',
+          '- Questão análoga:',
+          '- Próxima recuperação:',
+          '',
+        ])
+      : ['Nenhum erro ou acerto de baixa confiança neste bloco.', '']),
+    '## Próxima ação',
+    '',
+    '- [ ] Corrigir com fonte confiável',
+    '- [ ] Refazer sem consulta',
+    '- [ ] Agendar uma questão análoga',
+    '',
+  ];
+  return lines.join('\n');
+}

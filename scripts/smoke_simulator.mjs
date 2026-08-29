@@ -58,6 +58,15 @@ try {
     await page.locator('[data-question-form] > button[type="submit"]').click();
     if (!await page.locator('[data-simulator-result]').isVisible()) errors.push(`${viewport.width}px: resultado oculto`);
     if (await page.locator('[data-result-metrics] > div').count() !== 5) errors.push(`${viewport.width}px: métricas incompletas`);
+    if (!await page.locator('[data-download-session]').isEnabled()) {
+      errors.push(`${viewport.width}px: exportação Markdown indisponível`);
+    } else {
+      const downloadPromise = page.waitForEvent('download');
+      await page.locator('[data-download-session]').click();
+      const download = await downloadPromise;
+      if (!download.suggestedFilename().endsWith('.md')) errors.push(`${viewport.width}px: download não gerou Markdown`);
+      await download.delete();
+    }
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     if (overflow > 2) errors.push(`${viewport.width}px: overflow horizontal de ${overflow}px`);
     await page.close();

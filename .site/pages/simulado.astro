@@ -18,6 +18,7 @@ const bank = Object.values(questionFiles)
     prompt: question.prompt,
     alternatives: question.alternatives,
     answer: question.answer,
+    sourceId: question.sourceId,
     sourceUrl: sourceById.get(question.sourceId)?.url,
     sourceFile: question.provenance.sourceFile,
     sourcePage: question.provenance.page,
@@ -80,6 +81,7 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
       <div class="enem-simulator__metrics" data-result-metrics></div>
       <div data-result-review></div>
       <div class="vault-actions">
+        <button class="vault-button vault-button--secondary" type="button" data-download-session>Baixar registro .md</button>
         <button class="vault-button" type="button" data-new-block>Novo embaralhamento</button>
         <a class="vault-button vault-button--secondary" href="../recursos/enem/pratica/ciclo-de-questoes-e-analise-de-erros/">Analisar os erros</a>
       </div>
@@ -91,7 +93,7 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
 </StarlightPage>
 
 <script>
-  import { evaluateAttempt, selectQuestions } from '../lib/enem-simulator.mjs';
+  import { attemptToMarkdown, evaluateAttempt, selectQuestions } from '../lib/enem-simulator.mjs';
 
   const root = document.querySelector('[data-enem-simulator]');
   const bankNode = document.querySelector('#enem-question-bank');
@@ -104,6 +106,7 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
     const resultSection = root.querySelector('[data-simulator-result]');
     let selected = [];
     let startedAt = 0;
+    let completed = null;
 
     const letter = (index) => String.fromCharCode(65 + index);
     const storageKey = (seed, size) => `enem-vault:simulado:${seed}:${size}`;
@@ -195,6 +198,7 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
       event.preventDefault();
       const attempt = evaluateAttempt(selected, responses());
       const elapsedMinutes = Math.max(1, Math.round((performance.now() - startedAt) / 60000));
+      completed = { attempt, elapsedMinutes };
       const metrics = root.querySelector('[data-result-metrics]');
       metrics.replaceChildren();
       for (const [value, label] of [
@@ -244,6 +248,25 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
       setup.elements.namedItem('seed').value = `enem-${Date.now().toString(36)}`;
       questionForm.querySelectorAll('input, select, button').forEach((control) => { control.disabled = false; });
       mountBlock();
+    });
+
+    root.querySelector('[data-download-session]').addEventListener('click', () => {
+      if (!completed) return;
+      const seed = setup.elements.namedItem('seed').value.trim();
+      const date = new Date().toISOString().slice(0, 10);
+      const markdown = attemptToMarkdown({
+        attempt: completed.attempt,
+        questions: selected,
+        seed,
+        date,
+        elapsedMinutes: completed.elapsedMinutes,
+      });
+      const url = URL.createObjectURL(new Blob([markdown], { type: 'text/markdown;charset=utf-8' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `sessao-enem-${date}-${seed.replace(/[^a-z0-9-]+/gi, '-').toLowerCase()}.md`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 0);
     });
 
     const params = new URLSearchParams(location.search);

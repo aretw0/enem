@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { evaluateAttempt, selectQuestions } from '../.site/lib/enem-simulator.mjs';
+import { attemptToMarkdown, evaluateAttempt, selectQuestions } from '../.site/lib/enem-simulator.mjs';
 
 const questions = Array.from({ length: 10 }, (_, index) => ({
   id: `q${index + 1}`,
@@ -25,4 +25,17 @@ test('avalia erro, omissão e acerto de baixa confiança separadamente', () => {
     { total: result.total, correct: result.correct, incorrect: result.incorrect, unanswered: result.unanswered, fragile: result.fragile },
     { total: 3, correct: 1, incorrect: 1, unanswered: 1, fragile: 1 },
   );
+});
+
+test('exporta registro Markdown com resultado, confiança e fonte', () => {
+  const selected = [{
+    id: 'q1', item: 92, answer: 'D', sourceUrl: 'https://download.inep.gov.br/prova.pdf', sourcePage: 2,
+  }];
+  const attempt = evaluateAttempt(selected, { q1: { answer: 'A', confidence: 'low' } });
+  const markdown = attemptToMarkdown({
+    attempt, questions: selected, seed: 'bloco-1', date: '2026-08-29', elapsedMinutes: 12,
+  });
+  assert.match(markdown, /Resultado bruto: 0\/1/);
+  assert.match(markdown, /\| 92 \| A \| D \| baixa \| erro \| \[PDF p\. 2\]/);
+  assert.match(markdown, /Primeira decisão incorreta ou raciocínio frágil/);
 });

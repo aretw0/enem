@@ -22,7 +22,8 @@ sidebar:
 - registre se é treino, diagnóstico ou simulado.
 
 Para começar sem preparação adicional, abra o [bloco de questões verificadas](/simulado/). Ele
-preserva um identificador reproduzível na URL e só mostra o gabarito depois da entrega.
+preserva um identificador reproduzível na URL, só mostra o gabarito depois da entrega e baixa um
+registro Markdown da sessão para continuar a correção dentro do vault.
 
 ## Durante
 
