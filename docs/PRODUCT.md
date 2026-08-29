@@ -15,15 +15,17 @@ diagnóstico → plano semanal → estudo com recuperação → questões → an
 
 ## Arquitetura de conteúdo
 
-| Objeto | Onde vive | Critério de pronto |
-|---|---|---|
-| Jornada | `00 - Entrada/` | termina numa ação de até 15 minutos |
-| Plano | `20 - Projetos/` | meta, prazo, capacidade e revisão definidos |
-| Método | `40 - Recursos/ENEM/Métodos/` | evidência, procedimento e limite explícitos |
-| Fundamento anual | `40 - Recursos/ENEM/2026/` | fonte oficial e data de verificação |
-| Questão | `data/questions/` | proveniência e gabarito passam no gate |
-| Fonte | `data/sources.json` | URL, tipo, autoridade e acesso registrados |
-| Operação | `99 - Meta e Anexos/` | não disputa atenção com a jornada do estudante |
+| Objeto           | Onde vive                     | Critério de pronto                             |
+| ---------------- | ----------------------------- | ---------------------------------------------- |
+| Jornada          | `00 - Entrada/`               | termina numa ação de até 15 minutos            |
+| Plano            | `20 - Projetos/`              | meta, prazo, capacidade e revisão definidos    |
+| Método           | `40 - Recursos/ENEM/Métodos/` | evidência, procedimento e limite explícitos    |
+| Fundamento anual | `40 - Recursos/ENEM/2026/`    | fonte oficial e data de verificação            |
+| Questão          | `data/questions/`             | proveniência e gabarito passam no gate         |
+| Aquisição        | `data/acquisitions/`          | manifesto, TLS verificado, recibo e SHA-256    |
+| Fonte            | `data/sources.json`           | URL, tipo, autoridade e acesso registrados     |
+| SDK de domínio   | `packages/enem-domain/`       | pacote puro, empacotável e consumido pelo site |
+| Operação         | `99 - Meta e Anexos/`         | não disputa atenção com a jornada do estudante |
 
 ## Métricas úteis
 
@@ -39,12 +41,14 @@ de correção também não deve ser usada como série comparável.
 
 ## Roadmap orientado a fatias
 
-1. **Fundação e primeiro ciclo:** site, calculadora, onboarding, modelos, fontes e gate de questões.
-2. **Banco oficial:** importador reprodutível das provas e gabaritos públicos do Inep.
-3. **Simulados:** seleção por matriz, dificuldade observada e histórico, sem fabricar itens.
-4. **Revisão:** fila derivada do registro de erros e dos intervalos escolhidos pelo estudante.
-5. **Planejamento por curso:** pesos versionados por instituição, campus, turno e processo seletivo.
-6. **Atualização anual:** snapshot da edição anterior e promoção da nova configuração após auditoria.
+| Fatia                     | Estado em 29/08/2026                       | Próxima prova de valor                                        |
+| ------------------------- | ------------------------------------------ | ------------------------------------------------------------- |
+| Fundação e primeiro ciclo | entregue                                   | observar tempo até a primeira sessão                          |
+| Banco oficial             | em andamento: 10 itens de Natureza de 2025 | ampliar áreas sem reduzir o nível de revisão                  |
+| Simulados                 | bloco reproduzível de 5/10 itens entregue  | balancear por matriz quando houver classificação auditada     |
+| Revisão                   | registro Markdown por tentativa entregue   | derivar fila dos erros e intervalos escolhidos pelo estudante |
+| Planejamento por curso    | não iniciado                               | schema de pesos com edital, campus, turno e modalidade        |
+| Atualização anual         | gate e endpoint 2026 entregues             | snapshot e promoção da edição 2027                            |
 
 ## Fora de escopo por enquanto
 
