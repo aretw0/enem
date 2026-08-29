@@ -1,0 +1,106 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+
+const areas = [
+  ['linguagens', 'Linguagens'],
+  ['humanas', 'Ciências Humanas'],
+  ['natureza', 'Ciências da Natureza'],
+  ['matematica', 'Matemática'],
+  ['redacao', 'Redação'],
+];
+---
+
+<StarlightPage frontmatter={{ title: 'Calculadora ENEM', description: 'Média ponderada e nota necessária com pesos configuráveis.' }}>
+  <main class="enem-calculator" data-enem-calculator>
+    <header>
+      <p class="vault-section-label">Ferramenta transparente</p>
+      <p class="enem-calculator__title">Calculadora de média ponderada</p>
+      <p class="vault-lead">
+        Informe notas já conhecidas e os pesos do processo seletivo. O cálculo não converte acertos
+        em TRI, não busca pesos automaticamente e não prevê aprovação.
+      </p>
+    </header>
+
+    <form class="enem-calculator__form" novalidate>
+      <div class="enem-calculator__table" role="group" aria-label="Notas e pesos por área">
+        <span class="enem-calculator__heading">Área</span>
+        <span class="enem-calculator__heading">Nota</span>
+        <span class="enem-calculator__heading">Peso</span>
+        {areas.map(([id, label]) => (
+          <>
+            <label for={`score-${id}`}>{label}</label>
+            <input id={`score-${id}`} name={`score-${id}`} type="number" min="0" max="1000" step="0.1" value="600" inputmode="decimal" />
+            <input aria-label={`Peso de ${label}`} name={`weight-${id}`} type="number" min="0" step="0.1" value="1" inputmode="decimal" />
+          </>
+        ))}
+      </div>
+
+      <div class="enem-calculator__actions">
+        <button class="vault-button" type="button" data-calculate-average>Calcular média</button>
+      </div>
+
+      <output class="enem-calculator__result" data-average-result aria-live="polite">
+        Preencha as notas e os pesos.
+      </output>
+
+      <section class="enem-calculator__target" aria-labelledby="target-title">
+        <h2 id="target-title">Descobrir a nota necessária</h2>
+        <p>Escolha uma área para isolar na fórmula. As outras quatro notas serão tratadas como conhecidas.</p>
+        <div class="enem-calculator__target-fields">
+          <label>Meta de média <input name="target" type="number" min="0" max="1000" step="0.1" value="700" /></label>
+          <label>Área a descobrir
+            <select name="missing-area">
+              {areas.map(([id, label]) => <option value={id}>{label}</option>)}
+            </select>
+          </label>
+          <button class="vault-button vault-button--secondary" type="button" data-calculate-required>Descobrir nota</button>
+        </div>
+        <output class="enem-calculator__result" data-required-result aria-live="polite"></output>
+      </section>
+    </form>
+
+    <aside class="enem-calculator__notice">
+      <strong>Antes de decidir:</strong> confira os pesos no edital da instituição, do curso, campus,
+      turno e modalidade. Veja <a href="../recursos/enem/2026/enem-2026-fatos-oficiais-e-limites-da-calculadora/">os limites da calculadora</a>.
+    </aside>
+  </main>
+</StarlightPage>
+
+<script>
+  import { requiredScore, weightedAverage } from '../lib/enem-score.mjs';
+
+  const root = document.querySelector('[data-enem-calculator]');
+  if (root instanceof HTMLElement) {
+    const form = root.querySelector('form');
+    const ids = ['linguagens', 'humanas', 'natureza', 'matematica', 'redacao'];
+    const values = (prefix) => ids.map((id) => form.elements.namedItem(`${prefix}-${id}`).value);
+    const showError = (output, error) => { output.textContent = error instanceof Error ? error.message : String(error); };
+
+    root.querySelector('[data-calculate-average]').addEventListener('click', () => {
+      const output = root.querySelector('[data-average-result]');
+      try {
+        const result = weightedAverage(values('score'), values('weight'));
+        output.textContent = `Média ponderada: ${result.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      } catch (error) { showError(output, error); }
+    });
+
+    root.querySelector('[data-calculate-required]').addEventListener('click', () => {
+      const output = root.querySelector('[data-required-result]');
+      const missingId = form.elements.namedItem('missing-area').value;
+      try {
+        const result = requiredScore({
+          target: form.elements.namedItem('target').value,
+          scores: values('score'),
+          weights: values('weight'),
+          missingIndex: ids.indexOf(missingId),
+        });
+        const formatted = result.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        output.textContent = result > 1000
+          ? `Seriam necessários ${formatted} pontos: a meta é inalcançável com estas notas e pesos.`
+          : result < 0
+            ? `A meta já é atingida mesmo com zero nessa área (resultado algébrico: ${formatted}).`
+            : `Nota necessária: ${formatted}.`;
+      } catch (error) { showError(output, error); }
+    });
+  }
+</script>

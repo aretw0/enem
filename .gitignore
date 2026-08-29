@@ -1,0 +1,135 @@
+﻿# ===================================================================
+# .gitignore para Vaults de Obsidian & Foam
+# ===================================================================
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Dependências
+node_modules/
+.pnpm-store/
+__pycache__/
+__marimo__/
+
+# Tarballs locais usados em provas de consumo cross-repo com o refarm.
+/vendor/
+
+# Arquivos de Sistema e temporários
+*~
+.DS_Store
+Thumbs.db
+*.log
+.gemini/
+# Ignorar o restante do diretório .vscode/, por isso o *
+# Exceções rastreadas: extensões recomendadas e configurações do Foam
+.vscode/*
+# Exceções rastreadas: extensões recomendadas e configurações do Foam
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Pasta de lixo do Obsidian
+.trash/
+
+# ===================================================================
+# Arquivos específicos do usuário - NUNCA rastrear
+# ===================================================================
+# Cache, estado do workspace, histórico, etc.
+.obsidian/cache
+.obsidian/workspace.json
+.obsidian/workspaces.json
+.obsidian/workspace-mobile.json
+.obsidian/user.json
+.obsidian/graph.json
+# Ignora index do Plugin Copilot
+.obsidian/copilot-index-*.json
+.copilot-index/
+
+# Estado local de cerimônias e artefatos que não são do repositório.
+.local/
+# Conversas são estado local e podem incorporar conteúdo pessoal.
+# Prompts reutilizáveis continuam rastreados.
+copilot/copilot-conversations/
+# Ignora index do Plugin Smart Composer
+.smtcmp_json_db/.initial_migration_completed
+.smtcmp_vector_db.tar.gz
+
+# ===================================================================
+# Arquivos de configuração de Plugins do Obsidian
+# ===================================================================
+# A pasta de plugins da comunidade é ignorada para evitar conflitos
+# de sincronização entre diferentes dispositivos e sistemas.
+# Atualizações de plugins ou mudanças de configuração em um local
+# podem quebrar a instalação em outro.
+#
+# A lista de plugins ativados (.obsidian/community-plugins.json) É
+# rastreada, permitindo que cada ambiente instale as mesmas
+# versões de forma independente e segura.
+#
+# Consulte a documentação em 'docs/estrategia-plugins-obsidian.md'
+# para mais detalhes.
+.obsidian/plugins/
+
+# Arquivos de configuração que podem conter chaves de API ou dados sensíveis.
+obsidian-web-clipper-settings.json
+# Esse é um template, deve ser salvo sempre sem credenciais
+!99 - Meta e Anexos/config/obsidian-web-clipper-settings.json
+
+# ===================================================================
+# Arquivos de configuração do Vault - Rastrear por padrão
+# ===================================================================
+# As linhas abaixo estão comentadas porque os arquivos não existem
+# ainda. Descomente se você criar e quiser ignorá-los.
+#
+# .obsidian/hotkeys.json
+# .obsidian/community-plugins.json
+# .obsidian/publish.json
+
+# ===================================================================
+# Específico do Foam (para VS Code)
+# ===================================================================
+.foam/
+
+gha-creds-*.json
+
+# Claude Code local overrides and worktrees
+.claude/settings.local.json
+.claude/worktrees/
+
+# Pi local agent/workflow state
+.pi/
+.workflows/
+
+# ===================================================================
+# Astro build output
+# ===================================================================
+dist/
+.astro/
+.sandbox/
+public/lab/
+
+# ===================================================================
+# Artefatos efêmeros de ETL e pipeline (.lab/)
+# ===================================================================
+# .dgk/ contém snapshots gerados por `dgk etl` e estado de pipeline
+# (outbox-telegram.json, inbox-telegram-state.json, etc.).
+# Esses arquivos são regeneráveis pelo CI a cada deploy — não os commite.
+# fontes/ fica reservada para conteúdo editável pelo usuário:
+#   fontes/feeds.opml, fontes/lista-leitura.json
+.dgk/
+
+# Social dumps
+**/**/instagram-*.zip
+
+# Debug artifacts (Playwright MCP + inspeção manual local)
+.playwright-mcp/
+explorar-toc-check.png
+graph-drag-check.png
+
+# Arquivos de auditoria gerados por scripts de validação
+intent_matches.json
+published_files.json
+vendor/

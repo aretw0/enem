@@ -1,0 +1,119 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import manifest from '../../lab.notebooks.json';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+function resolveNotebooksPath(value: unknown): string {
+  const normalized = String(value || 'lab').trim().replace(/\\/g, '/').replace(/^\/+|\/+$/g, '');
+  if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(normalized)) {
+    throw new Error(`VAULT_NOTEBOOKS_PATH inválido: ${String(value)}`);
+  }
+  return normalized;
+}
+const notebooksPath = resolveNotebooksPath(import.meta.env.VAULT_NOTEBOOKS_PATH);
+
+function notebookAnchor(output: string): string {
+  return `notebook-${output.replace(/\.html$/, '').replace(/[^A-Za-z0-9_-]+/g, '-')}`;
+}
+
+const allNotebooks = manifest
+  .filter((notebook) => notebook.publish)
+  .map((notebook) => ({
+    title: notebook.title,
+    href: `${base}/${notebooksPath}/${notebook.output}`,
+    description: notebook.description,
+    anchor: notebookAnchor(notebook.output),
+    type: (notebook as { type?: string }).type ?? 'notebook',
+  }));
+
+const notebooks = allNotebooks.filter((n) => n.type !== 'presentation');
+const presentations = allNotebooks.filter((n) => n.type === 'presentation');
+---
+
+<StarlightPage frontmatter={{ title: 'Lab' }}>
+  <p class="vault-lead">
+    Notebooks interativos <a href="https://marimo.io">Marimo</a> para explorar a saúde do seu vault.
+    A curadoria visual segue os mesmos blocos do site: cartões, ações, estados e tema compartilhado.
+  </p>
+
+  <p>
+    Os notebooks são exportados como WebAssembly e servidos junto com o site.
+    Rode <code>pnpm run site:dev:lab</code> para ver a versão empacotada localmente
+    ou <code>pnpm run site:dev:lab:host</code> para testar no celular pela rede local;
+    em produção, o GitHub Actions faz a mesma exportação durante o deploy.
+  </p>
+
+  <p>
+    A versão publicada roda no navegador. Coletas, scraping, OCR e outras etapas de ETL devem gerar
+    snapshots antes da publicação; os notebooks publicados consomem esses dados preparados.
+  </p>
+
+  <section class="vault-card-grid notebook-grid" aria-label="Notebooks analíticos">
+    {notebooks.map((notebook) => (
+      <article class="vault-card notebook-card" id={notebook.anchor} data-notebook-link={notebook.href}>
+        <span class="vault-card__eyebrow">Notebook</span>
+        <h2 class="vault-card__title">{notebook.title}</h2>
+        <p class="vault-card__body">{notebook.description}</p>
+        <div class="vault-actions">
+          <span class="vault-status" data-availability>Aguardando exportação</span>
+          <a class="vault-button vault-button--secondary" data-notebook-open hidden>Abrir</a>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  {presentations.length > 0 && (
+    <>
+      <h2>Apresentações</h2>
+      <p>Slides interativos sobre o vault-seed e seus componentes. Navegáveis no navegador, exportados como WebAssembly.</p>
+      <section class="vault-card-grid notebook-grid" aria-label="Apresentações publicadas">
+        {presentations.map((notebook) => (
+          <article class="vault-card notebook-card" id={notebook.anchor} data-notebook-link={notebook.href}>
+            <span class="vault-card__eyebrow">Apresentação</span>
+            <h2 class="vault-card__title">{notebook.title.replace(/^Apresentação:\s*/, '')}</h2>
+            <p class="vault-card__body">{notebook.description}</p>
+            <div class="vault-actions">
+              <span class="vault-status" data-availability>Aguardando exportação</span>
+              <a class="vault-button vault-button--secondary" data-notebook-open hidden>Abrir</a>
+            </div>
+          </article>
+        ))}
+      </section>
+    </>
+  )}
+
+  <p>
+    Para rodar os notebooks localmente: <code>pnpm run notebooks:dev</code>
+  </p>
+</StarlightPage>
+
+<script>
+  for (const item of document.querySelectorAll('[data-notebook-link]')) {
+    const href = item.getAttribute('data-notebook-link');
+    const availability = item.querySelector('[data-availability]');
+    const openLink = item.querySelector('[data-notebook-open]');
+    if (!href || !availability || !openLink) continue;
+
+    fetch(href, { method: 'HEAD' })
+      .then((response) => {
+        if (!response.ok) return;
+        availability.textContent = 'Disponível';
+        availability.setAttribute('data-state', 'available');
+        openLink.href = href;
+        openLink.hidden = false;
+      })
+      .catch(() => {});
+  }
+</script>
+
+<style>
+  .notebook-grid {
+    --vault-card-min-height: 14rem;
+    --vault-card-body-lines: 3;
+    margin-block: 1.75rem;
+  }
+
+  .notebook-card {
+    min-height: var(--vault-card-min-height);
+  }
+</style>

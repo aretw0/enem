@@ -1,0 +1,1232 @@
+/* Marimo notebooks: aproxima a UI da paleta verde-jardim do vault.
+ * Exported notebooks load @refarm.dev/ds verde-jardim first. The semantic
+ * token blocks below are fallbacks for raw Marimo sessions without DS attrs. */
+:root,
+:root[data-vault-marimo-theme="light"] {
+  --radius: 0.5rem;
+  --slate-1: #f7f5f0;
+  --slate-2: #ede9e2;
+  --slate-3: #e0dbd2;
+  --slate-4: #b8b2a7;
+  --slate-11: #3d3935;
+  --slate-12: #12100e;
+  --grass-7: #2d7a4d;
+  --grass-9: #1b5e3b;
+  --grass-11: #0f3d26;
+  --vault-marimo-presentation-width: 86rem;
+  --vault-marimo-presentation-content-width: 80rem;
+  --vault-marimo-presentation-gutter: clamp(0.5rem, 1.5vw, 1.25rem);
+  --vault-marimo-presentation-viewport-gutter: clamp(0.75rem, 3vw, 4rem);
+}
+
+:root:not([data-refarm-theme]),
+:root[data-vault-marimo-theme="light"]:not([data-refarm-theme]),
+:root:not([data-refarm-theme]) .light,
+:root:not([data-refarm-theme]) .light-theme {
+  --background: #f7f5f0;
+  --foreground: #12100e;
+  --card: #f7f5f0;
+  --card-foreground: #12100e;
+  --popover: #f7f5f0;
+  --popover-foreground: #12100e;
+  --primary: #1b5e3b;
+  --primary-foreground: #f7f5f0;
+  --secondary: #e0dbd2;
+  --secondary-foreground: #12100e;
+  --muted: #ede9e2;
+  --muted-foreground: #6b6560;
+  --accent: #d4ede0;
+  --accent-foreground: #0f3d26;
+  --border: #b8b2a7;
+  --input: #b8b2a7;
+  --ring: #1b5e3b;
+}
+
+:root[data-vault-marimo-theme="dark"] {
+  --slate-1: #111310;
+  --slate-2: #1a1f18;
+  --slate-3: #282e26;
+  --slate-4: #4a5048;
+  --slate-11: #c0c8be;
+  --slate-12: #edf0ec;
+  --grass-7: #4f9d72;
+  --grass-9: #95d5b2;
+  --grass-11: #c4edd8;
+}
+
+:root[data-vault-marimo-theme="dark"]:not([data-refarm-theme]),
+:root:not([data-refarm-theme]) .dark,
+:root:not([data-refarm-theme]) .dark-theme {
+  --background: #111310;
+  --foreground: #edf0ec;
+  --card: #1a1f18;
+  --card-foreground: #edf0ec;
+  --popover: #22281f;
+  --popover-foreground: #edf0ec;
+  --primary: #95d5b2;
+  --primary-foreground: #111310;
+  --secondary: #74c69d;
+  --secondary-foreground: #111310;
+  --muted: #1a1f18;
+  --muted-foreground: #c0c8be;
+  --accent: #1a3327;
+  --accent-foreground: #c4edd8;
+  --border: #4a5048;
+  --input: #4a5048;
+  --ring: #95d5b2;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+}
+
+a {
+  overflow-wrap: anywhere;
+}
+
+.max-w-2xl {
+  max-width: calc(100vw - 3rem) !important;
+}
+
+.whitespace-normal,
+.underline {
+  overflow-wrap: anywhere;
+}
+
+.marimo,
+main,
+article,
+.markdown,
+.prose {
+  max-width: 100%;
+}
+
+.markdown,
+.prose {
+  overflow-wrap: anywhere;
+}
+
+.markdown p,
+.markdown li,
+.prose p,
+.prose li {
+  line-height: 1.58;
+}
+
+.markdown pre,
+.markdown code,
+.prose pre,
+.prose code {
+  max-width: 100%;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.markdown img,
+.prose img,
+.markdown svg,
+.prose svg,
+canvas,
+iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+.markdown table,
+.prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-inline: auto;
+}
+
+/* Chart containment. A chart whose intrinsic width exceeds its cell — e.g. long
+   y-axis category labels, which made "Distribuição de intenção" the worst
+   offender — must scroll inside its own box, never expand the page. This is the
+   variance-proof backstop: it covers every Lab chart, present and future,
+   regardless of label length; lab_altair_chart's width="container" handles the
+   common fit. The host lives in the light DOM, so this reaches it even though
+   the chart SVG itself renders in the marimo-vega shadow root. */
+marimo-vega,
+.vega-embed {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+:root[data-vault-marimo-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-vault-marimo-theme="dark"] {
+  color-scheme: dark;
+}
+
+:root[data-vault-marimo-theme],
+:root[data-vault-marimo-theme] .light,
+:root[data-vault-marimo-theme] .light-theme,
+:root[data-vault-marimo-theme] .dark,
+:root[data-vault-marimo-theme] .dark-theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --gdg-bg-cell: var(--background);
+  --gdg-bg-cell-medium: var(--muted);
+  --gdg-bg-header: var(--muted);
+  --gdg-bg-header-has-focus: var(--accent);
+  --gdg-bg-bubble: var(--accent);
+  --gdg-text-dark: var(--foreground);
+  --gdg-text-medium: var(--muted-foreground);
+  --gdg-text-light: var(--muted-foreground);
+  --gdg-text-group-header: var(--foreground);
+  --gdg-border-color: var(--border);
+  --gdg-accent-color: var(--primary);
+  --gdg-accent-light: var(--accent);
+  --gdg-link-color: var(--primary);
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  color: var(--primary);
+}
+
+:root[data-vault-marimo-theme] marimo-table,
+:root[data-vault-marimo-theme] marimo-table table,
+:root[data-vault-marimo-theme] table {
+  --border: var(--border);
+  background: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+:root[data-vault-marimo-theme] marimo-table {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+:root[data-vault-marimo-theme] thead,
+:root[data-vault-marimo-theme] tbody,
+:root[data-vault-marimo-theme] tr,
+:root[data-vault-marimo-theme] marimo-table th,
+:root[data-vault-marimo-theme] table th {
+  background: var(--background) !important;
+  color: var(--muted-foreground) !important;
+}
+
+:root[data-vault-marimo-theme] marimo-table tr:nth-child(even),
+:root[data-vault-marimo-theme] table tr:nth-child(even) {
+  background: var(--muted) !important;
+}
+
+:root[data-vault-marimo-theme] marimo-table td,
+:root[data-vault-marimo-theme] marimo-table caption,
+:root[data-vault-marimo-theme] table td,
+:root[data-vault-marimo-theme] table caption {
+  background: inherit !important;
+  color: var(--foreground) !important;
+}
+
+:root[data-vault-marimo-theme] marimo-table tr,
+:root[data-vault-marimo-theme] table tr,
+:root[data-vault-marimo-theme] marimo-table td,
+:root[data-vault-marimo-theme] table td,
+:root[data-vault-marimo-theme] marimo-table th,
+:root[data-vault-marimo-theme] table th {
+  border-color: var(--border) !important;
+}
+
+:root[data-vault-marimo-theme] select,
+:root[data-vault-marimo-theme] option,
+:root[data-vault-marimo-theme] [role="combobox"],
+:root[data-vault-marimo-theme] [role="listbox"],
+:root[data-vault-marimo-theme] [role="option"] {
+  background-color: var(--popover) !important;
+  color: var(--popover-foreground) !important;
+  border-color: var(--border) !important;
+}
+
+:root[data-vault-marimo-theme] [role="option"]:focus,
+:root[data-vault-marimo-theme] [role="option"][data-highlighted],
+:root[data-vault-marimo-theme] [role="option"][aria-selected="true"] {
+  background-color: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+}
+
+:root[data-vault-marimo-theme] .bg-background,
+:root[data-vault-marimo-theme] .bg-\(--background\) {
+  background-color: var(--background) !important;
+}
+
+:root[data-vault-marimo-theme] .bg-card {
+  background-color: var(--card) !important;
+}
+
+:root[data-vault-marimo-theme] .bg-popover {
+  background-color: var(--popover) !important;
+}
+
+:root[data-vault-marimo-theme] .bg-muted {
+  background-color: var(--muted) !important;
+}
+
+:root[data-vault-marimo-theme] .border,
+:root[data-vault-marimo-theme] .border-border,
+:root[data-vault-marimo-theme] .border-input {
+  border-color: var(--border) !important;
+}
+
+:root[data-vault-marimo-theme] .text-foreground {
+  color: var(--foreground) !important;
+}
+
+:root[data-vault-marimo-theme] .text-popover-foreground {
+  color: var(--popover-foreground) !important;
+}
+
+:root[data-vault-marimo-theme] .text-muted-foreground {
+  color: var(--muted-foreground) !important;
+}
+
+:root[data-vault-marimo-theme] #vg-tooltip-element,
+:root[data-vault-marimo-theme] .vg-tooltip,
+:root[data-vault-marimo-theme] .vega-tooltip {
+  background: var(--popover) !important;
+  color: var(--popover-foreground) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 0.22) !important;
+}
+
+:root[data-vault-marimo-theme] #vg-tooltip-element table,
+:root[data-vault-marimo-theme] #vg-tooltip-element tr,
+:root[data-vault-marimo-theme] #vg-tooltip-element td,
+:root[data-vault-marimo-theme] .vg-tooltip table,
+:root[data-vault-marimo-theme] .vg-tooltip tr,
+:root[data-vault-marimo-theme] .vg-tooltip td,
+:root[data-vault-marimo-theme] .vega-tooltip table,
+:root[data-vault-marimo-theme] .vega-tooltip tr,
+:root[data-vault-marimo-theme] .vega-tooltip td {
+  background: var(--popover) !important;
+  color: var(--popover-foreground) !important;
+  border-color: var(--border) !important;
+}
+
+:root[data-vault-marimo-theme] .vega-embed svg text {
+  fill: var(--foreground) !important;
+}
+
+:root[data-vault-marimo-theme] .vega-embed svg g.role-axis path,
+:root[data-vault-marimo-theme] .vega-embed svg g.role-axis line,
+:root[data-vault-marimo-theme] .vega-embed svg g.role-legend path,
+:root[data-vault-marimo-theme] .vega-embed svg g.role-legend line {
+  stroke: var(--border) !important;
+}
+
+:root[data-vault-marimo-theme="light"][data-vault-marimo-palette="oceano"] {
+  --background: #f5f7fa;
+  --foreground: #0f1623;
+  --card: #f5f7fa;
+  --card-foreground: #0f1623;
+  --popover: #f5f7fa;
+  --popover-foreground: #0f1623;
+  --primary: #0353a4;
+  --primary-foreground: #f5f7fa;
+  --secondary: #dde4ee;
+  --secondary-foreground: #0f1623;
+  --muted: #dde4ee;
+  --muted-foreground: #334155;
+  --accent: #cce0f5;
+  --accent-foreground: #023b74;
+  --border: #60718a;
+  --input: #60718a;
+  --ring: #0353a4;
+  --slate-1: #f5f7fa;
+  --slate-2: #dde4ee;
+  --slate-3: #adb8c8;
+  --slate-4: #60718a;
+  --slate-11: #1a2332;
+  --slate-12: #0f1623;
+  --grass-7: #2267b3;
+  --grass-9: #0353a4;
+  --grass-11: #023b74;
+}
+
+:root[data-vault-marimo-theme="dark"][data-vault-marimo-palette="oceano"] {
+  --background: #0f1623;
+  --foreground: #eef2f8;
+  --card: #181c26;
+  --card-foreground: #eef2f8;
+  --popover: #181c26;
+  --popover-foreground: #eef2f8;
+  --primary: #90b4e8;
+  --primary-foreground: #0f1623;
+  --secondary: #232936;
+  --secondary-foreground: #eef2f8;
+  --muted: #181c26;
+  --muted-foreground: #c0cad8;
+  --accent: #0d2040;
+  --accent-foreground: #c5d9f5;
+  --border: #445060;
+  --input: #445060;
+  --ring: #90b4e8;
+  --slate-1: #0f1623;
+  --slate-2: #181c26;
+  --slate-3: #232936;
+  --slate-4: #445060;
+  --slate-11: #c0cad8;
+  --slate-12: #eef2f8;
+  --grass-7: #6e9edb;
+  --grass-9: #90b4e8;
+  --grass-11: #c5d9f5;
+}
+
+:root[data-vault-marimo-theme="light"][data-vault-marimo-palette="terracota"] {
+  --background: #fffbf7;
+  --foreground: #130e09;
+  --card: #fffbf7;
+  --card-foreground: #130e09;
+  --popover: #fffbf7;
+  --popover-foreground: #130e09;
+  --primary: #7d2e0e;
+  --primary-foreground: #fffbf7;
+  --secondary: #f0e8df;
+  --secondary-foreground: #130e09;
+  --muted: #f0e8df;
+  --muted-foreground: #7a6b5e;
+  --accent: #f5ddd1;
+  --accent-foreground: #5a1f08;
+  --border: #bfb0a3;
+  --input: #bfb0a3;
+  --ring: #7d2e0e;
+  --slate-1: #fffbf7;
+  --slate-2: #f0e8df;
+  --slate-3: #e8e0d8;
+  --slate-4: #bfb0a3;
+  --slate-11: #3d3028;
+  --slate-12: #130e09;
+  --grass-7: #a1451f;
+  --grass-9: #7d2e0e;
+  --grass-11: #5a1f08;
+}
+
+:root[data-vault-marimo-theme="dark"][data-vault-marimo-palette="terracota"] {
+  --background: #1d1714;
+  --foreground: #f5ede8;
+  --card: #211710;
+  --card-foreground: #f5ede8;
+  --popover: #211710;
+  --popover-foreground: #f5ede8;
+  --primary: #e8a07a;
+  --primary-foreground: #1d1714;
+  --secondary: #2e231c;
+  --secondary-foreground: #f5ede8;
+  --muted: #211710;
+  --muted-foreground: #cfc4bc;
+  --accent: #3a1a0a;
+  --accent-foreground: #f5c9af;
+  --border: #5a4a40;
+  --input: #5a4a40;
+  --ring: #e8a07a;
+  --slate-1: #1d1714;
+  --slate-2: #211710;
+  --slate-3: #2e231c;
+  --slate-4: #5a4a40;
+  --slate-11: #cfc4bc;
+  --slate-12: #f5ede8;
+  --grass-7: #d58a64;
+  --grass-9: #e8a07a;
+  --grass-11: #f5c9af;
+}
+
+:root[data-vault-marimo-theme="light"],
+:root[data-vault-marimo-theme="light"] .dark,
+:root[data-vault-marimo-theme="light"] .dark-theme,
+:root[data-vault-marimo-theme="light"] .light,
+:root[data-vault-marimo-theme="light"] .light-theme {
+  --background: #f7f5f0;
+  --foreground: #12100e;
+  --card: #f7f5f0;
+  --card-foreground: #12100e;
+  --popover: #f7f5f0;
+  --popover-foreground: #12100e;
+  --primary: #1b5e3b;
+  --primary-foreground: #f7f5f0;
+  --secondary: #e0dbd2;
+  --secondary-foreground: #12100e;
+  --muted: #ede9e2;
+  --muted-foreground: #6b6560;
+  --accent: #d4ede0;
+  --accent-foreground: #0f3d26;
+  --border: #b8b2a7;
+  --input: #b8b2a7;
+  --ring: #1b5e3b;
+  --slate-1: #f7f5f0;
+  --slate-2: #ede9e2;
+  --slate-3: #e0dbd2;
+  --slate-4: #b8b2a7;
+  --slate-11: #3d3935;
+  --slate-12: #12100e;
+  --grass-7: #2d7a4d;
+  --grass-9: #1b5e3b;
+  --grass-11: #0f3d26;
+}
+
+:root[data-vault-marimo-theme="dark"],
+:root[data-vault-marimo-theme="dark"] .dark,
+:root[data-vault-marimo-theme="dark"] .dark-theme,
+:root[data-vault-marimo-theme="dark"] .light,
+:root[data-vault-marimo-theme="dark"] .light-theme {
+  --background: #111310;
+  --foreground: #edf0ec;
+  --card: #1a1f18;
+  --card-foreground: #edf0ec;
+  --popover: #1a1f18;
+  --popover-foreground: #edf0ec;
+  --primary: #95d5b2;
+  --primary-foreground: #111310;
+  --secondary: #282e26;
+  --secondary-foreground: #edf0ec;
+  --muted: #1a1f18;
+  --muted-foreground: #c0c8be;
+  --accent: #1a3327;
+  --accent-foreground: #c4edd8;
+  --border: #4a5048;
+  --input: #4a5048;
+  --ring: #95d5b2;
+  --slate-1: #111310;
+  --slate-2: #1a1f18;
+  --slate-3: #282e26;
+  --slate-4: #4a5048;
+  --slate-11: #c0c8be;
+  --slate-12: #edf0ec;
+  --grass-7: #4f9d72;
+  --grass-9: #95d5b2;
+  --grass-11: #c4edd8;
+}
+
+:root[data-vault-marimo-theme="light"][data-vault-marimo-palette="oceano"],
+:root[data-vault-marimo-theme="light"][data-vault-marimo-palette="oceano"] .dark,
+:root[data-vault-marimo-theme="light"][data-vault-marimo-palette="oceano"] .dark-theme,
+:root[data-vault-marimo-theme="light"][data-vault-marimo-palette="oceano"] .light,
+:root[data-vault-marimo-theme="light"][data-vault-marimo-palette="oceano"] .light-theme {
+  --background: #f5f7fa;
+  --foreground: #0f1623;
+  --card: #f5f7fa;
+  --card-foreground: #0f1623;
+  --popover: #f5f7fa;
+  --popover-foreground: #0f1623;
+  --primary: #0353a4;
+  --primary-foreground: #f5f7fa;
+  --secondary: #dde4ee;
+  --secondary-foreground: #0f1623;
+  --muted: #dde4ee;
+  --muted-foreground: #334155;
+  --accent: #cce0f5;
+  --accent-foreground: #023b74;
+  --border: #60718a;
+  --input: #60718a;
+  --ring: #0353a4;
+  --slate-1: #f5f7fa;
+  --slate-2: #dde4ee;
+  --slate-3: #adb8c8;
+  --slate-4: #60718a;
+  --slate-11: #1a2332;
+  --slate-12: #0f1623;
+  --grass-7: #2267b3;
+  --grass-9: #0353a4;
+  --grass-11: #023b74;
+}
+
+:root[data-vault-marimo-theme="dark"][data-vault-marimo-palette="oceano"],
+:root[data-vault-marimo-theme="dark"][data-vault-marimo-palette="oceano"] .dark,
+:root[data-vault-marimo-theme="dark"][data-vault-marimo-palette="oceano"] .dark-theme,
+:root[data-vault-marimo-theme="dark"][data-vault-marimo-palette="oceano"] .light,
+:root[data-vault-marimo-theme="dark"][data-vault-marimo-palette="oceano"] .light-theme {
+  --background: #0f1623;
+  --foreground: #eef2f8;
+  --card: #181c26;
+  --card-foreground: #eef2f8;
+  --popover: #181c26;
+  --popover-foreground: #eef2f8;
+  --primary: #90b4e8;
+  --primary-foreground: #0f1623;
+  --secondary: #232936;
+  --secondary-foreground: #eef2f8;
+  --muted: #181c26;
+  --muted-foreground: #c0cad8;
+  --accent: #0d2040;
+  --accent-foreground: #c5d9f5;
+  --border: #445060;
+  --input: #445060;
+  --ring: #90b4e8;
+  --slate-1: #0f1623;
+  --slate-2: #181c26;
+  --slate-3: #232936;
+  --slate-4: #445060;
+  --slate-11: #c0cad8;
+  --slate-12: #eef2f8;
+  --grass-7: #6e9edb;
+  --grass-9: #90b4e8;
+  --grass-11: #c5d9f5;
+}
+
+:root[data-vault-marimo-theme="light"][data-vault-marimo-palette="terracota"],
+:root[data-vault-marimo-theme="light"][data-vault-marimo-palette="terracota"] .dark,
+:root[data-vault-marimo-theme="light"][data-vault-marimo-palette="terracota"] .dark-theme,
+:root[data-vault-marimo-theme="light"][data-vault-marimo-palette="terracota"] .light,
+:root[data-vault-marimo-theme="light"][data-vault-marimo-palette="terracota"] .light-theme {
+  --background: #fffbf7;
+  --foreground: #130e09;
+  --card: #fffbf7;
+  --card-foreground: #130e09;
+  --popover: #fffbf7;
+  --popover-foreground: #130e09;
+  --primary: #7d2e0e;
+  --primary-foreground: #fffbf7;
+  --secondary: #f0e8df;
+  --secondary-foreground: #130e09;
+  --muted: #f0e8df;
+  --muted-foreground: #7a6b5e;
+  --accent: #f5ddd1;
+  --accent-foreground: #5a1f08;
+  --border: #bfb0a3;
+  --input: #bfb0a3;
+  --ring: #7d2e0e;
+  --slate-1: #fffbf7;
+  --slate-2: #f0e8df;
+  --slate-3: #e8e0d8;
+  --slate-4: #bfb0a3;
+  --slate-11: #3d3028;
+  --slate-12: #130e09;
+  --grass-7: #a1451f;
+  --grass-9: #7d2e0e;
+  --grass-11: #5a1f08;
+}
+
+:root[data-vault-marimo-theme="dark"][data-vault-marimo-palette="terracota"],
+:root[data-vault-marimo-theme="dark"][data-vault-marimo-palette="terracota"] .dark,
+:root[data-vault-marimo-theme="dark"][data-vault-marimo-palette="terracota"] .dark-theme,
+:root[data-vault-marimo-theme="dark"][data-vault-marimo-palette="terracota"] .light,
+:root[data-vault-marimo-theme="dark"][data-vault-marimo-palette="terracota"] .light-theme {
+  --background: #1d1714;
+  --foreground: #f5ede8;
+  --card: #211710;
+  --card-foreground: #f5ede8;
+  --popover: #211710;
+  --popover-foreground: #f5ede8;
+  --primary: #e8a07a;
+  --primary-foreground: #1d1714;
+  --secondary: #2e231c;
+  --secondary-foreground: #f5ede8;
+  --muted: #211710;
+  --muted-foreground: #cfc4bc;
+  --accent: #3a1a0a;
+  --accent-foreground: #f5c9af;
+  --border: #5a4a40;
+  --input: #5a4a40;
+  --ring: #e8a07a;
+  --slate-1: #1d1714;
+  --slate-2: #211710;
+  --slate-3: #2e231c;
+  --slate-4: #5a4a40;
+  --slate-11: #cfc4bc;
+  --slate-12: #f5ede8;
+  --grass-7: #d58a64;
+  --grass-9: #e8a07a;
+  --grass-11: #f5c9af;
+}
+
+.vault-marimo-theme-selector {
+  position: relative;
+  z-index: 10001;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  margin-left: auto;
+}
+
+.vault-marimo-theme-toggle,
+.vault-marimo-theme-panel {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--foreground) 12%, transparent);
+}
+
+.vault-marimo-theme-toggle {
+  padding: 0.55rem 0.7rem !important;
+}
+
+.vault-marimo-theme-panel {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  right: 0;
+  display: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  width: max-content;
+  max-width: calc(100vw - 1.5rem);
+  max-height: calc(100svh - var(--vault-lab-topbar-height, 0px) - 1rem);
+  overflow: auto;
+  padding: 0.25rem;
+}
+
+:root[data-vault-marimo-theme-panel="open"] .vault-marimo-theme-panel {
+  display: flex;
+}
+
+.vault-marimo-theme-selector button {
+  min-width: 4.25rem;
+  border: 0;
+  border-radius: 0.35rem;
+  background: transparent;
+  color: var(--foreground);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  line-height: 1;
+  padding: 0.45rem 0.6rem;
+}
+
+.vault-marimo-theme-selector select {
+  min-width: 7.25rem;
+  border: 0;
+  border-radius: 0.35rem;
+  background: var(--muted);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.78rem;
+  line-height: 1;
+  padding: 0.4rem 0.5rem;
+}
+
+.vault-marimo-theme-selector button:hover {
+  background: var(--muted);
+}
+
+.vault-marimo-theme-selector button[aria-pressed="true"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+:root[data-vault-marimo-shell="lab"] {
+  --vault-lab-topbar-height: 3.5rem;
+  --vault-lab-content-gap: 4.75rem;
+  --vault-lab-content-offset: calc(var(--vault-lab-topbar-height) + var(--vault-lab-content-gap));
+  --vault-lab-sidebar-width: 15.5rem;
+  --vault-lab-sidebar-control-size: 1.07rem;
+  --vault-lab-sidebar-toggle-size: 1.68rem;
+}
+
+:root[data-vault-marimo-shell="lab"] body {
+  box-sizing: border-box;
+  height: 100dvh;
+  overflow: hidden;
+  scroll-padding-top: var(--vault-lab-content-offset);
+}
+
+:root[data-vault-marimo-shell="lab"] .vault-marimo-navigation,
+:root[data-vault-marimo-shell="lab"] .vault-marimo-navigation * {
+  box-sizing: border-box;
+}
+
+:root[data-vault-marimo-shell="lab"] .markdown,
+:root[data-vault-marimo-shell="lab"] .prose {
+  font-size: 1.08rem;
+}
+
+:root[data-vault-marimo-shell="lab"] .vault-lab-topbar {
+  position: fixed;
+  z-index: 10000;
+  inset-block-start: 0;
+  inset-inline: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: var(--vault-lab-topbar-height);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+  background: color-mix(in srgb, var(--background) 96%, transparent);
+  box-shadow: 0 0.35rem 1rem color-mix(in srgb, var(--foreground) 7%, transparent);
+  padding: 0.5rem 0.75rem;
+}
+
+.vault-lab-sidebar-toggle,
+.vault-lab-brand,
+.vault-lab-section,
+.vault-lab-notebook-list a {
+  border-radius: 0.5rem;
+  color: var(--foreground);
+  font: inherit;
+  font-size: var(--vault-lab-sidebar-control-size);
+  line-height: 1;
+  text-decoration: none;
+}
+
+.vault-lab-sidebar-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card) 94%, transparent);
+  color: var(--foreground);
+  cursor: pointer;
+  padding: 0;
+  gap: 0;
+  font-size: var(--vault-lab-sidebar-toggle-size);
+  line-height: 1;
+  font-weight: 760;
+  box-shadow: 0 0.5rem 1.25rem color-mix(in srgb, var(--foreground) 12%, transparent);
+}
+
+.vault-lab-sidebar-toggle:hover,
+.vault-lab-sidebar-toggle[aria-pressed='true'] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.vault-lab-sidebar-toggle__icon {
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  pointer-events: none;
+}
+
+:root[data-vault-marimo-shell="lab"][data-vault-lab-sidebar="collapsed"] .vault-lab-sidebar-toggle svg {
+  transform: scaleX(-1);
+}
+
+.vault-lab-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(100%);
+  border: 0;
+}
+
+.vault-lab-brand,
+.vault-lab-section {
+  padding: 0.42rem 0.55rem;
+}
+
+.vault-lab-brand,
+.vault-lab-section {
+  color: var(--foreground);
+  font-weight: 650;
+}
+
+.vault-lab-section {
+  border-left: 1px solid var(--border);
+  color: var(--muted-foreground);
+}
+
+.vault-lab-sidebar {
+  position: fixed;
+  z-index: 9999;
+  top: var(--vault-lab-topbar-height);
+  bottom: 0;
+  left: 0;
+  width: var(--vault-lab-sidebar-width);
+  border-right: 1px solid var(--border);
+  background: color-mix(in srgb, var(--background) 97%, transparent);
+  overflow: auto;
+  padding: 1rem 0.75rem;
+  transition: transform 160ms ease;
+}
+
+.vault-lab-sidebar__title {
+  color: var(--muted-foreground);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  margin: 0 0.35rem 0.6rem;
+  text-transform: uppercase;
+}
+
+.vault-lab-notebook-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0 0.35rem 0.55rem;
+}
+
+.vault-lab-notebook-filter__input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  background: var(--card);
+  color: var(--foreground);
+  padding: 0.45rem 0.55rem;
+  font: inherit;
+  font-size: 0.72rem;
+  line-height: 1.15;
+}
+
+.vault-lab-notebook-filter__input::placeholder {
+  color: var(--muted-foreground);
+}
+
+.vault-lab-notebook-filter__input:focus {
+  outline: 2px solid color-mix(in srgb, var(--primary) 45%, transparent);
+  outline-offset: 1px;
+}
+
+.vault-lab-notebook-empty {
+  margin: 0;
+  padding: 0 0.15rem;
+  font-size: 0.72rem;
+  line-height: 1.15;
+  color: var(--muted-foreground);
+}
+
+.vault-lab-notebook-list {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.vault-lab-notebook-list a {
+  display: block;
+  padding: 0.58rem 0.65rem;
+}
+
+.vault-lab-notebook-list a:hover,
+.vault-lab-notebook-list a[aria-current="page"] {
+  background: var(--muted);
+}
+
+.vault-lab-notebook-list a[aria-current="page"] {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+:root[data-vault-marimo-shell="lab"] #root {
+  box-sizing: border-box;
+  position: relative;
+  width: calc(100% - var(--vault-lab-sidebar-width));
+  height: 100dvh;
+  margin-left: var(--vault-lab-sidebar-width);
+  padding-top: var(--vault-lab-content-gap) !important;
+  padding-inline: clamp(1rem, 2.5vw, 2rem) !important;
+  padding-bottom: 4rem !important;
+  transition: margin-left 160ms ease, width 160ms ease;
+}
+
+:root[data-vault-marimo-shell="lab"] #root [data-testid="chrome-wrapper"] {
+  top: var(--vault-lab-content-gap) !important;
+  right: clamp(1rem, 2.5vw, 2rem) !important;
+  bottom: 4rem !important;
+  left: clamp(1rem, 2.5vw, 2rem) !important;
+}
+
+:root[data-vault-marimo-shell="lab"] #root [class~="min-w-[400px]"] {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+:root[data-vault-marimo-shell="lab"] #root [class~="px-1"] {
+  padding-inline: clamp(0.75rem, 2.5vw, 1.25rem) !important;
+}
+
+:root[data-vault-marimo-shell="lab"] #root [class~="fixed"][class~="top-0"][class~="right-0"] {
+  top: calc(var(--vault-lab-topbar-height) + 0.75rem) !important;
+}
+
+.vault-lab-footer {
+  position: fixed;
+  z-index: 9998;
+  inset-block-end: 1rem;
+  inset-inline-start: calc(var(--vault-lab-sidebar-width) + 1rem);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card) 94%, transparent);
+  box-shadow: 0 0.75rem 2rem color-mix(in srgb, var(--foreground) 8%, transparent);
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  line-height: 1;
+  font-variant-emoji: text;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  width: fit-content;
+  max-width: calc(100vw - 1.5rem);
+  margin: 0;
+  padding: 0.45rem 0.7rem;
+  white-space: nowrap;
+  transition: inset-inline-start 160ms ease;
+}
+
+.vault-lab-footer__heart {
+  display: inline-block;
+  font-size: 0.98rem;
+  line-height: 1;
+  font-family: var(--sl-font-system, system-ui);
+  font-variant-emoji: text;
+  transform: translateY(-0.05em);
+}
+
+.vault-lab-footer a {
+  color: var(--primary);
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.vault-lab-footer a:hover {
+  text-decoration: underline;
+}
+
+:root[data-vault-marimo-shell="lab"][data-vault-lab-sidebar="collapsed"] .vault-lab-footer {
+  inset-inline-start: 1rem;
+}
+
+:root[data-vault-marimo-shell="lab"][data-vault-lab-sidebar="collapsed"] .vault-lab-sidebar {
+  transform: translateX(-100%);
+}
+
+:root[data-vault-marimo-shell="lab"][data-vault-lab-sidebar="collapsed"] #root {
+  width: 100%;
+  margin-left: 0;
+}
+
+:root[data-vault-marimo-presentation="slides"] {
+  --vault-marimo-slide-padding-block: clamp(1.5rem, 4.5vh, 2.75rem);
+  --vault-marimo-slide-padding-inline: clamp(2rem, 5vw, 4.5rem);
+  scrollbar-gutter: auto;
+}
+
+:root[data-vault-marimo-presentation="slides"],
+:root[data-vault-marimo-presentation="slides"] body {
+  height: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+:root[data-vault-marimo-presentation="slides"] #root {
+  height: calc(100dvh - var(--vault-lab-content-offset, 0px));
+  overflow: hidden;
+}
+
+:root[data-vault-marimo-presentation="slides"] .reveal,
+:root[data-vault-marimo-presentation="slides"] .reveal .slides,
+:root[data-vault-marimo-presentation="slides"] .reveal .slides section,
+:root[data-vault-marimo-presentation="slides"] .reveal .slides section > div:has(> .mo-slide-content) {
+  overflow: hidden !important;
+  text-align: left !important;
+}
+
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content {
+  box-sizing: border-box;
+  width: min(var(--vault-marimo-presentation-width), calc(100vw - (2 * var(--vault-marimo-presentation-viewport-gutter)))) !important;
+  min-height: 0 !important;
+  max-height: 100%;
+  margin: auto !important;
+  overflow: auto !important;
+  padding-block: var(--vault-marimo-slide-padding-block) !important;
+  padding-inline: var(--vault-marimo-slide-padding-inline) !important;
+  text-align: left !important;
+}
+
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content .output,
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content .markdown,
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content .prose {
+  max-width: min(100%, var(--vault-marimo-presentation-content-width));
+  margin-inline: 0 !important;
+  text-align: left !important;
+}
+
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content .output:has(table),
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content .output:has(marimo-table),
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content .markdown:has(table),
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content .prose:has(table) {
+  margin-inline: 0 !important;
+}
+
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content[data-vault-marimo-slide-cover="true"] {
+  display: grid !important;
+  align-content: center !important;
+  justify-items: center !important;
+  margin: auto !important;
+  text-align: center !important;
+}
+
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content[data-vault-marimo-slide-cover="true"] .output,
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content[data-vault-marimo-slide-cover="true"] .markdown,
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content[data-vault-marimo-slide-cover="true"] .prose {
+  margin-inline: auto !important;
+  text-align: center !important;
+}
+
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content .markdown,
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content .prose {
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content h1 {
+  color: var(--primary);
+  font-size: 2.75rem;
+  line-height: 1.06;
+  margin-block: 0 1.05rem;
+}
+
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content h2 {
+  color: var(--primary);
+  font-size: 2.15rem;
+  line-height: 1.12;
+  margin-block: 0 1rem;
+}
+
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content[data-vault-marimo-slide-cover="true"] h1 {
+  font-size: 3.6rem;
+  line-height: 1.02;
+  margin-block-end: 1rem;
+}
+
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content marimo-table,
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content .markdown table,
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content .prose table {
+  display: table !important;
+  width: auto !important;
+  inline-size: auto !important;
+  max-width: 100% !important;
+  max-inline-size: 100% !important;
+  margin-inline: auto !important;
+  table-layout: auto !important;
+}
+
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content :is(.markdown.prose, .markdown, .prose) table {
+  display: table !important;
+  width: auto !important;
+  inline-size: auto !important;
+  max-inline-size: 100% !important;
+  table-layout: auto !important;
+}
+
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content marimo-table {
+  overflow-x: auto;
+}
+
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content .markdown table,
+:root[data-vault-marimo-presentation="slides"] .mo-slide-content .prose table {
+  overflow-x: auto;
+}
+
+[data-vault-marimo-fullscreen-button] {
+  min-width: 2.25rem !important;
+  min-height: 2.25rem !important;
+  font-size: 1.1rem !important;
+  line-height: 1 !important;
+}
+
+:root[data-vault-marimo-presentation="slides"] .vault-marimo-theme-selector {
+  inset: auto;
+}
+
+@media (max-width: 44rem) {
+  body {
+    font-size: 0.95rem;
+  }
+
+  :root[data-vault-marimo-shell="lab"] .markdown,
+  :root[data-vault-marimo-shell="lab"] .prose {
+    font-size: 1.05rem;
+  }
+
+  .markdown h1,
+  .prose h1 {
+    font-size: 2rem;
+    line-height: 1.05;
+  }
+
+  .markdown h2,
+  .prose h2 {
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+
+  .markdown table,
+  .prose table {
+    font-size: 0.86rem;
+  }
+
+  :root[data-vault-marimo-presentation="slides"] {
+    --vault-marimo-slide-padding-block: clamp(1.25rem, 5vh, 2rem);
+    --vault-marimo-slide-padding-inline: clamp(1.25rem, 6vw, 2.5rem);
+  }
+
+  .vault-marimo-theme-selector {
+    inset: auto;
+    max-width: calc(100vw - 1.5rem);
+    justify-content: flex-end;
+  }
+
+  :root[data-vault-marimo-shell="lab"] .vault-lab-sidebar {
+    box-shadow: 1rem 0 2rem color-mix(in srgb, var(--foreground) 12%, transparent);
+    transform: translateX(-100%);
+  }
+
+  :root[data-vault-marimo-shell="lab"][data-vault-lab-sidebar="expanded"] .vault-lab-sidebar {
+    transform: translateX(0);
+  }
+
+  :root[data-vault-marimo-shell="lab"] {
+    --vault-lab-topbar-height: 3.75rem;
+    --vault-lab-content-gap: 5rem;
+  }
+
+  :root[data-vault-marimo-shell="lab"] #root,
+  :root[data-vault-marimo-shell="lab"][data-vault-lab-sidebar="collapsed"] #root {
+    width: 100%;
+    margin-left: 0;
+    padding-top: calc(var(--vault-lab-content-gap) + env(safe-area-inset-top, 0px)) !important;
+    padding-inline: 1rem !important;
+  }
+
+  :root[data-vault-marimo-shell="lab"] #root [data-testid="chrome-wrapper"],
+  :root[data-vault-marimo-shell="lab"][data-vault-lab-sidebar="collapsed"] #root [data-testid="chrome-wrapper"] {
+    top: calc(var(--vault-lab-content-gap) + env(safe-area-inset-top, 0px)) !important;
+    right: 1rem !important;
+    bottom: 4rem !important;
+    left: 1rem !important;
+  }
+
+  .vault-lab-footer,
+  :root[data-vault-marimo-shell="lab"][data-vault-lab-sidebar="collapsed"] .vault-lab-footer {
+    inset-inline-start: 1rem;
+  }
+
+  :root[data-vault-marimo-shell="lab"] .vault-marimo-theme-selector {
+    margin-left: auto;
+  }
+
+  .vault-marimo-theme-selector select {
+    flex: 1 1 100%;
+  }
+}

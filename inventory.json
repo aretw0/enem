@@ -1,0 +1,1786 @@
+{
+  ".claude/settings.json": {
+    "source": ".claude/settings.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".devcontainer/Dockerfile": {
+    "source": ".devcontainer/Dockerfile",
+    "class": "payload",
+    "transforms": []
+  },
+  ".devcontainer/devcontainer.json": {
+    "source": ".devcontainer/devcontainer.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".devcontainer/post-create.sh": {
+    "source": ".devcontainer/post-create.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  ".devcontainer/post-start.sh": {
+    "source": ".devcontainer/post-start.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  ".devcontainer/vault": {
+    "source": ".devcontainer/vault",
+    "class": "payload",
+    "transforms": []
+  },
+  ".gitattributes": {
+    "source": ".gitattributes",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/PULL_REQUEST_TEMPLATE/chore-maintenance.md": {
+    "source": ".github/PULL_REQUEST_TEMPLATE/chore-maintenance.md",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/PULL_REQUEST_TEMPLATE/docs-update.md": {
+    "source": ".github/PULL_REQUEST_TEMPLATE/docs-update.md",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/PULL_REQUEST_TEMPLATE/feat-knowledge-note.md": {
+    "source": ".github/PULL_REQUEST_TEMPLATE/feat-knowledge-note.md",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/PULL_REQUEST_TEMPLATE/feat-technical-enhancement.md": {
+    "source": ".github/PULL_REQUEST_TEMPLATE/feat-technical-enhancement.md",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/PULL_REQUEST_TEMPLATE/fix-technical.md": {
+    "source": ".github/PULL_REQUEST_TEMPLATE/fix-technical.md",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/PULL_REQUEST_TEMPLATE/refactor-knowledge-note.md": {
+    "source": ".github/PULL_REQUEST_TEMPLATE/refactor-knowledge-note.md",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/actions/setup/action.yml": {
+    "source": ".github/actions/setup/action.yml",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/copilot-instructions.md": {
+    "source": ".github/copilot-instructions.md",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/dependabot.yml": {
+    "source": ".github/dependabot.yml",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/prompts/feed-item-to-note.prompt.md": {
+    "source": ".github/prompts/feed-item-to-note.prompt.md",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/prompts/format-note.prompt.md": {
+    "source": ".github/prompts/format-note.prompt.md",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/prompts/ingest-content.prompt.md": {
+    "source": ".github/prompts/ingest-content.prompt.md",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/prompts/note-to-outbox-post.prompt.md": {
+    "source": ".github/prompts/note-to-outbox-post.prompt.md",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/workflows/ci.yml": {
+    "source": ".github/workflows/ci.yml",
+    "class": "payload",
+    "transforms": []
+  },
+  ".github/workflows/deploy-site.yml": {
+    "source": ".github/workflows/deploy-site.yml",
+    "class": "payload",
+    "transforms": []
+  },
+  ".gitignore": {
+    "source": ".gitignore",
+    "class": "payload",
+    "transforms": []
+  },
+  ".gitmessage": {
+    "source": ".gitmessage",
+    "class": "payload",
+    "transforms": []
+  },
+  ".markdownlint.json": {
+    "source": ".markdownlint.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".npmrc": {
+    "source": ".npmrc",
+    "class": "payload",
+    "transforms": []
+  },
+  ".nvmrc": {
+    "source": ".nvmrc",
+    "class": "payload",
+    "transforms": []
+  },
+  ".obsidian/app.json": {
+    "source": ".obsidian/app.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".obsidian/appearance.json": {
+    "source": ".obsidian/appearance.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".obsidian/canvas.json": {
+    "source": ".obsidian/canvas.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".obsidian/community-plugins.json": {
+    "source": ".obsidian/community-plugins.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".obsidian/core-plugins.json": {
+    "source": ".obsidian/core-plugins.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".obsidian/daily-notes.json": {
+    "source": ".obsidian/daily-notes.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".obsidian/templates.json": {
+    "source": ".obsidian/templates.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".obsidian/zk-prefixer.json": {
+    "source": ".obsidian/zk-prefixer.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/components/Footer.astro": {
+    "source": ".site/components/Footer.astro",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/components/Header.astro": {
+    "source": ".site/components/Header.astro",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/components/MobileMenuFooter.astro": {
+    "source": ".site/components/MobileMenuFooter.astro",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/components/PageFrame.astro": {
+    "source": ".site/components/PageFrame.astro",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/components/TwoColumnContent.astro": {
+    "source": ".site/components/TwoColumnContent.astro",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/components/VaultGraphShared.astro": {
+    "source": ".site/components/VaultGraphShared.astro",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/components/VaultGraphView.astro": {
+    "source": ".site/components/VaultGraphView.astro",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/content.config.ts": {
+    "source": ".site/content.config.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/information-architecture.json": {
+    "source": ".site/information-architecture.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/integrations/collect-published-slugs.ts": {
+    "source": ".site/integrations/collect-published-slugs.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/integrations/copy-vault-attachments.ts": {
+    "source": ".site/integrations/copy-vault-attachments.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/integrations/generate-vault-json.ts": {
+    "source": ".site/integrations/generate-vault-json.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/integrations/technical-docs.ts": {
+    "source": ".site/integrations/technical-docs.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/integrations/vault-config.ts": {
+    "source": ".site/integrations/vault-config.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/lab.datasets.json": {
+    "source": ".site/lab.datasets.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/lab.notebooks.json": {
+    "source": ".site/lab.notebooks.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/lib/information-architecture-audit.mjs": {
+    "source": ".site/lib/information-architecture-audit.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/lib/information-architecture.mjs": {
+    "source": ".site/lib/information-architecture.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/lib/vault-config.mjs": {
+    "source": ".site/lib/vault-config.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/lib/vault-credentials.mjs": {
+    "source": ".site/lib/vault-credentials.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/lib/vault-explore.graph.test.ts": {
+    "source": ".site/lib/vault-explore.graph.test.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/lib/vault-explore.ts": {
+    "source": ".site/lib/vault-explore.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/lib/vault-folders.mjs": {
+    "source": ".site/lib/vault-folders.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/pages/explorar/dados.json.ts": {
+    "source": ".site/pages/explorar/dados.json.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/pages/explorar/index.astro": {
+    "source": ".site/pages/explorar/index.astro",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/pages/explorar/intencoes.astro": {
+    "source": ".site/pages/explorar/intencoes.astro",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/pages/index.astro": {
+    "source": ".site/pages/index.astro",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/pages/lab/index.astro": {
+    "source": ".site/pages/lab/index.astro",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/pages/records-manifest.json.ts": {
+    "source": ".site/pages/records-manifest.json.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/pages/rss.xml.ts": {
+    "source": ".site/pages/rss.xml.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/sidebar.config.ts": {
+    "source": ".site/sidebar.config.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/sidebar.sections.json": {
+    "source": ".site/sidebar.sections.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/styles/custom.css": {
+    "source": ".site/styles/custom.css",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/styles/marimo-vault.css": {
+    "source": ".site/styles/marimo-vault.css",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/styles/theme-runtime.css": {
+    "source": ".site/styles/theme-runtime.css",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/styles/themes/oceano.css": {
+    "source": ".site/styles/themes/oceano.css",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/styles/themes/terracota.css": {
+    "source": ".site/styles/themes/terracota.css",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/styles/themes/verde-jardim.css": {
+    "source": ".site/styles/themes/verde-jardim.css",
+    "class": "payload",
+    "transforms": []
+  },
+  ".site/vault-folders.json": {
+    "source": ".site/vault-folders.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".vscode/extensions.json": {
+    "source": ".vscode/extensions.json",
+    "class": "payload",
+    "transforms": []
+  },
+  ".vscode/settings.json": {
+    "source": ".vscode/settings.json",
+    "class": "payload",
+    "transforms": []
+  },
+  "00 - Entrada/.gitkeep": {
+    "source": "00 - Entrada/.gitkeep",
+    "class": "payload",
+    "transforms": []
+  },
+  "00 - Entrada/Bem-vindo ao seu vault.md": {
+    "source": "00 - Entrada/Bem-vindo ao seu vault.md",
+    "class": "transform",
+    "transforms": [
+      "status-draft-to-published"
+    ],
+    "validation": "scripts/smoke_user_e2e.mjs"
+  },
+  "10 - Diário/.gitkeep": {
+    "source": "10 - Diário/.gitkeep",
+    "class": "payload",
+    "transforms": []
+  },
+  "20 - Projetos/.gitkeep": {
+    "source": "20 - Projetos/.gitkeep",
+    "class": "payload",
+    "transforms": []
+  },
+  "30 - Áreas/.gitkeep": {
+    "source": "30 - Áreas/.gitkeep",
+    "class": "payload",
+    "transforms": []
+  },
+  "30 - Áreas/Blog/Jardim digital - por onde começar.md": {
+    "source": "30 - Áreas/Blog/Jardim digital - por onde começar.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/.gitkeep": {
+    "source": "40 - Recursos/.gitkeep",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/Bases.md": {
+    "source": "40 - Recursos/Bases.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/Daily Note.md": {
+    "source": "40 - Recursos/Daily Note.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/Dataview.md": {
+    "source": "40 - Recursos/Dataview.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/Filosofia e Conceitos Fundamentais.md": {
+    "source": "40 - Recursos/Filosofia e Conceitos Fundamentais.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/Jardim digital.md": {
+    "source": "40 - Recursos/Jardim digital.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/Links.md": {
+    "source": "40 - Recursos/Links.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/Markdown e Obsidian.md": {
+    "source": "40 - Recursos/Markdown e Obsidian.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/Mermaid.md": {
+    "source": "40 - Recursos/Mermaid.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/O que sao system prompts de IA.md": {
+    "source": "40 - Recursos/O que sao system prompts de IA.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/O que são MOCs (Mapas de Conteúdo).md": {
+    "source": "40 - Recursos/O que são MOCs (Mapas de Conteúdo).md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/O que é o método PARA.md": {
+    "source": "40 - Recursos/O que é o método PARA.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/O que é o método Zettelkasten.md": {
+    "source": "40 - Recursos/O que é o método Zettelkasten.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/O que é publicação multi-canal.md": {
+    "source": "40 - Recursos/O que é publicação multi-canal.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/Obsidian.md": {
+    "source": "40 - Recursos/Obsidian.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/PKM com Obsidian e VS Code.md": {
+    "source": "40 - Recursos/PKM com Obsidian e VS Code.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/Tags.md": {
+    "source": "40 - Recursos/Tags.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/Templater.md": {
+    "source": "40 - Recursos/Templater.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "40 - Recursos/VS Code.md": {
+    "source": "40 - Recursos/VS Code.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "50 - Arquivo/.gitkeep": {
+    "source": "50 - Arquivo/.gitkeep",
+    "class": "payload",
+    "transforms": []
+  },
+  "90 - Modelos/.gitkeep": {
+    "source": "90 - Modelos/.gitkeep",
+    "class": "payload",
+    "transforms": []
+  },
+  "90 - Modelos/.markdownlint.json": {
+    "source": "90 - Modelos/.markdownlint.json",
+    "class": "payload",
+    "transforms": []
+  },
+  "90 - Modelos/Template - Dashboard.md": {
+    "source": "90 - Modelos/Template - Dashboard.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "90 - Modelos/Template - Item de Feed.md": {
+    "source": "90 - Modelos/Template - Item de Feed.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "90 - Modelos/Template - MOC.md": {
+    "source": "90 - Modelos/Template - MOC.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "90 - Modelos/Template - Nota Conceitual.md": {
+    "source": "90 - Modelos/Template - Nota Conceitual.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "90 - Modelos/Template - Nota Diaria.md": {
+    "source": "90 - Modelos/Template - Nota Diaria.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "90 - Modelos/Template - Plano de Ação.md": {
+    "source": "90 - Modelos/Template - Plano de Ação.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "90 - Modelos/Template - Post Externo.md": {
+    "source": "90 - Modelos/Template - Post Externo.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "90 - Modelos/Template - Prompt.md": {
+    "source": "90 - Modelos/Template - Prompt.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.1 - Onboarding/Configurando Localmente.md": {
+    "source": "99 - Meta e Anexos/99.1 - Onboarding/Configurando Localmente.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.1 - Onboarding/Configurando com Devcontainer.md": {
+    "source": "99 - Meta e Anexos/99.1 - Onboarding/Configurando com Devcontainer.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.1 - Onboarding/Depois da Recepcao do Template.md": {
+    "source": "99 - Meta e Anexos/99.1 - Onboarding/Depois da Recepcao do Template.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.1 - Onboarding/Entendendo a Estrutura de Pastas.md": {
+    "source": "99 - Meta e Anexos/99.1 - Onboarding/Entendendo a Estrutura de Pastas.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.1 - Onboarding/Exploracao Guiada do Vault.md": {
+    "source": "99 - Meta e Anexos/99.1 - Onboarding/Exploracao Guiada do Vault.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.1 - Onboarding/Guia do Jardineiro Digital.md": {
+    "source": "99 - Meta e Anexos/99.1 - Onboarding/Guia do Jardineiro Digital.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.1 - Onboarding/MOC Vault Seed.md": {
+    "source": "99 - Meta e Anexos/99.1 - Onboarding/MOC Vault Seed.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.1 - Onboarding/Preparando seu Computador para o Vault.md": {
+    "source": "99 - Meta e Anexos/99.1 - Onboarding/Preparando seu Computador para o Vault.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.1 - Onboarding/Seus Primeiros Passos.md": {
+    "source": "99 - Meta e Anexos/99.1 - Onboarding/Seus Primeiros Passos.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Automacoes no Obsidian.md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Automacoes no Obsidian.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Coletando Dados Locais com Scraping e OCR.md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Coletando Dados Locais com Scraping e OCR.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Configurando o Obsidian Git.md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Configurando o Obsidian Git.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Criando seu Painel de Controle (Dashboard).md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Criando seu Painel de Controle (Dashboard).md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Inbox Soberana de Fontes.md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Inbox Soberana de Fontes.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/O Ciclo de Vida do Conhecimento (Versionamento para Jardineiros Digitais).md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/O Ciclo de Vida do Conhecimento (Versionamento para Jardineiros Digitais).md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Outbox Soberana de Publicação.md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Outbox Soberana de Publicação.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Preparando Dados para o Lab.md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Preparando Dados para o Lab.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Publicando e Consumindo RSS no Vault.md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Publicando e Consumindo RSS no Vault.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Publicando seu Vault como Site.md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Publicando seu Vault como Site.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Rotina de Curadoria Editorial.md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Rotina de Curadoria Editorial.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Trilha de Publicação em Canal.md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Trilha de Publicação em Canal.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Trilha do Lab Interativo.md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Trilha do Lab Interativo.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Usando o Git e o GitHub para Sincronizar seu Vault.md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Usando o Git e o GitHub para Sincronizar seu Vault.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.2 - Workflows/Usando o Lab (Notebooks Marimo).md": {
+    "source": "99 - Meta e Anexos/99.2 - Workflows/Usando o Lab (Notebooks Marimo).md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Agentes de Codificação.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Agentes de Codificação.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Comandos do dgk.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Comandos do dgk.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Conhecendo o Agents Lab.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Conhecendo o Agents Lab.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Convenções e Boas Práticas.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Convenções e Boas Práticas.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Ecossistema aretw0 Agents Lab e Refarm.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Ecossistema aretw0 Agents Lab e Refarm.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Evoluindo seu Vault com Links, Tags e MOCs.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Evoluindo seu Vault com Links, Tags e MOCs.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Identidade Visual e Blocos de Interface.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Identidade Visual e Blocos de Interface.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Integrando com VSCode (Foam).md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Integrando com VSCode (Foam).md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Licença e Uso do Vault.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Licença e Uso do Vault.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Plugins Essenciais e Recomendados.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Plugins Essenciais e Recomendados.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Qualidade e Lint de Notas.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Qualidade e Lint de Notas.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Usando com Agentes de IA.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Usando com Agentes de IA.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Usando o Plugin Templates.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Usando o Plugin Templates.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Usando o Vault no Celular vs. Desktop.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Usando o Vault no Celular vs. Desktop.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Verificando a Aparencia do Site Publicado.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Verificando a Aparencia do Site Publicado.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Verificando a Configuração do Vault.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Verificando a Configuração do Vault.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.3 - Referência/Visualização do Fluxo do Vault.md": {
+    "source": "99 - Meta e Anexos/99.3 - Referência/Visualização do Fluxo do Vault.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.4 - Apresentações/Apresentações.md": {
+    "source": "99 - Meta e Anexos/99.4 - Apresentações/Apresentações.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.4 - Apresentações/Bem-vindo ao vault-seed.md": {
+    "source": "99 - Meta e Anexos/99.4 - Apresentações/Bem-vindo ao vault-seed.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.4 - Apresentações/Fluxo de Publicação.md": {
+    "source": "99 - Meta e Anexos/99.4 - Apresentações/Fluxo de Publicação.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.4 - Apresentações/Integração com Agentes de IA.md": {
+    "source": "99 - Meta e Anexos/99.4 - Apresentações/Integração com Agentes de IA.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.4 - Apresentações/O Lab — Notebooks e Dados.md": {
+    "source": "99 - Meta e Anexos/99.4 - Apresentações/O Lab — Notebooks e Dados.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/99.4 - Apresentações/Visão Geral do Vault Seed.md": {
+    "source": "99 - Meta e Anexos/99.4 - Apresentações/Visão Geral do Vault Seed.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Anexos/.gitkeep": {
+    "source": "99 - Meta e Anexos/Anexos/.gitkeep",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Anexos/vault-seed-banner.svg": {
+    "source": "99 - Meta e Anexos/Anexos/vault-seed-banner.svg",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Canvas/.gitkeep": {
+    "source": "99 - Meta e Anexos/Canvas/.gitkeep",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Clippings/.gitkeep": {
+    "source": "99 - Meta e Anexos/Clippings/.gitkeep",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Diagramas/.templates/daily-review.t.md": {
+    "source": "99 - Meta e Anexos/Diagramas/.templates/daily-review.t.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Diagramas/.templates/para-structure.t.md": {
+    "source": "99 - Meta e Anexos/Diagramas/.templates/para-structure.t.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Diagramas/.templates/project-lifecycle.t.md": {
+    "source": "99 - Meta e Anexos/Diagramas/.templates/project-lifecycle.t.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Diagramas/.templates/vault-flow.t.md": {
+    "source": "99 - Meta e Anexos/Diagramas/.templates/vault-flow.t.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Diagramas/Exemplos.md": {
+    "source": "99 - Meta e Anexos/Diagramas/Exemplos.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Diagramas/mdt.toml": {
+    "source": "99 - Meta e Anexos/Diagramas/mdt.toml",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/_lab_notebook_runtime.py": {
+    "source": "99 - Meta e Anexos/Notebooks/_lab_notebook_runtime.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/analise-escrita.py": {
+    "source": "99 - Meta e Anexos/Notebooks/analise-escrita.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/analise-feeds.py": {
+    "source": "99 - Meta e Anexos/Notebooks/analise-feeds.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/analise-grafo.py": {
+    "source": "99 - Meta e Anexos/Notebooks/analise-grafo.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/analise-leitura.py": {
+    "source": "99 - Meta e Anexos/Notebooks/analise-leitura.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/analise-outbox.py": {
+    "source": "99 - Meta e Anexos/Notebooks/analise-outbox.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/analise-publicacao.py": {
+    "source": "99 - Meta e Anexos/Notebooks/analise-publicacao.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/apresentacoes/agentes.py": {
+    "source": "99 - Meta e Anexos/Notebooks/apresentacoes/agentes.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/apresentacoes/layouts/agentes.slides.json": {
+    "source": "99 - Meta e Anexos/Notebooks/apresentacoes/layouts/agentes.slides.json",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/apresentacoes/layouts/o-lab.slides.json": {
+    "source": "99 - Meta e Anexos/Notebooks/apresentacoes/layouts/o-lab.slides.json",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/apresentacoes/layouts/publicacao.slides.json": {
+    "source": "99 - Meta e Anexos/Notebooks/apresentacoes/layouts/publicacao.slides.json",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/apresentacoes/layouts/visao-geral.slides.json": {
+    "source": "99 - Meta e Anexos/Notebooks/apresentacoes/layouts/visao-geral.slides.json",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/apresentacoes/o-lab.py": {
+    "source": "99 - Meta e Anexos/Notebooks/apresentacoes/o-lab.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/apresentacoes/publicacao.py": {
+    "source": "99 - Meta e Anexos/Notebooks/apresentacoes/publicacao.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/apresentacoes/visao-geral.py": {
+    "source": "99 - Meta e Anexos/Notebooks/apresentacoes/visao-geral.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/curadoria-feeds-ia.py": {
+    "source": "99 - Meta e Anexos/Notebooks/curadoria-feeds-ia.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/etl-demo.py": {
+    "source": "99 - Meta e Anexos/Notebooks/etl-demo.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/publicar-thread.py": {
+    "source": "99 - Meta e Anexos/Notebooks/publicar-thread.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/starters/coleta-local.py": {
+    "source": "99 - Meta e Anexos/Notebooks/starters/coleta-local.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/starters/explorador.py": {
+    "source": "99 - Meta e Anexos/Notebooks/starters/explorador.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Notebooks/starters/revisao-diaria.py": {
+    "source": "99 - Meta e Anexos/Notebooks/starters/revisao-diaria.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/Vault Seed Kitchen Sink.base": {
+    "source": "99 - Meta e Anexos/Vault Seed Kitchen Sink.base",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/config/commander-example.json": {
+    "source": "99 - Meta e Anexos/config/commander-example.json",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/config/obsidian-web-clipper-settings.json": {
+    "source": "99 - Meta e Anexos/config/obsidian-web-clipper-settings.json",
+    "class": "payload",
+    "transforms": []
+  },
+  "99 - Meta e Anexos/config/shell-commands-example.json": {
+    "source": "99 - Meta e Anexos/config/shell-commands-example.json",
+    "class": "payload",
+    "transforms": []
+  },
+  "AGENTS.md": {
+    "source": "AGENTS.template.md",
+    "class": "transform",
+    "transforms": [
+      "rename"
+    ]
+  },
+  "CHANGELOG.md": {
+    "source": "CHANGELOG.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "CLAUDE.md": {
+    "source": "CLAUDE.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "CONTRIBUTING.md": {
+    "source": "CONTRIBUTING.template.md",
+    "class": "transform",
+    "transforms": [
+      "rename"
+    ]
+  },
+  "GEMINI.md": {
+    "source": "GEMINI.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "LICENSE.md": {
+    "source": "LICENSE.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "NOTICE.md": {
+    "source": "NOTICE.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "README.md": {
+    "source": "README.template.md",
+    "class": "transform",
+    "transforms": [
+      "rename"
+    ]
+  },
+  "astro.config.mjs": {
+    "source": "astro.config.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "fontes/feeds.opml": {
+    "source": "fontes/feeds.opml",
+    "class": "payload",
+    "transforms": []
+  },
+  "fontes/lista-leitura.json": {
+    "source": "fontes/lista-leitura.json",
+    "class": "payload",
+    "transforms": []
+  },
+  "install.ps1": {
+    "source": "install.ps1",
+    "class": "payload",
+    "transforms": []
+  },
+  "install.sh": {
+    "source": "install.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  "package.json": {
+    "source": "package.template.json",
+    "class": "transform",
+    "transforms": [
+      "rename",
+      "set-package-repository",
+      "externalize-dgk-astro-plugins"
+    ]
+  },
+  "packages/astro-plugins/.gitignore": {
+    "source": "packages/astro-plugins/.gitignore",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/CHANGELOG.md": {
+    "source": "packages/astro-plugins/CHANGELOG.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/README.md": {
+    "source": "packages/astro-plugins/README.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/package.json": {
+    "source": "packages/astro-plugins/package.json",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/src/__tests__/remark-callouts.test.ts": {
+    "source": "packages/astro-plugins/src/__tests__/remark-callouts.test.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/src/__tests__/remark-wiki-images.test.ts": {
+    "source": "packages/astro-plugins/src/__tests__/remark-wiki-images.test.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/src/__tests__/remark-wiki-links.test.ts": {
+    "source": "packages/astro-plugins/src/__tests__/remark-wiki-links.test.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/src/__tests__/slugify.test.ts": {
+    "source": "packages/astro-plugins/src/__tests__/slugify.test.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/src/index.ts": {
+    "source": "packages/astro-plugins/src/index.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/src/remark-callouts.ts": {
+    "source": "packages/astro-plugins/src/remark-callouts.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/src/remark-wiki-images.ts": {
+    "source": "packages/astro-plugins/src/remark-wiki-images.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/src/remark-wiki-links.ts": {
+    "source": "packages/astro-plugins/src/remark-wiki-links.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/src/slugify.ts": {
+    "source": "packages/astro-plugins/src/slugify.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/tsconfig.json": {
+    "source": "packages/astro-plugins/tsconfig.json",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/astro-plugins/vitest.config.ts": {
+    "source": "packages/astro-plugins/vitest.config.ts",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/lab-runtime/README.md": {
+    "source": "packages/lab-runtime/README.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/lab-runtime/pyproject.toml": {
+    "source": "packages/lab-runtime/pyproject.toml",
+    "class": "payload",
+    "transforms": []
+  },
+  "packages/lab-runtime/src/dgk_lab_runtime/__init__.py": {
+    "source": "packages/lab-runtime/src/dgk_lab_runtime/__init__.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "pnpm-lock.yaml": {
+    "source": "pnpm-lock.template.yaml",
+    "class": "transform",
+    "transforms": [
+      "rename"
+    ]
+  },
+  "pnpm-workspace.yaml": {
+    "source": "pnpm-workspace.yaml",
+    "class": "payload",
+    "transforms": []
+  },
+  "public/assets/.gitkeep": {
+    "source": "public/assets/.gitkeep",
+    "class": "payload",
+    "transforms": []
+  },
+  "public/assets/vault-seed-banner.svg": {
+    "source": "public/assets/vault-seed-banner.svg",
+    "class": "payload",
+    "transforms": []
+  },
+  "pyproject.toml": {
+    "source": "pyproject.toml",
+    "class": "payload",
+    "transforms": []
+  },
+  "quality-rules.json": {
+    "source": "quality-rules.json",
+    "class": "payload",
+    "transforms": []
+  },
+  "requirements.local-etl.txt": {
+    "source": "requirements.local-etl.txt",
+    "class": "payload",
+    "transforms": []
+  },
+  "requirements.txt": {
+    "source": "requirements.txt",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/audience_boundary.test.mjs": {
+    "source": "scripts/audience_boundary.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/audit_information_architecture.mjs": {
+    "source": "scripts/audit_information_architecture.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/audit_sidebar.js": {
+    "source": "scripts/audit_sidebar.js",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/check_git_hygiene.sh": {
+    "source": "scripts/check_git_hygiene.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/check_github_action_pins.mjs": {
+    "source": "scripts/check_github_action_pins.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/check_lab_extract_tools.py": {
+    "source": "scripts/check_lab_extract_tools.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/check_mermaid.js": {
+    "source": "scripts/check_mermaid.js",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/check_pt_text.js": {
+    "source": "scripts/check_pt_text.js",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/check_pt_text.test.mjs": {
+    "source": "scripts/check_pt_text.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/check_refarm_publication_readiness.mjs": {
+    "source": "scripts/check_refarm_publication_readiness.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/check_refarm_publication_readiness.test.mjs": {
+    "source": "scripts/check_refarm_publication_readiness.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/check_theme.js": {
+    "source": "scripts/check_theme.js",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/clean_site_dist.mjs": {
+    "source": "scripts/clean_site_dist.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/contacts.mjs": {
+    "source": "scripts/contacts.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/curate_feeds_ia.py": {
+    "source": "scripts/curate_feeds_ia.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/deploy_site_workflow.test.mjs": {
+    "source": "scripts/deploy_site_workflow.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/devcontainer_contract.test.mjs": {
+    "source": "scripts/devcontainer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/distributed_scripts_no_static_refarm_import.test.mjs": {
+    "source": "scripts/distributed_scripts_no_static_refarm_import.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/doc_host_path_contract.test.mjs": {
+    "source": "scripts/doc_host_path_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/emit_refarm_proof_receipts.mjs": {
+    "source": "scripts/emit_refarm_proof_receipts.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/enrichment_key_lookup.mjs": {
+    "source": "scripts/enrichment_key_lookup.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/enrichment_key_lookup.test.mjs": {
+    "source": "scripts/enrichment_key_lookup.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/ensure_lab_snapshots.mjs": {
+    "source": "scripts/ensure_lab_snapshots.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/export_notebooks.mjs": {
+    "source": "scripts/export_notebooks.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/feed_sources.test.mjs": {
+    "source": "scripts/feed_sources.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/generate_records_data.mjs": {
+    "source": "scripts/generate_records_data.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/generate_records_data.test.mjs": {
+    "source": "scripts/generate_records_data.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/generate_records_manifest.mjs": {
+    "source": "scripts/generate_records_manifest.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/generate_records_manifest.test.mjs": {
+    "source": "scripts/generate_records_manifest.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/generate_task_artifacts_manifest.mjs": {
+    "source": "scripts/generate_task_artifacts_manifest.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/generate_vault_data.mjs": {
+    "source": "scripts/generate_vault_data.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/generate_vault_data.test.mjs": {
+    "source": "scripts/generate_vault_data.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/get_release_notes.js": {
+    "source": "scripts/get_release_notes.js",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/graph_interactions_perf_smoke.mjs": {
+    "source": "scripts/graph_interactions_perf_smoke.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/graph_interactions_smoke.mjs": {
+    "source": "scripts/graph_interactions_smoke.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/history_cleanup_apply_local.sh": {
+    "source": "scripts/history_cleanup_apply_local.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/history_cleanup_plan.sh": {
+    "source": "scripts/history_cleanup_plan.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/inbox_from_telegram.mjs": {
+    "source": "scripts/inbox_from_telegram.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/inbox_from_telegram.test.mjs": {
+    "source": "scripts/inbox_from_telegram.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/information_architecture.test.mjs": {
+    "source": "scripts/information_architecture.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/lab_etl_demo.mjs": {
+    "source": "scripts/lab_etl_demo.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/lab_shell_contract.test.mjs": {
+    "source": "scripts/lab_shell_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/llm_client.py": {
+    "source": "scripts/llm_client.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/mdx_content_surface_contract.test.mjs": {
+    "source": "scripts/mdx_content_surface_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/mermaid_render_contract.test.mjs": {
+    "source": "scripts/mermaid_render_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/mermaid_toggle.test.mjs": {
+    "source": "scripts/mermaid_toggle.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/no_raw_child_process_contract.test.mjs": {
+    "source": "scripts/no_raw_child_process_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/notebook_cell_output_lint.test.mjs": {
+    "source": "scripts/notebook_cell_output_lint.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/notebook_chart_contrast.test.mjs": {
+    "source": "scripts/notebook_chart_contrast.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/notebook_chart_responsive.test.mjs": {
+    "source": "scripts/notebook_chart_responsive.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/notebook_export_runtime_helpers.mjs": {
+    "source": "scripts/notebook_export_runtime_helpers.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/notebook_export_runtime_helpers.test.mjs": {
+    "source": "scripts/notebook_export_runtime_helpers.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/notebook_path.cjs": {
+    "source": "scripts/notebook_path.cjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/notebook_path.mjs": {
+    "source": "scripts/notebook_path.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/notebook_path.test.mjs": {
+    "source": "scripts/notebook_path.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/notebooks_check.mjs": {
+    "source": "scripts/notebooks_check.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/notebooks_dev.mjs": {
+    "source": "scripts/notebooks_dev.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/notebooks_pair.mjs": {
+    "source": "scripts/notebooks_pair.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/obsidian/check.sh": {
+    "source": "scripts/obsidian/check.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/obsidian/lint.sh": {
+    "source": "scripts/obsidian/lint.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/obsidian/validate.sh": {
+    "source": "scripts/obsidian/validate.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/package_version_contract.test.mjs": {
+    "source": "scripts/package_version_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/prepare_feed_sources.mjs": {
+    "source": "scripts/prepare_feed_sources.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/prepare_lab_datasets.mjs": {
+    "source": "scripts/prepare_lab_datasets.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/prepare_lab_datasets.test.mjs": {
+    "source": "scripts/prepare_lab_datasets.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/prepare_publication_outbox.mjs": {
+    "source": "scripts/prepare_publication_outbox.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/presentation_export_helpers.mjs": {
+    "source": "scripts/presentation_export_helpers.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/presentation_export_helpers.test.mjs": {
+    "source": "scripts/presentation_export_helpers.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/publication_outbox.test.mjs": {
+    "source": "scripts/publication_outbox.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/publish_to_telegram.mjs": {
+    "source": "scripts/publish_to_telegram.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/publish_to_telegram.test.mjs": {
+    "source": "scripts/publish_to_telegram.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/rate_limiter.mjs": {
+    "source": "scripts/rate_limiter.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/records_etl.mjs": {
+    "source": "scripts/records_etl.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/records_etl.test.mjs": {
+    "source": "scripts/records_etl.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/records_table_surface.test.mjs": {
+    "source": "scripts/records_table_surface.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_artifact_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_artifact_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_channel_policy_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_channel_policy_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_content_projection_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_content_projection_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_credentials_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_credentials_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_ds_astro_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_ds_astro_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_ds_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_ds_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_ds_html_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_ds_html_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_enrichment_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_enrichment_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_health_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_health_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_local_surface_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_local_surface_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_no_reimplementation_contract.test.mjs": {
+    "source": "scripts/refarm_no_reimplementation_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_process_handoff_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_process_handoff_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_publish_hold_contract.test.mjs": {
+    "source": "scripts/refarm_publish_hold_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_quality_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_quality_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_records_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_records_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/refarm_source_web_consumer_contract.test.mjs": {
+    "source": "scripts/refarm_source_web_consumer_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/release_package_smoke.test.mjs": {
+    "source": "scripts/release_package_smoke.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/remove_from_git_history.sh": {
+    "source": "scripts/remove_from_git_history.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/reset_example_content.mjs": {
+    "source": "scripts/reset_example_content.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/setup.sh": {
+    "source": "scripts/setup.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/setup_git.sh": {
+    "source": "scripts/setup_git.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/setup_node.sh": {
+    "source": "scripts/setup_node.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/setup_python.sh": {
+    "source": "scripts/setup_python.sh",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/site_ux_contract.test.mjs": {
+    "source": "scripts/site_ux_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/smoke_responsive.mjs": {
+    "source": "scripts/smoke_responsive.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/smoke_site.js": {
+    "source": "scripts/smoke_site.js",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/status_from_config_contract.test.mjs": {
+    "source": "scripts/status_from_config_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/sync_lockfile_template.test.mjs": {
+    "source": "scripts/sync_lockfile_template.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/templates_contract.test.mjs": {
+    "source": "scripts/templates_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/test_llm_client.py": {
+    "source": "scripts/test_llm_client.py",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/uv_env.mjs": {
+    "source": "scripts/uv_env.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/validate_onboarding.js": {
+    "source": "scripts/validate_onboarding.js",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/validate_onboarding.test.mjs": {
+    "source": "scripts/validate_onboarding.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/vault_credentials_headspace.test.mjs": {
+    "source": "scripts/vault_credentials_headspace.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/vault_primitives_contract.test.mjs": {
+    "source": "scripts/vault_primitives_contract.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/vault_records_profile.mjs": {
+    "source": "scripts/vault_records_profile.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/vault_records_profile.test.mjs": {
+    "source": "scripts/vault_records_profile.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "scripts/verify_release_readiness.mjs": {
+    "source": "scripts/verify_release_readiness.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "uv.lock": {
+    "source": "uv.lock",
+    "class": "payload",
+    "transforms": []
+  },
+  "validations/records-reference/README.md": {
+    "source": "validations/records-reference/README.md",
+    "class": "payload",
+    "transforms": []
+  },
+  "validations/records-reference/reference-vault.mjs": {
+    "source": "validations/records-reference/reference-vault.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "validations/records-reference/reference-vault.test.mjs": {
+    "source": "validations/records-reference/reference-vault.test.mjs",
+    "class": "payload",
+    "transforms": []
+  },
+  "vault.config.json": {
+    "source": "vault.config.json",
+    "class": "transform",
+    "transforms": [
+      "drop-kudos",
+      "set-license-holder"
+    ],
+    "validation": "scripts/smoke_user_e2e.mjs"
+  },
+  "vitest.config.mjs": {
+    "source": "vitest.config.mjs",
+    "class": "payload",
+    "transforms": []
+  }
+}

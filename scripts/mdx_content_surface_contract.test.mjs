@@ -1,0 +1,70 @@
+import { test, expect } from "vitest";
+import { existsSync, readFileSync } from "node:fs";
+
+function read(path) {
+  return readFileSync(path, "utf8");
+}
+
+test("Explorar remains the canonical MD/MDX surface instead of adding records pages", () => {
+  expect(existsSync(".site/pages/records/index.astro")).toBe(false);
+
+  const explorePage = read(".site/pages/explorar/index.astro");
+  const exploreLib = read(".site/lib/vault-explore.ts");
+  const vaultData = read("scripts/generate_vault_data.mjs");
+  const vaultLoader = read(".site/content.config.ts");
+  const rootPkg = read("package.json");
+
+  expect(explorePage).toMatch(/buildVaultExploreData/);
+  expect(explorePage).toMatch(/data-vault-explore-results/);
+  expect(explorePage).toMatch(/data-vault-explore-type/);
+  expect(exploreLib).toMatch(/loadVaultContentItems/);
+  expect(exploreLib).toMatch(/buildExploreRecordsTable/);
+  expect(exploreLib).not.toMatch(/globSync/);
+  expect(vaultData).not.toMatch(/from\s+["']@refarm\.dev\//);
+  expect(vaultData).toMatch(/CONTENT_EXTENSIONS = \["md", "mdx"\]/);
+  expect(vaultLoader).toMatch(/contentGlobPatterns\(PUBLISHED_VAULT_FOLDERS\)/);
+  expect(vaultLoader).toMatch(/stripContentExtension\(normalizedFile\)/);
+  expect(vaultLoader).not.toMatch(/PUBLISHED_VAULT_FOLDERS\.map\(f => `\$\{f\}\/\*\*\/\*\.md`\)/);
+  expect(rootPkg).not.toMatch(/@aretw0\/(?:vault|dgk)-(?:blocks|content-blocks|astro-blocks)/);
+});
+
+test("MDX migration boundary keeps reusable Astro blocks upstream in refarm", () => {
+  const design = read("docs/superpowers/specs/2026-06-30-records-view-design.md");
+  const status = read("docs/convergencia-refarm-status.md");
+  const feedback = read("docs/convergencia-refarm-feedback.md");
+  const inventory = read("docs/superpowers/specs/2026-07-03-mdx-block-migration-inventory.md");
+  const proofPlanPath = "docs/superpowers/plans/2026-07-03-ds-astro-mdx-consumer-proof.md";
+  const proofPlan = read(proofPlanPath);
+
+  expect(design).toMatch(/MDX is the authoring migration path/);
+  expect(design).toMatch(/Refarm owns .*reusable Astro\/SSR\/content blocks/);
+  expect(status).toMatch(/blocos reutilizáveis[\s\S]*devem vir do\s+refarm/);
+  expect(feedback).toMatch(/blocos MDX\/Astro\/SSR reutilizáveis/);
+  expect(feedback).toMatch(/@refarm\.dev\/ds-astro/);
+  expect(feedback).toMatch(/mdx-components/);
+  expect(feedback).toContain(proofPlanPath);
+  expect(feedback).toMatch(/2026-07-03-mdx-block-migration-inventory\.md/);
+  expect(inventory).toMatch(/The next generic block to cultivate in refarm/);
+  expect(inventory).toMatch(/@refarm\.dev\/ds-astro/);
+  expect(inventory).toMatch(/vault-seed should only consume those blocks/);
+  expect(inventory).toContain(proofPlanPath);
+  expect(proofPlan).toMatch(/@refarm\.dev\/ds-astro/);
+  expect(proofPlan).toMatch(/scripts\/refarm_ds_astro_consumer_contract\.test\.mjs/);
+  expect(proofPlan).toMatch(/Nenhum pacote local genérico de blocos é criado/);
+
+  for (const page of [
+    ".site/pages/index.astro",
+    ".site/pages/explorar/index.astro",
+    ".site/pages/explorar/intencoes.astro",
+    ".site/pages/lab/index.astro",
+  ]) {
+    expect(inventory).toContain(page);
+  }
+
+  for (const block of ["GraphHero", "FacetPanel", "RecordsList", "NotebookCard", "GraphView", "GraphToolbar"]) {
+    expect(inventory).toContain(block);
+  }
+
+  expect(inventory).toMatch(/A block is promoted to refarm pressure/);
+  expect(inventory).toMatch(/Avoid creating new `\.site\/components\/\*` generic blocks/);
+});

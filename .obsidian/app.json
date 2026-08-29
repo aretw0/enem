@@ -1,0 +1,15 @@
+{
+  "readableLineLength": true,
+  "alwaysUpdateLinks": true,
+  "trashOption": "local",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "00 - Entrada",
+  "showUnsupportedFiles": true,
+  "attachmentFolderPath": "99 - Meta e Anexos/Anexos",
+  "userIgnoreFilters": [
+    "node_modules/",
+    "scripts/",
+    "tests/"
+  ],
+  "showLineNumber": true
+}

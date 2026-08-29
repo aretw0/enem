@@ -1,0 +1,41 @@
+{
+  "categories": {
+    "guia": { "label": "Guia" },
+    "conceito": { "label": "Conceito" },
+    "referencia": { "label": "Referência", "aliases": ["referência"] },
+    "workflow": { "label": "Processo" },
+    "moc": { "label": "Mapa" }
+  },
+  "audiences": {
+    "iniciante": { "label": "Começando" },
+    "todos": { "label": "Todos" },
+    "pessoal": { "label": "Pessoal" }
+  },
+  "intents": {
+    "comecar": {
+      "label": "Começar",
+      "description": "Diagnóstico curto e primeira ação concreta.",
+      "tags": ["enem/comecar", "enem/diagnostico"]
+    },
+    "planejar": {
+      "label": "Planejar",
+      "description": "Meta, capacidade, calendário e revisão do plano.",
+      "tags": ["enem/planejar", "enem/2026", "enem/moc"]
+    },
+    "estudar": {
+      "label": "Estudar",
+      "description": "Métodos fundamentados e sessões executáveis.",
+      "tags": ["enem/estudar", "enem/metodo", "enem/sessao"]
+    },
+    "praticar": {
+      "label": "Praticar",
+      "description": "Questões, redação, simulados e escolha de estratégia.",
+      "tags": ["enem/praticar", "enem/questoes"]
+    },
+    "revisar": {
+      "label": "Revisar",
+      "description": "Feedback, causas de erro e recuperação futura.",
+      "tags": ["enem/revisar", "enem/erro"]
+    }
+  }
+}

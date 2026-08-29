@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/aretw0/enem/data/schema/question.schema.json",
+  "title": "Questão ENEM com proveniência",
+  "type": "object",
+  "required": ["id", "sourceId", "year", "exam", "item", "area", "answer", "provenance"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "sourceId": { "type": "string", "minLength": 1 },
+    "year": { "type": "integer", "minimum": 1998 },
+    "exam": { "type": "string", "minLength": 1 },
+    "item": { "type": "integer", "minimum": 1 },
+    "area": { "enum": ["linguagens", "humanas", "natureza", "matematica"] },
+    "answer": { "enum": ["A", "B", "C", "D", "E", "anulada"] },
+    "prompt": { "type": "string" },
+    "alternatives": { "type": "array", "minItems": 5, "maxItems": 5, "items": { "type": "string" } },
+    "skills": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "provenance": {
+      "type": "object",
+      "required": ["sourceFile", "page", "extractedBy", "reviewStatus"],
+      "properties": {
+        "sourceFile": { "type": "string", "minLength": 1 },
+        "page": { "type": "integer", "minimum": 1 },
+        "extractedBy": { "type": "string", "minLength": 1 },
+        "reviewStatus": { "enum": ["pending", "verified"] },
+        "reviewedAt": { "type": "string", "format": "date" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

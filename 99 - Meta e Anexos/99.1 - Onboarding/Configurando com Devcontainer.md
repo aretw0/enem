@@ -1,0 +1,117 @@
+---
+title: Configurando com Devcontainer
+aliases:
+  - Setup Devcontainer
+  - Ambiente de Desenvolvimento no Container
+tags:
+  - meta/setup
+  - meta/devcontainer
+status: draft
+created: 2026-05-19
+updated: 2026-05-19
+category: guia
+audience: tecnico
+related:
+  - "[[Preparando seu Computador para o Vault]]"
+  - "[[Configurando Localmente]]"
+---
+# Configurando com Devcontainer
+
+O devcontainer é um ambiente de desenvolvimento completo que roda dentro do
+VS Code sem precisar instalar Node.js, Python ou outras ferramentas manualmente.
+Tudo vem pré-configurado — incluindo extensões, locale PT-BR e dependências do vault.
+
+## Requisitos
+
+- **VS Code** — <https://code.visualstudio.com/>
+- **Extensão Dev Containers** — instale no VS Code:
+  `ms-vscode-remote.remote-containers`
+- **Docker Desktop** — <https://www.docker.com/products/docker-desktop/>
+  (ou Docker Engine no Linux)
+
+## O que vem pré-instalado
+
+| Ferramenta | Versão |
+| --- | --- |
+| Node.js | 22 (LTS) |
+| pnpm | via Corepack |
+| uv | 0.11.11 (pinada — mesma versão usada no CI) |
+| mdt_cli | 0.7.0 (pinada) |
+| Locale | pt_BR.UTF-8 |
+
+**Extensões VS Code instaladas automaticamente:**
+
+- Foam (wikilinks e grafo de notas)
+- markdownlint (qualidade do Markdown)
+- Prettier (formatação)
+
+## Como abrir
+
+1. Clone o repositório localmente.
+2. Abra a pasta no VS Code.
+3. Quando aparecer a notificação "Reopen in Container", clique nela.
+   (Ou use o comando `Dev Containers: Reopen in Container` na paleta.)
+4. Aguarde o Docker baixar a imagem e instalar as dependências.
+   Na primeira vez, leva alguns minutos.
+
+## O que esperar durante a instalação
+
+O VS Code mostra o log do container. Você verá:
+
+1. Download da imagem base
+2. Instalação do locale pt_BR
+3. `pnpm install --frozen-lockfile`
+4. Configuração do Git
+5. Instalação do Pi (agente de IA), `mdt_cli` e dependências Python
+
+Ao final, o terminal exibe:
+
+```
+=== Ambiente pronto ===
+Node.js : v22.x.x
+pnpm    : x.x.x
+uv      : uv 0.11.11
+marimo  : x.x.x
+Pi      : x.x.x
+gh      : gh version x.x.x
+rg      : ripgrep x.x.x
+fd      : fd x.x.x
+jq      : jq-x.x.x
+shfmt   : v3.x.x
+=======================
+```
+
+Essa mensagem confirma que todas as ferramentas estão funcionando. Se algum
+item aparecer como "não instalado", a instalação automática daquela
+ferramenta falhou — rode `dgk doctor` para um diagnóstico mais detalhado.
+
+## Ao retomar o container
+
+Quando você reabre o VS Code depois de fechar, o container verifica
+automaticamente se tudo está em ordem:
+
+- Se `node_modules` sumiu: avisa para rodar `pnpm install`
+- Se os hooks do Git precisam de reconfiguração: roda `setup_git.sh` sozinho
+- Imprime `[devcontainer] Container pronto.` quando terminado
+
+## Abrindo pelo Docker Desktop
+
+Se você abrir o container diretamente pelo Docker Desktop, o terminal inicia como
+`root` na raiz do filesystem. Para entrar no ambiente correto, use o comando:
+
+```bash
+vault
+```
+
+Isso muda para o usuário `vscode`, define as variáveis de ambiente necessárias e
+navega até o diretório do vault. Aceita argumentos opcionais: `vault [usuario] [diretorio]`.
+
+## Dicas
+
+- O store do pnpm fica num volume Docker persistente — reinstalações são rápidas.
+- Para reconstruir o container do zero: `Dev Containers: Rebuild Container`.
+- Para abrir um terminal dentro do container: `` Ctrl+` `` no VS Code.
+
+---
+
+Voltar para [[Preparando seu Computador para o Vault]]

@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "foam.foam-vscode",
+    "ms-ceintl.vscode-language-pack-pt-br",
+    "davidanson.vscode-markdownlint",
+    "arr.marksman"
+  ]
+}

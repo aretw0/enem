@@ -1,0 +1,282 @@
+---
+import config from 'virtual:starlight/user-config';
+import LanguageSelect from 'virtual:starlight/components/LanguageSelect';
+import Search from 'virtual:starlight/components/Search';
+import SiteTitle from 'virtual:starlight/components/SiteTitle';
+import SocialIcons from 'virtual:starlight/components/SocialIcons';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+const shouldRenderSearch =
+	config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const themeSelectorMode = import.meta.env.VAULT_THEME_SELECTOR;
+const repoName = import.meta.env.GITHUB_REPOSITORY?.split('/')[1] ?? process.cwd().split(/[\\/]/).pop();
+const isVaultSeedRepo = import.meta.env.GITHUB_REPOSITORY === 'aretw0/vault-seed' || repoName === 'vault-seed';
+const shouldRenderThemeSelect = themeSelectorMode === '1' || (themeSelectorMode !== '0' && isVaultSeedRepo);
+const shouldRenderTechnicalDocs =
+	import.meta.env.VAULT_SEED_TECHNICAL_DOCS !== '0' && existsSync(join(process.cwd(), 'docs', 'INDEX.md'));
+---
+
+<div class="header">
+	<div class="title-wrapper sl-flex">
+		<SiteTitle />
+		<a class="lab-link" href={`${base}/explorar/`}>Explorar</a>
+		<a class="lab-link" href={`${base}/lab/`}>Lab</a>
+		{shouldRenderTechnicalDocs && <a class="lab-link" href={`${base}/docs/`}>Docs</a>}
+	</div>
+	<div class="sl-flex print:hidden">
+		{shouldRenderSearch && <Search />}
+	</div>
+	{shouldRenderThemeSelect && (
+		<details class="vault-theme-mobile print:hidden">
+			<summary aria-label="Tema do site" title="Tema">◐</summary>
+			<div class="vault-theme-demo" aria-label="Tema do site no mobile">
+				<select data-vault-palette-select aria-label="Paleta">
+					<option value="verde-jardim">Verde jardim</option>
+					<option value="oceano">Oceano</option>
+					<option value="terracota">Terracota</option>
+				</select>
+				<select data-vault-mode-select aria-label="Modo">
+					<option value="system">Sistema</option>
+					<option value="light">Claro</option>
+					<option value="dark">Escuro</option>
+				</select>
+			</div>
+		</details>
+	)}
+	<div class="sl-hidden md:sl-flex print:hidden right-group">
+		<div class="sl-flex social-icons">
+			<SocialIcons />
+		</div>
+
+		{shouldRenderThemeSelect && (
+			<div class="vault-theme-demo" aria-label="Tema do site">
+				<select data-vault-palette-select aria-label="Paleta">
+					<option value="verde-jardim">Verde jardim</option>
+					<option value="oceano">Oceano</option>
+					<option value="terracota">Terracota</option>
+				</select>
+				<select data-vault-mode-select aria-label="Modo">
+					<option value="system">Sistema</option>
+					<option value="light">Claro</option>
+					<option value="dark">Escuro</option>
+				</select>
+			</div>
+			<script is:inline>
+				(() => {
+					const root = document.documentElement;
+					const paletteKey = 'vault-seed:palette';
+					const modeKey = 'vault-seed:mode';
+					const media = window.matchMedia('(prefers-color-scheme: dark)');
+					const palettes = ['verde-jardim', 'oceano', 'terracota'];
+					const modes = ['system', 'light', 'dark'];
+
+					function resolveMode(mode) {
+						return mode === 'system' ? (media.matches ? 'dark' : 'light') : mode;
+					}
+
+					function apply() {
+						const palette = palettes.includes(localStorage.getItem(paletteKey) || '')
+							? localStorage.getItem(paletteKey)
+							: 'verde-jardim';
+						const mode = modes.includes(localStorage.getItem(modeKey) || '')
+							? localStorage.getItem(modeKey)
+							: 'system';
+						localStorage.setItem('starlight-theme', mode === 'system' ? '' : mode);
+						root.dataset.vaultPalette = palette;
+						root.dataset.theme = resolveMode(mode);
+						document.querySelectorAll('[data-vault-palette-select]').forEach((select) => {
+							select.value = palette;
+						});
+						document.querySelectorAll('[data-vault-mode-select]').forEach((select) => {
+							select.value = mode;
+						});
+					}
+
+					document.addEventListener('change', (event) => {
+						if (event.target?.matches?.('[data-vault-palette-select]')) {
+							localStorage.setItem(paletteKey, event.target.value);
+							apply();
+						}
+						if (event.target?.matches?.('[data-vault-mode-select]')) {
+							localStorage.setItem(modeKey, event.target.value);
+							apply();
+						}
+					});
+					media.addEventListener('change', apply);
+					apply();
+				})();
+			</script>
+		)}
+		<LanguageSelect />
+	</div>
+</div>
+
+
+<style>
+	@layer starlight.core {
+		.header {
+			display: flex;
+			gap: var(--sl-nav-gap);
+			justify-content: space-between;
+			align-items: center;
+			height: 100%;
+		}
+
+		.title-wrapper {
+			overflow: clip;
+			padding: 0.25rem;
+			margin: -0.25rem;
+			min-width: 0;
+			align-items: center;
+			gap: 0.75rem;
+		}
+
+		.lab-link {
+			flex: none;
+			color: var(--sl-color-text-accent);
+			font-size: var(--sl-text-sm);
+			font-weight: 600;
+			line-height: 1;
+			text-decoration: none;
+		}
+
+		.lab-link:hover {
+			color: var(--sl-color-white);
+		}
+
+		.right-group,
+		.social-icons {
+			gap: 1rem;
+			align-items: center;
+		}
+
+		.social-icons::after {
+			content: '';
+			height: 2rem;
+			border-inline-end: 1px solid var(--sl-color-gray-5);
+		}
+
+		.vault-theme-demo {
+			display: flex;
+			gap: 0.35rem;
+			align-items: center;
+		}
+
+		.vault-theme-mobile {
+			position: relative;
+			flex: none;
+		}
+
+		.vault-theme-mobile summary {
+			border: 1px solid var(--sl-color-hairline);
+			border-radius: 999px;
+			background: var(--sl-color-bg-nav);
+			color: var(--sl-color-text-accent);
+			cursor: pointer;
+			font-size: var(--sl-text-xs);
+			font-weight: 700;
+			line-height: 1;
+			list-style: none;
+			padding: 0.45rem 0.7rem;
+		}
+
+		.vault-theme-mobile summary::-webkit-details-marker {
+			display: none;
+		}
+
+		.vault-theme-mobile .vault-theme-demo {
+			position: absolute;
+			z-index: 10;
+			top: calc(100% + 0.5rem);
+			right: 0;
+			flex-direction: column;
+			align-items: stretch;
+			border: 1px solid var(--sl-color-hairline);
+			border-radius: 0.75rem;
+			background: var(--sl-color-bg-nav);
+			box-shadow: 0 1rem 2.5rem color-mix(in srgb, var(--sl-color-black) 18%, transparent);
+			padding: 0.5rem;
+		}
+
+
+		.vault-theme-demo select {
+			max-width: 8.25rem;
+			border: 1px solid var(--sl-color-hairline);
+			border-radius: 0.35rem;
+			background: var(--sl-color-bg-nav);
+			color: var(--sl-color-text);
+			font: inherit;
+			font-size: var(--sl-text-xs);
+			line-height: 1;
+			padding: 0.3rem 0.45rem;
+		}
+
+		@media (max-width: 36rem) {
+			.header {
+				gap: 0.45rem;
+			}
+
+			.title-wrapper {
+				flex: 1 1 auto;
+				gap: 0.45rem;
+			}
+
+			.title-wrapper :global(.site-title span) {
+				position: relative;
+				display: inline-flex;
+				width: 2.35rem;
+				overflow: hidden;
+				color: transparent;
+				letter-spacing: -0.04em;
+			}
+
+			.title-wrapper :global(.site-title span)::before {
+				position: absolute;
+				inset: 0;
+				color: var(--sl-color-text-accent);
+				content: 'VS';
+				font-weight: 800;
+			}
+
+			.lab-link {
+				font-size: 0.78rem;
+			}
+		}
+
+		@media (min-width: 50rem) {
+			.vault-theme-mobile {
+				display: none;
+			}
+		}
+
+		@media (min-width: 50rem) {
+			:global(:root[data-has-sidebar]) {
+				--__sidebar-pad: calc(2 * var(--sl-nav-pad-x));
+			}
+			:global(:root:not([data-has-toc])) {
+				--__toc-width: 0rem;
+			}
+			.header {
+				--__sidebar-width: max(0rem, var(--sl-content-inline-start, 0rem) - var(--sl-nav-pad-x));
+				--__main-column-fr: calc(
+					(
+							100% + var(--__sidebar-pad, 0rem) - var(--__toc-width, var(--sl-sidebar-width)) -
+								(2 * var(--__toc-width, var(--sl-nav-pad-x))) - var(--sl-content-inline-start, 0rem) -
+								var(--sl-content-width)
+						) / 2
+				);
+				display: grid;
+				grid-template-columns:
+					minmax(
+						calc(var(--__sidebar-width) + max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))),
+						auto
+					)
+					1fr
+					auto;
+				align-content: center;
+			}
+		}
+	}
+</style>

@@ -1,0 +1,580 @@
+// Validates a built Astro/Starlight site in dist/.
+// Run after `pnpm run site:build`. Catches:
+//   - 0-page builds (vault loader misconfiguration)
+//   - missing root redirect (404 at /)
+//   - missing published contract pages (slugify regressions, status not published)
+//   - empty content pages (schema/rendering failures)
+//   - duplicate <h1> titles (vault loader must strip leading # heading)
+//   - protocol-relative URLs like href="//path" (remark-wiki-links base normalization)
+//   - placeholder URLs left in HTML (ASTRO_BASE not configured)
+//   - broken internal anchor links
+//   - empty sidebar or empty sidebar groups (autogenerate failed, dynamic filter broken)
+//   - missing mermaid CDN script (head[] injection lost)
+//   - missing mermaid code blocks in known diagram pages (pipeline regression)
+//   - missing or empty Pagefind index (search broken)
+//   - audience:user-vault notes leaking into explore data (vault-explore filter regression)
+
+const fs = require("node:fs");
+const path = require("node:path");
+const { resolveNotebooksPath } = require("./notebook_path.cjs");
+
+const root = process.cwd();
+const distDir = path.join(root, "dist");
+const labManifest = JSON.parse(
+  fs.readFileSync(path.join(root, ".site", "lab.notebooks.json"), "utf8"),
+);
+const notebooksPath = resolveNotebooksPath();
+const requirePublishedNotebooks = process.env.VAULT_SITE_REQUIRE_NOTEBOOKS === "1";
+const hasTechnicalDocs = fs.existsSync(path.join(root, "docs", "INDEX.md"));
+const publishedNotebookEntries = labManifest.filter((entry) => entry.publish);
+const marimoNotebookPaths = new Set(
+  publishedNotebookEntries.map((entry) => `${notebooksPath}/${entry.output}`),
+);
+const defaultMarimoNotebookPaths = new Set(
+  publishedNotebookEntries.map((entry) => `lab/${entry.output}`),
+);
+const errors = [];
+const warnings = [];
+
+function requireCondition(condition, message) {
+  if (!condition) errors.push(message);
+}
+
+function warnCondition(condition, message) {
+  if (!condition) warnings.push(message);
+}
+
+// ── helpers ──────────────────────────────────────────────────────────────────
+
+function listHtmlFiles(dir, results = []) {
+  if (!fs.existsSync(dir)) return results;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      listHtmlFiles(full, results);
+    } else if (entry.name.endsWith(".html")) {
+      results.push(full);
+    }
+  }
+  return results;
+}
+
+// Base URL prefix Astro prepends to all internal links (e.g., /vault-seed).
+// Links in built HTML are <base>/slug, but files live at dist/slug.
+const astroBase = (process.env.ASTRO_BASE || "").replace(/\/$/, "");
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function resolveDistFile(urlPath) {
+  const [pathOnly] = String(urlPath).split(/[?#]/, 1);
+  // Strip base prefix so /vault-seed/foo/bar → /foo/bar before resolving.
+  let rel = pathOnly;
+  if (astroBase && rel.startsWith(astroBase + "/")) {
+    rel = rel.slice(astroBase.length);
+  }
+  // /foo/bar/ → dist/foo/bar/index.html  or  dist/foo/bar.html
+  const clean = rel.replace(/^\//, "").replace(/\/$/, "");
+  const candidates = clean
+    ? [path.join(distDir, clean, "index.html"), path.join(distDir, clean + ".html"), path.join(distDir, clean)]
+    : [path.join(distDir, "index.html")];
+  return candidates.find((candidate) => fs.existsSync(candidate)) || null;
+}
+
+function distExists(urlPath) {
+  const filePath = resolveDistFile(urlPath);
+  if (!filePath) return false;
+
+  const hash = String(urlPath).split("#", 2)[1]?.split("?", 1)[0];
+  if (!hash || hash.startsWith(":~:")) return true;
+
+  const decodedHash = decodeURIComponent(hash);
+  const html = fs.readFileSync(filePath, "utf8");
+  const anchorPattern = new RegExp(`\\s(?:id|name)="${escapeRegExp(decodedHash)}"`);
+  return anchorPattern.test(html);
+}
+
+// ── 1. dist/ must exist ───────────────────────────────────────────────────────
+
+requireCondition(
+  fs.existsSync(distDir),
+  "dist/ does not exist — run pnpm run site:build first.",
+);
+
+if (!fs.existsSync(distDir)) {
+  console.error("Site smoke failed:");
+  console.error("- dist/ does not exist");
+  process.exit(1);
+}
+
+// ── 2. root page must exist ───────────────────────────────────────────────────
+// Without a root page, users land on 404 when opening the site URL.
+// .site/pages/index.astro generates dist/index.html as a redirect to the MOC.
+
+requireCondition(
+  fs.existsSync(path.join(distDir, "index.html")),
+  "dist/index.html missing — root URL (/) returns 404. Add .site/pages/index.astro.",
+);
+
+// ── 3. published contract pages ───────────────────────────────────────────────
+// These slugs are deliberately public in the template. Draft onboarding notes
+// are validated by initialize/user-vault smokes instead; this smoke protects the
+// built site surface from slugify, status, or loader regressions.
+
+const REQUIRED_DIST_PATHS = [
+  // Astro-first exploration surface
+  "explorar",
+  "explorar/intencoes",
+  "calculadora",
+  "entrada/comece-aqui",
+  "projetos/plano-enem-2026",
+  "areas/enem-mapa-do-estudante",
+  "recursos/enem/2026/enem-2026-fatos-oficiais-e-limites-da-calculadora",
+  "recursos/enem/metodos/metodos-de-estudo-que-orientam-este-vault",
+  "recursos/enem/pratica/ciclo-de-questoes-e-analise-de-erros",
+];
+
+for (const slug of REQUIRED_DIST_PATHS) {
+  requireCondition(
+    fs.existsSync(path.join(distDir, slug, "index.html")),
+    `dist/${slug}/index.html missing — template-contract page not built. Check status:published and slugify output.`,
+  );
+}
+
+const exploreDataPath = path.join(distDir, "explorar", "dados.json");
+requireCondition(
+  fs.existsSync(exploreDataPath),
+  "dist/explorar/dados.json missing — Astro exploration data endpoint was not built.",
+);
+if (fs.existsSync(exploreDataPath)) {
+  const exploreData = JSON.parse(fs.readFileSync(exploreDataPath, "utf8"));
+  const notes = Array.isArray(exploreData.notes) ? exploreData.notes : [];
+  const graphNodes = Array.isArray(exploreData.graph?.nodes) ? exploreData.graph.nodes : [];
+  const graphEdges = Array.isArray(exploreData.graph?.links) ? exploreData.graph.links : [];
+  const noteIds = new Set(notes.map((note) => note?.id).filter(Boolean));
+
+  requireCondition(
+    exploreData.metrics?.notes > 0 &&
+      notes.length > 0 &&
+      graphNodes.length > 0 &&
+      Array.isArray(exploreData.graph?.insights?.hubs) &&
+      Array.isArray(exploreData.graph?.insights?.orphans) &&
+      exploreData.editorial?.notesEvaluated > 0 &&
+      Array.isArray(exploreData.editorial?.warnings) &&
+      Array.isArray(exploreData.editorial?.notices) &&
+      Array.isArray(exploreData.editorial?.promotionCandidates) &&
+      Array.isArray(exploreData.editorial?.thinPublishedResources),
+    "dist/explorar/dados.json must expose metrics, graph data, and editorial curation signals for the Astro exploration surface.",
+  );
+
+  for (const note of notes) {
+    const href = note?.href;
+    requireCondition(
+      typeof href === 'string' && href.startsWith('/') && !href.endsWith('/'),
+      `dist/explorar/dados.json: note '${note?.id || '<missing-id>'}' must include a clean route href without trailing slash.`,
+    );
+    requireCondition(
+      distExists(href),
+      `dist/explorar/dados.json: note href '${href}' does not resolve to a built HTML page.`,
+    );
+  }
+
+  const graphNodeIds = new Set(graphNodes.map((node) => node?.id).filter(Boolean));
+  for (const node of graphNodes) {
+    requireCondition(
+      noteIds.has(node?.id),
+      `dist/explorar/dados.json: graph node references an unknown note id '${node?.id}'.`,
+    );
+  }
+
+  for (const edge of graphEdges) {
+    requireCondition(
+      graphNodeIds.has(edge?.source) && graphNodeIds.has(edge?.target),
+      `dist/explorar/dados.json: graph edge references unknown node ids (${edge?.source} -> ${edge?.target}).`,
+    );
+    requireCondition(
+      noteIds.has(edge?.source) && noteIds.has(edge?.target),
+      `dist/explorar/dados.json: graph edge references unknown note ids (${edge?.source} -> ${edge?.target}).`,
+    );
+  }
+
+  // No audience:user-vault note should leak into explore data.
+  // Scan source markdown for the frontmatter field and assert paths are absent from dados.json.
+  const explorePaths = new Set(notes.map((n) => n?.path).filter(Boolean));
+  const VAULT_SOURCE_FOLDERS = [
+    '00 - Entrada', '10 - Diário', '20 - Projetos', '30 - Áreas',
+    '40 - Recursos', '50 - Arquivo', '90 - Modelos', '99 - Meta e Anexos',
+  ];
+  function findMdFiles(dir, results = []) {
+    if (!fs.existsSync(dir)) return results;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) findMdFiles(full, results);
+      else if (entry.name.endsWith('.md')) results.push(full);
+    }
+    return results;
+  }
+  for (const folder of VAULT_SOURCE_FOLDERS) {
+    for (const absPath of findMdFiles(path.join(root, folder))) {
+      const content = fs.readFileSync(absPath, 'utf8').replace(/^﻿/, '');
+      if (!/^audience:\s*user-vault\s*$/m.test(content)) continue;
+      const relPath = path.relative(root, absPath).replace(/\\/g, '/');
+      requireCondition(
+        !explorePaths.has(relPath),
+        `dist/explorar/dados.json: note "${relPath}" has audience:user-vault and must not appear in explore data.`,
+      );
+    }
+  }
+}
+
+
+const rssPath = path.join(distDir, "rss.xml");
+requireCondition(
+  fs.existsSync(rssPath),
+  "dist/rss.xml missing — RSS feed was not generated.",
+);
+if (fs.existsSync(rssPath)) {
+  const rss = fs.readFileSync(rssPath, "utf8");
+  requireCondition(
+    rss.includes("<rss") && rss.includes("<channel>") && rss.includes("<item>"),
+    "dist/rss.xml must be a non-empty RSS feed.",
+  );
+}
+
+if (hasTechnicalDocs) {
+  requireCondition(
+    fs.existsSync(path.join(distDir, "docs", "index.html")),
+    "dist/docs/index.html missing — template technical docs route (/docs/) was not built.",
+  );
+  requireCondition(
+    !fs.existsSync(path.join(distDir, "docs", "superpowers")),
+    "dist/docs/superpowers/ exists — internal planning artifacts leaked into technical docs.",
+  );
+}
+
+if (requirePublishedNotebooks) {
+  for (const relPath of marimoNotebookPaths) {
+    requireCondition(
+      fs.existsSync(path.join(distDir, relPath)),
+      `dist/${relPath} missing — published notebook was not exported before site smoke.`,
+    );
+  }
+  requireCondition(
+    fs.existsSync(path.join(distDir, notebooksPath, "vault-seed-slides-lite.html")),
+    `dist/${notebooksPath}/vault-seed-slides-lite.html missing — mobile-safe slide fallback was not exported.`,
+  );
+}
+
+if (requirePublishedNotebooks && notebooksPath !== "lab") {
+  for (const entry of publishedNotebookEntries) {
+    requireCondition(
+      !fs.existsSync(path.join(distDir, "lab", entry.output)),
+      `dist/lab/${entry.output} exists while VAULT_NOTEBOOKS_PATH=${notebooksPath} — remove stale default notebook exports from the deploy artifact.`,
+    );
+  }
+}
+
+// ── 4. collect content pages ──────────────────────────────────────────────────
+
+const allHtml = listHtmlFiles(distDir);
+// Exclude: 404, index (redirect), Starlight internals (_astro/), and exported
+// Marimo notebooks. Marimo HTML is intentionally not rendered by Starlight.
+const contentPages = allHtml.filter((f) => {
+  const rel = path.relative(distDir, f).replace(/\\/g, "/");
+  return (
+    !rel.endsWith("404.html") &&
+    rel !== "index.html" &&
+    !rel.startsWith("_") &&
+    !isNotebookArtifact(rel)
+  );
+});
+
+requireCondition(
+  contentPages.length > 0,
+  `No content pages generated. Only found: ${allHtml
+    .map((f) => path.relative(distDir, f))
+    .join(", ")}`,
+);
+
+// ── 5. per-page checks ────────────────────────────────────────────────────────
+
+// Known placeholder strings that must never appear in deployed HTML.
+const PLACEHOLDER_PATTERNS = [
+  { re: /href="\/vault-name\//, label: "base-path placeholder /vault-name/" },
+  {
+    re: /href="https?:\/\/username\.github\.io/,
+    label: "site placeholder username.github.io",
+  },
+];
+
+// Minimum byte size for a page that has real markdown content.
+const MIN_CONTENT_BYTES = 3000;
+
+// Matches only anchor <a href="..."> internal absolute links.
+const internalHrefPattern = /<a\s[^>]*href="(\/[^"#?][^"]*?)"/g;
+
+// Starlight wraps rendered markdown in this class.
+const hasMarkdownContent = /class="[^"]*sl-markdown-content[^"]*"/;
+
+function isMarimoNotebook(relPath) {
+  return marimoNotebookPaths.has(relPath) || defaultMarimoNotebookPaths.has(relPath);
+}
+
+function isNotebookArtifact(relPath) {
+  return (
+    isMarimoNotebook(relPath) ||
+    (relPath.startsWith(`${notebooksPath}/`) && relPath.endsWith('.html') && relPath !== `${notebooksPath}/index.html`)
+  );
+}
+
+function hasMarimoRuntime(content) {
+  return content.includes("<marimo-wasm") && content.includes('data-marimo="true"');
+}
+
+for (const htmlFile of allHtml) {
+  const rel = path.relative(distDir, htmlFile).replace(/\\/g, "/");
+  if (!isMarimoNotebook(rel)) continue;
+  const content = fs.readFileSync(htmlFile, "utf8");
+
+  requireCondition(
+    hasMarimoRuntime(content),
+    `${rel}: missing Marimo WASM runtime markers — notebook export may be invalid.`,
+  );
+  requireCondition(
+    content.includes("./assets/"),
+    `${rel}: missing relative assets references — notebook export may not load in /lab/.`,
+  );
+}
+
+for (const htmlFile of contentPages) {
+  const rel = path.relative(distDir, htmlFile).replace(/\\/g, "/");
+  const content = fs.readFileSync(htmlFile, "utf8");
+
+  // 5a. No placeholder URLs.
+  for (const { re, label } of PLACEHOLDER_PATTERNS) {
+    requireCondition(
+      !re.test(content),
+      `${rel}: contains ${label} — check ASTRO_BASE/ASTRO_SITE configuration.`,
+    );
+  }
+
+  const rawMarkdownLinks = [...content.matchAll(/<a\s[^>]*href="([^"]+)"/g)]
+    .map(([, href]) => href)
+    .filter((href) => !/^(https?:|mailto:|#)/.test(href) && /\.md(?:[#?]|$)/.test(href));
+  requireCondition(
+    rawMarkdownLinks.length === 0,
+    `${rel}: contains raw .md link(s) — markdown source links should resolve to published routes: ${rawMarkdownLinks.join(", ")}`,
+  );
+
+  // 5b. Page must have Starlight's markdown content wrapper.
+  requireCondition(
+    hasMarkdownContent.test(content),
+    `${rel}: missing sl-markdown-content wrapper — page may have rendered empty.`,
+  );
+
+  // 5e. No duplicate <h1> — Starlight renders one from frontmatter title; the
+  // vault loader must strip any leading # heading from the markdown body.
+  const h1Count = (content.match(/<h1[\s>]/g) || []).length;
+  requireCondition(
+    h1Count <= 1,
+    `${rel}: ${h1Count} <h1> elements found — duplicate title. Check H1-stripping ` +
+      `regex in vault loader (content.config.ts).`,
+  );
+
+  // 5f. No protocol-relative URLs (double-slash like //path). These are caused
+  // by remarkWikiLinks when base is '/' and the slug is not prefixed correctly.
+  requireCondition(
+    !/<a[^>]+href="\/\//.test(content),
+    `${rel}: contains a protocol-relative URL (href="//...") — check base normalization ` +
+      `in remark-wiki-links.ts.`,
+  );
+
+  // 5c. Page must have meaningful size.
+  requireCondition(
+    content.length >= MIN_CONTENT_BYTES,
+    `${rel}: only ${content.length} bytes — suspiciously small, content may be missing.`,
+  );
+
+  // 5d. Internal anchor links must resolve in dist/.
+  for (const [, href] of content.matchAll(internalHrefPattern)) {
+    if (href.startsWith("/_astro/") || href.startsWith("/pagefind/")) continue;
+    if (!distExists(href)) {
+      errors.push(
+        `${rel}: internal link ${href} does not resolve in dist/.`,
+      );
+    }
+  }
+}
+
+// ── 6. sidebar has nav links ─────────────────────────────────────────────────
+// Sample the MOC page (always present) and verify at least one sidebar link
+// points into each configured section directory. An empty sidebar means
+// autogenerate failed to match entry IDs to directory names.
+
+const SIDEBAR_SECTIONS = ["recursos", "meta-e-anexos"];
+const mocHtmlPath = path.join(
+  distDir,
+  "meta-e-anexos",
+  "referencia",
+  "comandos-do-dgk",
+  "index.html",
+);
+
+if (fs.existsSync(mocHtmlPath)) {
+  const mocHtml = fs.readFileSync(mocHtmlPath, "utf8");
+  const sidebarStart = mocHtml.indexOf('id="starlight__sidebar"');
+  if (sidebarStart !== -1) {
+    const sidebarEnd = mocHtml.indexOf("</nav>", sidebarStart);
+    const sidebarChunk = mocHtml.substring(sidebarStart, sidebarEnd);
+
+    // 6a. Known-populated sections must have at least one nav link.
+    for (const section of SIDEBAR_SECTIONS) {
+      const pattern = new RegExp(`href="[^"]*/${section}/[^"]*"`);
+      requireCondition(
+        pattern.test(sidebarChunk),
+        `Sidebar has no links for section '${section}' — autogenerate may have failed. ` +
+          `Common cause: backslash paths in collectPublishedSlugs on Windows, or filePath ` +
+          `format mismatch in vault loader.`,
+      );
+    }
+
+    // 6b. No sidebar group (<details>) may be completely empty.
+    // An empty group means the dynamic filter is producing sections that have
+    // no matching entries — the section should have been excluded instead.
+    const detailsChunks = [...sidebarChunk.matchAll(/<details[^>]*>([\s\S]*?)<\/details>/g)];
+    for (const [full, inner] of detailsChunks) {
+      const hasLink = /<a [^>]*href/.test(inner);
+      requireCondition(
+        hasLink,
+        `Sidebar contains an empty group (no nav links inside a <details> block). ` +
+          `The sidebar filter in astro.config.mjs may be including sections with no published notes.`,
+      );
+    }
+} else {
+    errors.push(
+      "meta-e-anexos/referencia/comandos-do-dgk/index.html: starlight__sidebar element not found.",
+    );
+  }
+
+  // 6c. Mermaid client-side script must be present in the head.
+  // Catches regressions in the astro.config.mjs head[] injection.
+  requireCondition(
+    mocHtml.includes("mermaid.esm.min.mjs"),
+    "Mermaid CDN script not found in page head — check head[] config in astro.config.mjs.",
+  );
+
+  if (hasTechnicalDocs) {
+    requireCondition(
+      /href="[^"]*\/docs\/"/.test(mocHtml),
+      "Header/sidebar has no link to /docs/ even though docs/INDEX.md exists.",
+    );
+  }
+}
+
+// ── 7. Mermaid code blocks present in diagram pages ──────────────────────────
+// These pages are known to contain mermaid blocks.  Verifies that the blocks
+// survived the remark/Expressive Code pipeline and will be available for the
+// client-side renderer to replace.  Does NOT verify actual SVG rendering
+// (that requires a headless browser).
+
+const MERMAID_PAGES = [
+  "recursos/mermaid",
+  "meta-e-anexos/diagramas/exemplos",
+  "meta-e-anexos/referencia/visualizacao-do-fluxo-do-vault",
+];
+
+for (const slug of MERMAID_PAGES) {
+  const htmlPath = path.join(distDir, slug, "index.html");
+  if (!fs.existsSync(htmlPath)) {
+    // Page existence already caught by REQUIRED_DIST_PATHS for contract pages;
+    // skip the mermaid block check if the file is simply absent.
+    continue;
+  }
+  const pageHtml = fs.readFileSync(htmlPath, "utf8");
+  requireCondition(
+    pageHtml.includes('data-language="mermaid"'),
+    `${slug}/index.html: no mermaid code blocks found — diagram content may have been lost during build.`,
+  );
+}
+
+// ── 8. pagefind index ────────────────────────────────────────────────────────
+
+requireCondition(
+  fs.existsSync(path.join(distDir, "pagefind", "pagefind.js")),
+  "dist/pagefind/pagefind.js missing — Pagefind search index was not built.",
+);
+
+// Pagefind index must have non-trivial size (real content was indexed).
+const pagefindIndexDir = path.join(distDir, "pagefind");
+if (fs.existsSync(pagefindIndexDir)) {
+  const indexFiles = fs
+    .readdirSync(pagefindIndexDir)
+    .filter((f) => f.endsWith(".pf_index") || f.endsWith(".pf_meta"));
+  requireCondition(
+    indexFiles.length > 0,
+    "dist/pagefind/ has no index files (.pf_index / .pf_meta) — search index may be empty.",
+  );
+}
+
+// ── 9a. homepage structure ────────────────────────────────────────────────────
+// The homepage must render the curated "Por onde começar" section and a
+// persistent license-row in the footer. These are build-time signals that
+// vault.config.json and vault-explore.ts are wired up correctly.
+
+const indexPath = path.join(distDir, "index.html");
+if (fs.existsSync(indexPath)) {
+  const indexHtml = fs.readFileSync(indexPath, "utf8");
+  requireCondition(
+    indexHtml.includes("vault-hubs") || indexHtml.includes("Por onde começar"),
+    "dist/index.html: missing curated start section — vault-hubs or 'Por onde começar' label not found. " +
+    "Check that explore.notes has notes tagged meta/onboarding or iniciante.",
+  );
+  requireCondition(
+    indexHtml.includes("vault-metrics") || indexHtml.includes("notas"),
+    "dist/index.html: metrics strip missing — vault-explore.ts metrics may not be wiring through to the homepage.",
+  );
+  requireCondition(
+    indexHtml.includes("license-row") || indexHtml.includes("license-badge"),
+    "dist/index.html: license attribution not found in footer — vault.config.json license may not be configured, " +
+    "or Footer.astro license-row is broken.",
+  );
+}
+
+// ── 9b. sitemap (warning only — requires ASTRO_SITE to be set) ───────────────
+
+warnCondition(
+  fs.existsSync(path.join(distDir, "sitemap-index.xml")),
+  "dist/sitemap-index.xml missing — sitemap not generated. Set ASTRO_SITE env var to enable.",
+);
+
+// ── 10. kudos comment ─────────────────────────────────────────────────────────
+// This check documents expected footer states. Not an error — kudos presence
+// depends on vault.config.json and is intentionally absent in user vaults.
+if (fs.existsSync(indexPath)) {
+  const indexHtml = fs.readFileSync(indexPath, "utf8");
+  const hasKudos = indexHtml.includes('class="kudos"');
+  const hasLicense = indexHtml.includes("license-row") || indexHtml.includes("license-badge");
+  warnCondition(
+    hasLicense,
+    "dist/index.html: no license-row found — if vault.config.json has a license, this is a regression. " +
+    "If license is intentionally absent, this warning is expected.",
+  );
+  // (kudos is not required — user vaults omit it by design, so no requireCondition)
+}
+
+// ── report ────────────────────────────────────────────────────────────────────
+
+if (warnings.length > 0) {
+  for (const w of warnings) console.warn(`[warn] ${w}`);
+}
+
+if (errors.length > 0) {
+  console.error("Site smoke failed:");
+  for (const e of errors) console.error(`- ${e}`);
+  process.exit(1);
+}
+
+console.log(
+  `Site smoke passed. ${contentPages.length} content page(s) + root redirect verified.`,
+);

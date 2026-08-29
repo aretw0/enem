@@ -1,0 +1,84 @@
+{
+  "name": "digital-gardening-kit",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": false
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22",
+      "nodeGypDependencies": false
+    },
+    "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {
+      "version": "0.11.11"
+    }
+  },
+  "containerEnv": {
+    "LANG": "pt_BR.UTF-8",
+    "LC_ALL": "pt_BR.UTF-8",
+    "LANGUAGE": "pt_BR:pt:en",
+    "TERM": "xterm-256color",
+    "UV_SYSTEM_PYTHON": "true",
+    "UV_LINK_MODE": "copy",
+    "NPM_CONFIG_PREFIX": "/home/vscode/.npm-global"
+  },
+  "remoteEnv": {
+    "LANG": "pt_BR.UTF-8",
+    "LC_ALL": "pt_BR.UTF-8",
+    "LANGUAGE": "pt_BR:pt:en",
+    "TERM": "xterm-256color",
+    "PNPM_HOME": "/home/vscode/.local/share/pnpm",
+    "PATH": "/home/vscode/.local/share/pnpm/bin:/home/vscode/.local/share/pnpm:/home/vscode/.npm-global/bin:${containerEnv:PATH}"
+  },
+  "mounts": [
+    "source=dgk-node-modules,target=/workspaces/vault-seed/node_modules,type=volume",
+    "source=dgk-pnpm-store,target=/home/vscode/.local/share/pnpm/store,type=volume",
+    "source=dgk-npm-global,target=/home/vscode/.npm-global,type=volume",
+    "source=dgk-claude-home,target=/home/vscode/.claude,type=volume",
+    "source=dgk-codex-home,target=/home/vscode/.codex,type=volume",
+    "source=dgk-gh-config,target=/home/vscode/.config/gh,type=volume",
+    "source=dgk-pi-home,target=/home/vscode/.pi,type=volume"
+  ],
+  "runArgs": [
+    "--publish",
+    "127.0.0.1:4321:4321",
+    "--publish",
+    "127.0.0.1:2718:2718"
+  ],
+  "forwardPorts": [4321, 2718],
+  "portsAttributes": {
+    "4321": {
+      "label": "Vault Seed Astro site",
+      "onAutoForward": "silent"
+    },
+    "2718": {
+      "label": "Marimo notebooks",
+      "onAutoForward": "silent"
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "postStartCommand": "bash .devcontainer/post-start.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "DavidAnson.vscode-markdownlint",
+        "esbenp.prettier-vscode",
+        "foam.foam-vscode"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.env.linux": {
+          "LANG": "pt_BR.UTF-8",
+          "LC_ALL": "pt_BR.UTF-8"
+        },
+        "editor.unicodeHighlight.ambiguousCharacters": false,
+        "files.encoding": "utf8",
+        "files.autoGuessEncoding": false
+      }
+    }
+  }
+}

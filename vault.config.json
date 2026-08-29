@@ -1,0 +1,74 @@
+{
+  "license": {
+    "type": "CC BY-SA 4.0",
+    "holder": "aretw0",
+    "holderUrl": "https://github.com/aretw0"
+  },
+  "status": {
+    "states": [
+      "draft",
+      "published"
+    ],
+    "publicState": "published"
+  },
+  "folders": {
+    "excludeFromPublic": [
+      "90 - Modelos",
+      "99 - Meta e Anexos"
+    ],
+    "list": {
+      "$ref": ".site/vault-folders.json"
+    }
+  },
+  "vocab": {
+    "$ref": ".site/information-architecture.json"
+  },
+  "credentials": {
+    "verificationPolicy": {
+      "trustSelf": true,
+      "trustedIssuers": [],
+      "revocation": "required",
+      "validity": "required"
+    }
+  },
+  "records": {
+    "context": {
+      "base": "https://refarm.dev/contexts/records/v1",
+      "vocab": null
+    },
+    "typeByFolder": {
+      "00 - Entrada": "Inbox",
+      "10 - Diário": "Journal",
+      "20 - Projetos": "Project",
+      "30 - Áreas": "Area",
+      "40 - Recursos": "Resource",
+      "50 - Arquivo": "Archive",
+      "fontes": "Source"
+    },
+    "defaultType": "Note",
+    "serialization": {
+      "format": "yaml-ld",
+      "fieldsFromFrontmatter": [
+        "title",
+        "status",
+        "tags",
+        "verified"
+      ],
+      "preserveFolderAs": "folder"
+    },
+    "surface": {
+      "graph": {
+        "labelField": "folder",
+        "degree": "both"
+      },
+      "table": {
+        "columns": [
+          "title",
+          "status",
+          "tags",
+          "folder"
+        ]
+      }
+    }
+  }
+}

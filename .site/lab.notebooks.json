@@ -1,0 +1,69 @@
+[
+  {
+    "title": "Publicação",
+    "source": "99 - Meta e Anexos/Notebooks/analise-publicacao.py",
+    "output": "publishing.html",
+    "description": "status das notas, tags e distribuição por pasta",
+    "publish": true
+  },
+  {
+    "title": "Grafo",
+    "source": "99 - Meta e Anexos/Notebooks/analise-grafo.py",
+    "output": "graph.html",
+    "description": "notas órfãs, links quebrados, densidade por pasta",
+    "publish": true
+  },
+  {
+    "title": "ETL",
+    "source": "99 - Meta e Anexos/Notebooks/etl-demo.py",
+    "output": "etl.html",
+    "description": "snapshot local empacotado e fonte remota opcional em runtime",
+    "publish": true
+  },
+  {
+    "title": "Feeds",
+    "source": "99 - Meta e Anexos/Notebooks/analise-feeds.py",
+    "output": "feeds.html",
+    "description": "assinaturas RSS/Atom, domínios, categorias e inbox de fontes",
+    "publish": true
+  },
+  {
+    "title": "Outbox",
+    "source": "99 - Meta e Anexos/Notebooks/analise-outbox.py",
+    "output": "outbox.html",
+    "description": "rascunhos por canal, política de publicação e checklist de revisão",
+    "publish": true
+  },
+  {
+    "title": "Apresentação: Visão Geral",
+    "source": "99 - Meta e Anexos/Notebooks/apresentacoes/visao-geral.py",
+    "output": "visao-geral-slides.html",
+    "description": "vault-seed — o que é, como funciona, a filosofia local-first",
+    "publish": true,
+    "type": "presentation"
+  },
+  {
+    "title": "Apresentação: O Lab",
+    "source": "99 - Meta e Anexos/Notebooks/apresentacoes/o-lab.py",
+    "output": "o-lab-slides.html",
+    "description": "notebooks Marimo, pipeline de dados e os três modos de execução",
+    "publish": true,
+    "type": "presentation"
+  },
+  {
+    "title": "Apresentação: Publicação",
+    "source": "99 - Meta e Anexos/Notebooks/apresentacoes/publicacao.py",
+    "output": "publicacao-slides.html",
+    "description": "site, outbox, canais, RSS e CI como infraestrutura",
+    "publish": true,
+    "type": "presentation"
+  },
+  {
+    "title": "Apresentação: Agentes de IA",
+    "source": "99 - Meta e Anexos/Notebooks/apresentacoes/agentes.py",
+    "output": "agentes-slides.html",
+    "description": "Pi, Claude Code, inbox soberana e curadoria com IA",
+    "publish": true,
+    "type": "presentation"
+  }
+]

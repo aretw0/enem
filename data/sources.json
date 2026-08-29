@@ -1,0 +1,65 @@
+[
+  {
+    "id": "inep-cronograma-enem-2026",
+    "title": "Cronograma do Enem",
+    "type": "official",
+    "authority": "Inep",
+    "url": "https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/enem/orientacoes/cronograma",
+    "accessed": "2026-08-28",
+    "scope": "Datas da edição regular de 2026"
+  },
+  {
+    "id": "inep-faq-enem-2026",
+    "title": "Perguntas frequentes do Enem",
+    "type": "official",
+    "authority": "Inep",
+    "url": "https://www.gov.br/inep/pt-br/acesso-a-informacao/perguntas-frequentes/exame-nacional-do-ensino-medio-enem/",
+    "accessed": "2026-08-28",
+    "scope": "Estrutura, TRI, redação e orientações operacionais"
+  },
+  {
+    "id": "inep-matriz-enem-2026",
+    "title": "Matrizes de Referência do Enem",
+    "type": "official",
+    "authority": "Inep",
+    "url": "https://www.gov.br/inep/pt-br/centrais-de-conteudo/acervo-linha-editorial/publicacoes-institucionais/avaliacoes-e-exames-da-educacao-basica/matrizes-de-referencia-enem",
+    "accessed": "2026-08-28",
+    "scope": "Eixos cognitivos, competências, habilidades e objetos de conhecimento"
+  },
+  {
+    "id": "roediger-karpicke-2006",
+    "title": "The Power of Testing Memory",
+    "type": "research",
+    "authority": "Perspectives on Psychological Science",
+    "url": "https://doi.org/10.1111/j.1745-6916.2006.00012.x",
+    "accessed": "2026-08-28",
+    "scope": "Prática de recuperação"
+  },
+  {
+    "id": "dunlosky-et-al-2013",
+    "title": "Improving Students’ Learning With Effective Learning Techniques",
+    "type": "research",
+    "authority": "Psychological Science in the Public Interest",
+    "url": "https://doi.org/10.1177/1529100612453266",
+    "accessed": "2026-08-28",
+    "scope": "Revisão de dez técnicas de aprendizagem"
+  },
+  {
+    "id": "rohrer-et-al-2020",
+    "title": "A Randomized Controlled Trial of Interleaved Mathematics Practice",
+    "type": "research",
+    "authority": "Journal of Educational Psychology",
+    "url": "https://doi.org/10.1037/edu0000367",
+    "accessed": "2026-08-28",
+    "scope": "Prática intercalada em matemática"
+  },
+  {
+    "id": "wisniewski-et-al-2020",
+    "title": "The Power of Feedback Revisited",
+    "type": "research",
+    "authority": "Frontiers in Psychology",
+    "url": "https://doi.org/10.3389/fpsyg.2019.03087",
+    "accessed": "2026-08-28",
+    "scope": "Meta-análise de feedback educacional"
+  }
+]

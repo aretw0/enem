@@ -1,0 +1,7 @@
+[
+  { "label": "Começar", "intent": "comecar" },
+  { "label": "Planejar", "intent": "planejar", "collapsed": false },
+  { "label": "Estudar", "intent": "estudar", "collapsed": true },
+  { "label": "Praticar", "intent": "praticar", "collapsed": true },
+  { "label": "Revisar", "intent": "revisar", "collapsed": true }
+]

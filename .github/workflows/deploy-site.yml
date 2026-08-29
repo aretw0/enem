@@ -1,0 +1,128 @@
+﻿name: Deploy Site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "00 - Entrada/**"
+      - "10 - Diário/**"
+      - "20 - Projetos/**"
+      - "30 - Áreas/**"
+      - "40 - Recursos/**"
+      - "50 - Arquivo/**"
+      - "90 - Modelos/**"
+      - "99 - Meta e Anexos/**"
+      - "99 - Meta e Anexos/Notebooks/**"
+      - "requirements.txt"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "scripts/**"
+      - "docs/**"
+      - ".site/**"
+      - "astro.config.mjs"
+      - "packages/astro-plugins/**"
+      - ".github/workflows/deploy-site.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build Astro site
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Setup
+        uses: ./.github/actions/setup
+        with:
+          install-playwright: "true"
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
+        with:
+          version: "0.11.11"
+          enable-cache: true
+
+      - name: Validate vault quality gates
+        run: pnpm run validate
+
+      - name: Detect site URL and base path
+        id: pages-url
+        run: |
+          CNAME=$(gh api "repos/${{ github.repository }}/pages" --jq '.cname // ""' 2>/dev/null || echo "")
+          if [ -n "$CNAME" ]; then
+            echo "site=https://$CNAME" >> "$GITHUB_OUTPUT"
+            echo "base=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "site=https://${{ github.repository_owner }}.github.io" >> "$GITHUB_OUTPUT"
+            echo "base=/${{ github.event.repository.name }}" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Generate lab datasets (ETL)
+        # ETL gera .dgk/ e public/lab/datasets/ antes do astro build.
+        # O Astro copia public/lab/datasets/ para dist/lab/datasets/;
+        # os notebooks WASM leem esses datasets em runtime via fetch.
+        # .dgk/ é ignorado pelo git — os snapshots nunca precisam ser commitados.
+        run: pnpm run notebooks:etl
+
+      - name: Build @aretw0/dgk-astro-plugins
+        run: pnpm --filter @aretw0/dgk-astro-plugins build
+
+      - name: Build site
+        run: pnpm run site:build
+        env:
+          ASTRO_SITE: ${{ steps.pages-url.outputs.site }}
+          ASTRO_BASE: ${{ steps.pages-url.outputs.base }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          VAULT_TITLE: ${{ vars.VAULT_TITLE }}
+          VAULT_THEME_SELECTOR: ${{ github.repository == 'aretw0/vault-seed' && '1' || '0' }}
+          VAULT_NOTEBOOKS_PATH: ${{ vars.VAULT_NOTEBOOKS_PATH || 'lab' }}
+
+      - name: Export analysis notebooks
+        env:
+          VAULT_NOTEBOOKS_PATH: ${{ vars.VAULT_NOTEBOOKS_PATH || 'lab' }}
+        run: pnpm run notebooks:export
+
+      - name: Check site
+        run: pnpm run site:check
+        env:
+          ASTRO_BASE: ${{ steps.pages-url.outputs.base }}
+          VAULT_NOTEBOOKS_PATH: ${{ vars.VAULT_NOTEBOOKS_PATH || 'lab' }}
+          VAULT_SITE_REQUIRE_NOTEBOOKS: "1"
+
+      - name: Smoke responsive site and Lab
+        run: node scripts/smoke_responsive.mjs
+        env:
+          VAULT_NOTEBOOKS_PATH: ${{ vars.VAULT_NOTEBOOKS_PATH || 'lab' }}
+          VAULT_RESPONSIVE_REQUIRE_EXTERNAL: "1"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: dist/
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0

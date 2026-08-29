@@ -1,37 +1,55 @@
-# ENEM · second brain / jardim digital
+# ENEM 2026 · vault de preparação fundamentada
 
-Repositório para acumular conhecimento de estudo para o ENEM de forma reutilizável, aberta e atualizável a cada ano.
+Um ambiente local-first para transformar diagnóstico em plano, plano em prática e prática em
+evidência de aprendizagem. O conteúdo público, o site e as automações vivem no mesmo repositório.
 
-## Objetivo
+> Fundação materializada pelo gerador oficial do
+> [vault-seed](https://github.com/aretw0/vault-seed), mantido no ecossistema do
+> [refarm](https://github.com/aretw0/refarm). O inventário da materialização está em
+> [`inventory.json`](inventory.json).
 
-- Centralizar material refinado (conteúdo) + estrutura prática de estudo (processo).
-- Servir tanto para quem está começando quanto para quem já tem meta de curso.
-- Funcionar no ENEM deste ano sem perder histórico e sem “reinventar tudo” no próximo.
+## Comece em 15 minutos
 
-## Estrutura do repositório
+1. Abra [`Comece aqui`](00%20-%20Entrada/Comece%20aqui.md) e faça o diagnóstico mínimo.
+2. Registre uma sessão com o [`Template - Sessão de Estudo`](90%20-%20Modelos/Template%20-%20Sessão%20de%20Estudo.md).
+3. Converta cada erro relevante com o [`Template - Erro de Questão`](90%20-%20Modelos/Template%20-%20Erro%20de%20Questão.md).
+4. Acompanhe o ciclo em [`Plano ENEM 2026`](20%20-%20Projetos/Plano%20ENEM%202026.md).
+5. Use a calculadora do site para médias ponderadas e metas, sem confundir o resultado com nota TRI.
 
-```text
-content/
-  00-guia/                 # Como usar o repositório
-  10-fundamentos-enem/     # O que é o ENEM, prova, TRI, pesos
-  20-organizacao/          # Planejamento, rotina, revisão e simulados
-  30-trilhas/              # Trilhas por objetivo de curso
-    curso-direito/
-  40-tecnicas/             # Técnicas de estudo (Anki e outras)
-  90-atualizacao-anual/    # Checklist para virar o ano sem perder base
+## Arquitetura de informação
+
+| Camada | Pergunta respondida | Pasta |
+|---|---|---|
+| Entrada | O que faço agora? | `00 - Entrada/` |
+| Projetos | Qual resultado estou perseguindo neste ciclo? | `20 - Projetos/` |
+| Áreas | O que precisa de cuidado contínuo? | `30 - Áreas/` |
+| Recursos | O que sei, com qual fonte e validade? | `40 - Recursos/ENEM/` |
+| Arquivo | O que saiu do ciclo atual, mas precisa ser preservado? | `50 - Arquivo/` |
+| Modelos | Como começo um processo sem montar tudo do zero? | `90 - Modelos/` |
+| Meta | Como o vault funciona e evolui? | `99 - Meta e Anexos/` |
+
+O diretório `content/` da primeira versão foi migrado para PARA. A navegação pública é orientada a
+intenções — começar, planejar, estudar, praticar e revisar — e não reproduz a árvore interna.
+
+## Fontes e banco de questões
+
+- Fatos sobre a edição de 2026 partem de fontes oficiais e carregam data de verificação.
+- Técnicas de estudo apontam para estudos ou revisões identificáveis; limitações fazem parte da nota.
+- Questões entram em `data/questions/` somente com origem, ano, prova, número do item e gabarito.
+- `pnpm run validate:enem` rejeita registros órfãos ou fontes sem URL e data de acesso.
+- O banco começa vazio de propósito: estrutura pronta não é licença para inventar questões.
+
+## Desenvolvimento
+
+Requer Node.js 22+ e pnpm. Os comandos principais são:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm run validate:enem
+pnpm test
+pnpm run site:build
 ```
 
-## Por onde começar
-
-1. Leia `content/00-guia/como-usar.md`.
-2. Entenda a prova em `content/10-fundamentos-enem/o-que-e-enem.md`.
-3. Monte seu plano com `content/20-organizacao/como-se-organizar.md`.
-4. Escolha uma trilha em `content/30-trilhas/`.
-5. Adote técnicas de revisão em `content/40-tecnicas/`.
-
-## Princípios de manutenção
-
-- Conteúdo atômico: um tema por arquivo.
-- Decisões explícitas: registrar por que a trilha foi escolhida.
-- Revisão contínua: atualizar material com base em simulados/erros.
-- Atualização anual orientada por checklist, preservando base histórica.
+Veja [`docs/PRODUCT.md`](docs/PRODUCT.md) para decisões, métricas e roadmap; e
+[`docs/ECOSYSTEM-DEMANDS.md`](docs/ECOSYSTEM-DEMANDS.md) para os blocos que este consumidor exige de
+`vault-seed` e `refarm`.
