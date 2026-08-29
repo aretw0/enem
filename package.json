@@ -28,6 +28,7 @@
     "site:responsive": "pnpm run site:build && pnpm run notebooks:export && node scripts/smoke_responsive.mjs",
     "site:audit:sidebar": "node scripts/audit_sidebar.js",
     "audit:ia": "node scripts/audit_information_architecture.mjs",
+    "acquire:enem": "node scripts/acquire_enem_artifacts.mjs",
     "notebooks:data": "node scripts/generate_vault_data.mjs",
     "notebooks:etl:demo": "node scripts/lab_etl_demo.mjs",
     "feeds:opml": "node scripts/prepare_feed_sources.mjs",
@@ -43,7 +44,7 @@
     "notebooks:export:public": "node scripts/export_notebooks.mjs --public",
     "site:dev:lab": "pnpm run notebooks:export:public && astro dev",
     "site:dev:lab:host": "pnpm run notebooks:export:public && astro dev --host 0.0.0.0",
-    "validate:enem": "node scripts/validate_enem_content.mjs",
+    "validate:enem": "node scripts/validate_enem_content.mjs && node scripts/validate_enem_acquisitions.mjs",
     "validate": "pnpm run validate:enem && pnpm run lint && pnpm run audit:ia && pnpm run site:audit:sidebar && pnpm run test && pnpm run validate:onboarding && pnpm run validate:pt-text && pnpm run validate:theme && pnpm run validate:mermaid && pnpm run validate:texto && pnpm run validate:apresentacoes"
   },
   "keywords": [],
@@ -69,6 +70,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@aretw0/dgk-astro-plugins": "workspace:^"
+    "@aretw0/dgk-astro-plugins": "workspace:^",
+    "@refarm.dev/source-web": "file:vendor/refarm.dev-source-web-0.1.0.tgz"
   }
 }

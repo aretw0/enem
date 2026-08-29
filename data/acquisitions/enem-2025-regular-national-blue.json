@@ -1,0 +1,68 @@
+{
+  "$schema": "../schema/acquisition.schema.json",
+  "schemaVersion": 1,
+  "collectionId": "enem-2025-regular-national-blue",
+  "sourcePage": "https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/enem/provas-e-gabaritos/2025",
+  "accessedAt": "2026-08-29",
+  "policy": {
+    "allowedHosts": ["download.inep.gov.br"],
+    "mediaTypes": ["application/pdf"],
+    "maxBytes": 104857600,
+    "extraCertificate": {
+      "path": "config/certificates/rnp-icpedu-gr46-ov-tls-ca-2025.pem",
+      "sha256Fingerprint": "e10747d4da7bab09cba9952f019d3534cb9fba070bf13d8791b1699cd2ff59dd",
+      "validUntil": "2030-11-19"
+    }
+  },
+  "engine": {
+    "package": "@refarm.dev/source-web",
+    "version": "0.1.0",
+    "primitive": "downloadAttachment"
+  },
+  "artifacts": [
+    {
+      "id": "enem-2025-d1-c1-blue-proof",
+      "sourceId": "inep-enem-2025-d1-c1-blue-proof",
+      "kind": "proof",
+      "day": 1,
+      "booklet": 1,
+      "color": "azul",
+      "title": "ENEM 2025 — 1º dia — Caderno 1 Azul — prova",
+      "url": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D1_CD1.pdf",
+      "filename": "2025_PV_impresso_D1_CD1.pdf"
+    },
+    {
+      "id": "enem-2025-d1-c1-blue-answer-key",
+      "sourceId": "inep-enem-2025-d1-c1-blue-answer-key",
+      "kind": "answer-key",
+      "day": 1,
+      "booklet": 1,
+      "color": "azul",
+      "title": "ENEM 2025 — 1º dia — Caderno 1 Azul — gabarito",
+      "url": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+      "filename": "2025_GB_impresso_D1_CD1.pdf"
+    },
+    {
+      "id": "enem-2025-d2-c7-blue-proof",
+      "sourceId": "inep-enem-2025-d2-c7-blue-proof",
+      "kind": "proof",
+      "day": 2,
+      "booklet": 7,
+      "color": "azul",
+      "title": "ENEM 2025 — 2º dia — Caderno 7 Azul — prova",
+      "url": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D2_CD7.pdf",
+      "filename": "2025_PV_impresso_D2_CD7.pdf"
+    },
+    {
+      "id": "enem-2025-d2-c7-blue-answer-key",
+      "sourceId": "inep-enem-2025-d2-c7-blue-answer-key",
+      "kind": "answer-key",
+      "day": 2,
+      "booklet": 7,
+      "color": "azul",
+      "title": "ENEM 2025 — 2º dia — Caderno 7 Azul — gabarito",
+      "url": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D2_CD7.pdf",
+      "filename": "2025_GB_impresso_D2_CD7.pdf"
+    }
+  ]
+}

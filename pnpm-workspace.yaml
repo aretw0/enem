@@ -1,6 +1,10 @@
 packages:
   - "."
   - "packages/*"
+
+overrides:
+  "@refarm.dev/source-contract-v1": "file:vendor/refarm.dev-source-contract-v1-0.1.0.tgz"
+  "@refarm.dev/source-web": "file:vendor/refarm.dev-source-web-0.1.0.tgz"
 allowBuilds:
   esbuild: false
   sharp: false

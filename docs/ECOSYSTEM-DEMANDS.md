@@ -16,7 +16,7 @@ auditoria de arquitetura de informação, Lab, RSS, frontmatter e scripts de qua
 | Prioridade | Dono | Bloco esperado | Prova que o ENEM fornecerá |
 |---|---|---|---|
 | P0 | vault-seed | perfil de produto que exclua a documentação operacional da superfície pública | build sem rotas meta e teste de navegação estudantil |
-| P0 | refarm | aquisição versionada de PDF + checksum + metadados de página | prova e gabarito oficiais viram snapshots reproduzíveis |
+| P0 | refarm | release pública de `source-web` com driver binário HTTP seguro e sessão anônima | prova e gabarito oficiais viram snapshots reproduzíveis sem adaptador de transporte privado |
 | P0 | refarm | records para itens de avaliação e relações item→habilidade→fonte | fixture ENEM validada sem extensão privada do envelope |
 | P1 | vault-seed | componente de calculadora/formulário acessível no DS Astro | calculadora de média sem CSS/JS duplicado |
 | P1 | refarm | fila de revisão derivada de eventos, agnóstica ao algoritmo | erros do estudante geram agenda exportável |
@@ -50,6 +50,14 @@ Esses pontos devem ser corrigidos no gerador/manifesto e cobertos por um `pnpm i
 --frozen-lockfile` executado sobre o vault gerado, não apenas sobre fixtures mínimas.
 
 ## Seam local temporário
+
+A aquisição oficial consome `downloadAttachment` do handoff `@refarm.dev/source-web@0.1.0`: política
+de tipo/tamanho e SHA-256 permanecem no refarm. Enquanto não há release no registry, os dois
+tarballs estritamente necessários (`source-web` e `source-contract-v1`) são importados do handoff
+do `vault-seed`, com versão fixa. O consumidor ainda precisa manter cerca de uma chamada HTTPS
+específica porque o pacote injeta `BinaryFetchDriver`, mas não fornece uma implementação HTTP; o
+contrato de sessão também só modela `fixture` ou `authenticated`, não uma fonte pública anônima.
+O teste de aquisição e os recibos deste vault são a prova de consumo para essas releases.
 
 A calculadora de média ponderada vive em `.site/lib/enem-score.mjs` porque a fórmula e os rótulos são
 domínio do produto. O formulário Astro é temporário: quando o DS oferecer a primitiva acessível, o

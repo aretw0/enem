@@ -133,3 +133,9 @@ graph-drag-check.png
 intent_matches.json
 published_files.json
 vendor/
+
+# Handoffs publicados pelo vault-seed enquanto os pacotes ainda não chegam ao registry.
+!vendor/
+vendor/*
+!vendor/refarm.dev-source-contract-v1-0.1.0.tgz
+!vendor/refarm.dev-source-web-0.1.0.tgz

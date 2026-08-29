@@ -4,6 +4,10 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@refarm.dev/source-contract-v1': file:vendor/refarm.dev-source-contract-v1-0.1.0.tgz
+  '@refarm.dev/source-web': file:vendor/refarm.dev-source-web-0.1.0.tgz
+
 importers:
 
   .:
@@ -11,6 +15,9 @@ importers:
       '@aretw0/dgk-astro-plugins':
         specifier: workspace:^
         version: link:packages/astro-plugins
+      '@refarm.dev/source-web':
+        specifier: file:vendor/refarm.dev-source-web-0.1.0.tgz
+        version: file:vendor/refarm.dev-source-web-0.1.0.tgz
     devDependencies:
       '@aretw0/dgk-channels':
         specifier: latest
@@ -546,6 +553,14 @@ packages:
     resolution: {integrity: sha512-O71yZIbAh/PxDMNGns37GHBIfrVkEVyn+AXyIa5dOTfb4/xNvRWV+Vv/NMbNCtODB/pO7vLlF2OTmMVLhmr7Ag==}
     engines: {node: '>=18'}
     hasBin: true
+
+  '@refarm.dev/source-contract-v1@file:vendor/refarm.dev-source-contract-v1-0.1.0.tgz':
+    resolution: {integrity: sha512-YrZBl29cO78k1Ie6eavGdIeU8QI9LWzX1H7PAmR3UK2/rLRTg56p/+qikGWNs8n9NjPp3q+o/zxr1dStIH+u5A==, tarball: file:vendor/refarm.dev-source-contract-v1-0.1.0.tgz}
+    version: 0.1.0
+
+  '@refarm.dev/source-web@file:vendor/refarm.dev-source-web-0.1.0.tgz':
+    resolution: {integrity: sha512-TWm1UTJzFfzymHfL2CcXNytt/+4ZlNRkkKjPr7Kl6S4Md6GnJ4Vm45WGpa2G9iK4nVz9o0NMRRQnerS0y4futA==, tarball: file:vendor/refarm.dev-source-web-0.1.0.tgz}
+    version: 0.1.0
 
   '@rollup/pluginutils@5.3.0':
     resolution: {integrity: sha512-5EdhGZtnu3V88ces7s53hhfK5KSASnJZv8Lulpc04cWO3REESroJXg73DFsOmgbU2BhwV0E20bu2IDZb3VKW4Q==}
@@ -2615,6 +2630,12 @@ snapshots:
   '@playwright/test@1.60.0':
     dependencies:
       playwright: 1.60.0
+
+  '@refarm.dev/source-contract-v1@file:vendor/refarm.dev-source-contract-v1-0.1.0.tgz': {}
+
+  '@refarm.dev/source-web@file:vendor/refarm.dev-source-web-0.1.0.tgz':
+    dependencies:
+      '@refarm.dev/source-contract-v1': file:vendor/refarm.dev-source-contract-v1-0.1.0.tgz
 
   '@rollup/pluginutils@5.3.0(rollup@4.60.4)':
     dependencies:

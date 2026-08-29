@@ -27,6 +27,42 @@
     "scope": "Eixos cognitivos, competências, habilidades e objetos de conhecimento"
   },
   {
+    "id": "inep-enem-2025-d1-c1-blue-proof",
+    "title": "ENEM 2025 — 1º dia — Caderno 1 Azul — prova",
+    "type": "official",
+    "authority": "Inep",
+    "url": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D1_CD1.pdf",
+    "accessed": "2026-08-29",
+    "scope": "Itens 1 a 90 da aplicação regular nacional de 2025"
+  },
+  {
+    "id": "inep-enem-2025-d1-c1-blue-answer-key",
+    "title": "ENEM 2025 — 1º dia — Caderno 1 Azul — gabarito",
+    "type": "official",
+    "authority": "Inep",
+    "url": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+    "accessed": "2026-08-29",
+    "scope": "Gabarito dos itens 1 a 90 da aplicação regular nacional de 2025"
+  },
+  {
+    "id": "inep-enem-2025-d2-c7-blue-proof",
+    "title": "ENEM 2025 — 2º dia — Caderno 7 Azul — prova",
+    "type": "official",
+    "authority": "Inep",
+    "url": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D2_CD7.pdf",
+    "accessed": "2026-08-29",
+    "scope": "Itens 91 a 180 da aplicação regular nacional de 2025"
+  },
+  {
+    "id": "inep-enem-2025-d2-c7-blue-answer-key",
+    "title": "ENEM 2025 — 2º dia — Caderno 7 Azul — gabarito",
+    "type": "official",
+    "authority": "Inep",
+    "url": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D2_CD7.pdf",
+    "accessed": "2026-08-29",
+    "scope": "Gabarito dos itens 91 a 180 da aplicação regular nacional de 2025"
+  },
+  {
     "id": "roediger-karpicke-2006",
     "title": "The Power of Testing Memory",
     "type": "research",

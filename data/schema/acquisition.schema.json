@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/aretw0/enem/data/schema/acquisition.schema.json",
+  "title": "Coleção de artefatos oficiais do ENEM",
+  "type": "object",
+  "required": ["schemaVersion", "collectionId", "sourcePage", "accessedAt", "policy", "engine", "artifacts"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "collectionId": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "sourcePage": { "type": "string", "format": "uri", "pattern": "^https://" },
+    "accessedAt": { "type": "string", "format": "date" },
+    "policy": {
+      "type": "object",
+      "required": ["allowedHosts", "mediaTypes", "maxBytes", "extraCertificate"],
+      "properties": {
+        "allowedHosts": { "type": "array", "minItems": 1, "items": { "type": "string" }, "uniqueItems": true },
+        "mediaTypes": { "type": "array", "minItems": 1, "items": { "type": "string" }, "uniqueItems": true },
+        "maxBytes": { "type": "integer", "minimum": 1 },
+        "extraCertificate": {
+          "type": "object",
+          "required": ["path", "sha256Fingerprint", "validUntil"],
+          "properties": {
+            "path": { "type": "string", "minLength": 1 },
+            "sha256Fingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+            "validUntil": { "type": "string", "format": "date" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "engine": {
+      "type": "object",
+      "required": ["package", "version", "primitive"],
+      "properties": {
+        "package": { "const": "@refarm.dev/source-web" },
+        "version": { "type": "string", "minLength": 1 },
+        "primitive": { "const": "downloadAttachment" }
+      },
+      "additionalProperties": false
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "sourceId", "kind", "day", "booklet", "color", "title", "url", "filename"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "sourceId": { "type": "string", "minLength": 1 },
+          "kind": { "enum": ["proof", "answer-key"] },
+          "day": { "enum": [1, 2] },
+          "booklet": { "type": "integer", "minimum": 1 },
+          "color": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+          "filename": { "type": "string", "pattern": "^[^/]+\\.pdf$" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
