@@ -229,6 +229,20 @@ if (fs.existsSync(exploreDataPath)) {
   }
 }
 
+const annualDataPath = path.join(distDir, "dados", "enem-2026.json");
+requireCondition(
+  fs.existsSync(annualDataPath),
+  "dist/dados/enem-2026.json missing — annual transparency endpoint was not built.",
+);
+if (fs.existsSync(annualDataPath)) {
+  const annualData = JSON.parse(fs.readFileSync(annualDataPath, "utf8"));
+  requireCondition(
+    annualData.edition === 2026 && annualData.verified && annualData.reviewDue &&
+      Array.isArray(annualData.sources) && annualData.sources.length === annualData.officialSourceIds.length,
+    "dist/dados/enem-2026.json must expose edition, freshness and every official source.",
+  );
+}
+
 
 const rssPath = path.join(distDir, "rss.xml");
 requireCondition(

@@ -1,5 +1,6 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import annualData from '../../data/enem-2026.json';
 
 const areas = [
   ['linguagens', 'Linguagens'],
@@ -62,6 +63,8 @@ const areas = [
     <aside class="enem-calculator__notice">
       <strong>Antes de decidir:</strong> confira os pesos no edital da instituição, do curso, campus,
       turno e modalidade. Veja <a href="../recursos/enem/2026/enem-2026-fatos-oficiais-e-limites-da-calculadora/">os limites da calculadora</a>.
+      <br />Contexto anual: ENEM {annualData.edition}, verificado em <time datetime={annualData.verified}>{new Date(`${annualData.verified}T12:00:00Z`).toLocaleDateString('pt-BR')}</time>;
+      <a href="../dados/enem-2026.json">dados e fontes em JSON</a>.
     </aside>
   </main>
 </StarlightPage>

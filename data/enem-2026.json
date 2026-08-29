@@ -1,7 +1,12 @@
 {
   "edition": 2026,
   "verified": "2026-08-28",
+  "reviewDue": "2026-09-28",
   "regularApplicationDates": ["2026-11-08", "2026-11-15"],
-  "officialSourceId": "inep-cronograma-enem-2026",
+  "officialSourceIds": [
+    "inep-cronograma-enem-2026",
+    "inep-faq-enem-2026",
+    "inep-matriz-enem-2026"
+  ],
   "notes": "Datas da aplicação regular. Revalidar antes de publicar alertas ou calendários derivados."
 }
