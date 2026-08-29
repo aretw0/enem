@@ -46,11 +46,19 @@ try {
   for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }]) {
     const page = await browser.newPage({ viewport });
     page.on('pageerror', (error) => errors.push(`${viewport.width}px: ${error.message}`));
-    const response = await page.goto(`http://127.0.0.1:${address.port}/simulado/?seed=browser-smoke&size=5`);
+    const response = await page.goto(`http://127.0.0.1:${address.port}/simulado/?area=mixed&seed=browser-smoke&size=5`);
     if (!response?.ok()) errors.push(`${viewport.width}px: HTTP ${response?.status()}`);
     await page.locator('[data-simulator-setup] button[type="submit"]').click();
     const questions = page.locator('.enem-question');
     if (await questions.count() !== 5) errors.push(`${viewport.width}px: bloco não contém 5 questões`);
+    const legends = await questions.locator('legend').allTextContents();
+    const groupCounts = [
+      legends.filter((text) => text.includes('Ciências da Natureza')).length,
+      legends.filter((text) => text.includes('Matemática')).length,
+    ].sort();
+    if (groupCounts[0] !== 2 || groupCounts[1] !== 3) {
+      errors.push(`${viewport.width}px: bloco misto não ficou equilibrado (${groupCounts.join('/')})`);
+    }
     for (let index = 0; index < await questions.count(); index++) {
       await questions.nth(index).locator('input[type="radio"]').first().check();
       await questions.nth(index).locator('select').selectOption('low');

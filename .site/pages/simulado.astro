@@ -54,10 +54,19 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
 
     <aside class="enem-simulator__notice">
       Este acervo cobre parte de Ciências da Natureza e Matemática; ainda não representa um simulado
-      completo nem a distribuição oficial do ENEM. O resultado é acerto bruto; não é nota TRI.
+      completo nem a distribuição oficial do ENEM. No modo misto, o bloco apenas alterna igualmente
+      as áreas disponíveis. O resultado é acerto bruto; não é nota TRI.
     </aside>
 
     <form class="enem-simulator__setup" data-simulator-setup>
+      <label>
+        Recorte do bloco
+        <select name="area">
+          <option value="mixed" selected>Misto equilibrado</option>
+          <option value="natureza">Ciências da Natureza</option>
+          <option value="matematica">Matemática</option>
+        </select>
+      </label>
       <label>
         Tamanho do bloco
         <select name="size">
@@ -67,7 +76,7 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
       </label>
       <label>
         Identificador reproduzível
-        <input name="seed" value="enem-2025-d2-1" autocomplete="off" />
+        <input name="seed" value="enem-2025-misto-1" autocomplete="off" />
       </label>
       <button class="vault-button" type="submit">Montar bloco</button>
     </form>
@@ -104,7 +113,12 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
 </StarlightPage>
 
 <script>
-  import { attemptToMarkdown, evaluateAttempt, selectQuestions } from '@aretw0/enem-domain/simulator';
+  import {
+    attemptToMarkdown,
+    evaluateAttempt,
+    selectBalancedQuestions,
+    selectQuestions,
+  } from '@aretw0/enem-domain/simulator';
 
   const root = document.querySelector('[data-enem-simulator]');
   const bankNode = document.querySelector('#enem-question-bank');
@@ -120,7 +134,12 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
     let completed = null;
 
     const letter = (index) => String.fromCharCode(65 + index);
-    const storageKey = (seed, size) => `enem-vault:simulado:${seed}:${size}`;
+    const areaLabels = {
+      mixed: 'Misto equilibrado',
+      natureza: 'Ciências da Natureza',
+      matematica: 'Matemática',
+    };
+    const storageKey = (seed, size, area) => `enem-vault:simulado:${area}:${seed}:${size}`;
     const safeStored = (key) => {
       try { return JSON.parse(localStorage.getItem(key) || '{}'); } catch { return {}; }
     };
@@ -130,7 +149,7 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
       fieldset.className = 'enem-question';
       fieldset.dataset.questionId = question.id;
       const legend = document.createElement('legend');
-      legend.textContent = `${index + 1}. Questão ${question.item}`;
+      legend.textContent = `${index + 1}. ${areaLabels[question.area]} · Questão ${question.item}`;
       fieldset.append(legend);
       for (const paragraphText of question.prompt.split(/\n\n+/)) {
         const paragraph = document.createElement('p');
@@ -184,22 +203,27 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
       root.querySelector('[data-progress]').textContent = `${answered}/${selected.length} respondidas`;
       const size = Number(setup.elements.namedItem('size').value);
       const seed = setup.elements.namedItem('seed').value.trim();
-      localStorage.setItem(storageKey(seed, size), JSON.stringify(responses()));
+      const area = setup.elements.namedItem('area').value;
+      localStorage.setItem(storageKey(seed, size, area), JSON.stringify(responses()));
     }
 
     function mountBlock() {
       const size = Number(setup.elements.namedItem('size').value);
-      const seed = setup.elements.namedItem('seed').value.trim() || 'enem-2025-d2-1';
+      const area = setup.elements.namedItem('area').value;
+      const seed = setup.elements.namedItem('seed').value.trim() || 'enem-2025-misto-1';
       setup.elements.namedItem('seed').value = seed;
-      selected = selectQuestions(bank, { seed, size });
-      const stored = safeStored(storageKey(seed, size));
+      const scopedBank = area === 'mixed' ? bank : bank.filter((question) => question.area === area);
+      selected = area === 'mixed'
+        ? selectBalancedQuestions(scopedBank, { seed, size })
+        : selectQuestions(scopedBank, { seed, size });
+      const stored = safeStored(storageKey(seed, size, area));
       questionList.replaceChildren(...selected.map((question, index) => renderQuestion(question, index, stored[question.id])));
-      root.querySelector('[data-session-title]').textContent = `${selected.length} questões · seed ${seed}`;
+      root.querySelector('[data-session-title]').textContent = `${areaLabels[area]} · ${selected.length} questões · seed ${seed}`;
       session.hidden = false;
       resultSection.hidden = true;
       startedAt = performance.now();
       updateProgress();
-      history.replaceState(null, '', `${location.pathname}?seed=${encodeURIComponent(seed)}&size=${selected.length}`);
+      history.replaceState(null, '', `${location.pathname}?area=${area}&seed=${encodeURIComponent(seed)}&size=${selected.length}`);
       session.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -281,6 +305,9 @@ const serializedBank = JSON.stringify(bank).replaceAll('<', '\\u003c');
     });
 
     const params = new URLSearchParams(location.search);
+    if (['mixed', 'natureza', 'matematica'].includes(params.get('area'))) {
+      setup.elements.namedItem('area').value = params.get('area');
+    }
     if (params.get('seed')) setup.elements.namedItem('seed').value = params.get('seed');
     if (['5', '10'].includes(params.get('size'))) setup.elements.namedItem('size').value = params.get('size');
   }

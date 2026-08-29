@@ -30,6 +30,46 @@ export function selectQuestions(questions, { seed, size }) {
   return shuffled.slice(0, Math.min(size, shuffled.length));
 }
 
+export function selectBalancedQuestions(questions, { seed, size, groupBy = 'area' }) {
+  if (!Array.isArray(questions)) throw new TypeError('questions deve ser um array');
+  if (!Number.isInteger(size) || size < 1) throw new RangeError('size deve ser um inteiro positivo');
+  const readGroup = typeof groupBy === 'function' ? groupBy : (question) => question?.[groupBy];
+  const groups = new Map();
+  for (const question of questions) {
+    const group = readGroup(question);
+    if (group === undefined || group === null || group === '') {
+      throw new TypeError('toda questão deve pertencer a um grupo');
+    }
+    const key = String(group);
+    groups.set(key, [...(groups.get(key) ?? []), question]);
+  }
+
+  const orderedGroups = selectQuestions(
+    [...groups.entries()].sort(([first], [second]) => first.localeCompare(second)),
+    { seed: `${seed}:grupos`, size: groups.size },
+  ).map(([group, items]) => ({
+    group,
+    items: selectQuestions(items, { seed: `${seed}:${group}`, size: items.length }),
+    cursor: 0,
+  }));
+
+  const selected = [];
+  const limit = Math.min(size, questions.length);
+  while (selected.length < limit) {
+    let advanced = false;
+    for (const group of orderedGroups) {
+      if (selected.length === limit) break;
+      if (group.cursor < group.items.length) {
+        selected.push(group.items[group.cursor]);
+        group.cursor++;
+        advanced = true;
+      }
+    }
+    if (!advanced) break;
+  }
+  return selected;
+}
+
 export function evaluateAttempt(questions, responses) {
   const items = questions.map((question) => {
     const response = responses?.[question.id] ?? {};

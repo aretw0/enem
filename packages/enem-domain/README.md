@@ -5,8 +5,8 @@ faz I/O, não estima TRI e não impõe um calendário universal de revisão.
 
 ## Exports
 
-- `@aretw0/enem-domain/simulator`: seleção reproduzível por seed, avaliação com confiança e
-  serialização de uma tentativa para Markdown;
+- `@aretw0/enem-domain/simulator`: seleção reproduzível por seed, balanceamento entre grupos,
+  avaliação com confiança e serialização de uma tentativa para Markdown;
 - `@aretw0/enem-domain/annual`: valida edição, prazo de revisão, datas e referências a fontes
   oficiais de um dataset anual.
 

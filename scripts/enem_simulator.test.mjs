@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { attemptToMarkdown, evaluateAttempt, selectQuestions } from '@aretw0/enem-domain/simulator';
+import {
+  attemptToMarkdown,
+  evaluateAttempt,
+  selectBalancedQuestions,
+  selectQuestions,
+} from '@aretw0/enem-domain/simulator';
 
 const questions = Array.from({ length: 10 }, (_, index) => ({
   id: `q${index + 1}`,
@@ -14,6 +19,33 @@ test('seleção é reproduzível pela seed e não altera o banco', () => {
   assert.deepEqual(first, repeated);
   assert.equal(new Set(first.map((question) => question.id)).size, 5);
   assert.deepEqual(questions.map((question) => question.id), Array.from({ length: 10 }, (_, index) => `q${index + 1}`));
+});
+
+test('seleção balanceada intercala os grupos disponíveis de forma reproduzível', () => {
+  const grouped = Array.from({ length: 20 }, (_, index) => ({
+    id: `grouped-${index}`,
+    area: index < 10 ? 'natureza' : 'matematica',
+  }));
+  const first = selectBalancedQuestions(grouped, { seed: 'misto-1', size: 5 });
+  const repeated = selectBalancedQuestions(grouped, { seed: 'misto-1', size: 5 });
+  const counts = Object.groupBy(first, (question) => question.area);
+  assert.deepEqual(first, repeated);
+  assert.deepEqual(
+    Object.values(counts).map((group) => group.length).sort(),
+    [2, 3],
+  );
+  assert.notEqual(first[0].area, first[1].area);
+});
+
+test('seleção balanceada reaproveita vagas quando um grupo se esgota', () => {
+  const grouped = [
+    { id: 'natureza-1', area: 'natureza' },
+    ...Array.from({ length: 5 }, (_, index) => ({ id: `matematica-${index}`, area: 'matematica' })),
+  ];
+  const selected = selectBalancedQuestions(grouped, { seed: 'misto-curto', size: 5 });
+  assert.equal(selected.length, 5);
+  assert.equal(new Set(selected.map((question) => question.id)).size, 5);
+  assert.equal(selected.filter((question) => question.area === 'natureza').length, 1);
 });
 
 test('avalia erro, omissão e acerto de baixa confiança separadamente', () => {
