@@ -3,10 +3,11 @@
   "$id": "https://github.com/aretw0/enem/data/schema/question.schema.json",
   "title": "Questão ENEM com proveniência",
   "type": "object",
-  "required": ["id", "sourceId", "year", "exam", "item", "area", "answer", "provenance"],
+  "required": ["id", "sourceId", "answerSourceId", "year", "exam", "item", "area", "answer", "prompt", "alternatives", "provenance"],
   "properties": {
     "id": { "type": "string", "minLength": 1 },
     "sourceId": { "type": "string", "minLength": 1 },
+    "answerSourceId": { "type": "string", "minLength": 1 },
     "year": { "type": "integer", "minimum": 1998 },
     "exam": { "type": "string", "minLength": 1 },
     "item": { "type": "integer", "minimum": 1 },
@@ -17,12 +18,17 @@
     "skills": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
     "provenance": {
       "type": "object",
-      "required": ["sourceFile", "page", "extractedBy", "reviewStatus"],
+      "required": ["sourceFile", "sourceSha256", "page", "answerSourceFile", "answerSourceSha256", "answerPage", "extractedBy", "reviewStatus"],
       "properties": {
         "sourceFile": { "type": "string", "minLength": 1 },
+        "sourceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
         "page": { "type": "integer", "minimum": 1 },
+        "answerSourceFile": { "type": "string", "minLength": 1 },
+        "answerSourceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "answerPage": { "type": "integer", "minimum": 1 },
         "extractedBy": { "type": "string", "minLength": 1 },
         "reviewStatus": { "enum": ["pending", "verified"] },
+        "reviewedBy": { "type": "string", "minLength": 1 },
         "reviewedAt": { "type": "string", "format": "date" }
       },
       "additionalProperties": false

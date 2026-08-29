@@ -4,7 +4,9 @@ import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const REQUIRED_SOURCE_FIELDS = ['id', 'title', 'type', 'authority', 'url', 'accessed', 'scope'];
-const REQUIRED_QUESTION_FIELDS = ['id', 'sourceId', 'year', 'exam', 'item', 'area', 'answer', 'provenance'];
+const REQUIRED_QUESTION_FIELDS = [
+  'id', 'sourceId', 'answerSourceId', 'year', 'exam', 'item', 'area', 'answer', 'prompt', 'alternatives', 'provenance',
+];
 const AREAS = new Set(['linguagens', 'humanas', 'natureza', 'matematica']);
 const ANSWERS = new Set(['A', 'B', 'C', 'D', 'E', 'anulada']);
 
@@ -40,6 +42,12 @@ export function validateRepository(root = process.cwd()) {
     if (source?.accessed && !/^\d{4}-\d{2}-\d{2}$/.test(source.accessed)) errors.push(`fonte ${source.id ?? index} tem accessed inválido`);
   }
 
+  const receiptsBySourceId = new Map();
+  for (const file of listJsonFiles(join(root, 'data', 'acquisitions', 'receipts'))) {
+    const receipt = json(file);
+    if (receipt?.sourceId) receiptsBySourceId.set(receipt.sourceId, receipt);
+  }
+
   let questionCount = 0;
   const questionIds = new Set();
   for (const file of listJsonFiles(join(root, 'data', 'questions'))) {
@@ -59,12 +67,46 @@ export function validateRepository(root = process.cwd()) {
       if (question?.id && questionIds.has(question.id)) errors.push(`questionId duplicado: ${question.id}`);
       if (question?.id) questionIds.add(question.id);
       if (question?.sourceId && !ids.has(question.sourceId)) errors.push(`${label}: sourceId desconhecido ${question.sourceId}`);
+      if (question?.answerSourceId && !ids.has(question.answerSourceId)) {
+        errors.push(`${label}: answerSourceId desconhecido ${question.answerSourceId}`);
+      }
+      if (question?.sourceId && question.sourceId === question.answerSourceId) {
+        errors.push(`${label}: prova e gabarito devem ter fontes distintas`);
+      }
       if (question?.area && !AREAS.has(question.area)) errors.push(`${label}: área inválida ${question.area}`);
       if (question?.answer && !ANSWERS.has(question.answer)) errors.push(`${label}: gabarito inválido ${question.answer}`);
+      if (!Number.isInteger(question?.item) || question.item < 1 || question.item > 180) errors.push(`${label}: item inválido`);
+      if (typeof question?.prompt !== 'string' || !question.prompt.trim()) errors.push(`${label}: prompt vazio`);
+      if (!Array.isArray(question?.alternatives) || question.alternatives.length !== 5 ||
+          question.alternatives.some((alternative) => typeof alternative !== 'string' || !alternative.trim())) {
+        errors.push(`${label}: deve haver cinco alternativas não vazias`);
+      }
       if (!question?.provenance?.sourceFile) errors.push(`${label}: provenance.sourceFile ausente`);
+      if (!/^[a-f0-9]{64}$/.test(question?.provenance?.sourceSha256 ?? '')) errors.push(`${label}: sourceSha256 inválido`);
       if (!Number.isInteger(question?.provenance?.page) || question.provenance.page < 1) errors.push(`${label}: provenance.page inválida`);
+      if (!question?.provenance?.answerSourceFile) errors.push(`${label}: answerSourceFile ausente`);
+      if (!/^[a-f0-9]{64}$/.test(question?.provenance?.answerSourceSha256 ?? '')) errors.push(`${label}: answerSourceSha256 inválido`);
+      if (!Number.isInteger(question?.provenance?.answerPage) || question.provenance.answerPage < 1) {
+        errors.push(`${label}: answerPage inválida`);
+      }
       if (!['pending', 'verified'].includes(question?.provenance?.reviewStatus)) errors.push(`${label}: reviewStatus inválido`);
-      if (question?.provenance?.reviewStatus === 'verified' && !question.provenance.reviewedAt) errors.push(`${label}: verificada sem reviewedAt`);
+      if (question?.provenance?.reviewStatus === 'verified' &&
+          (!question.provenance.reviewedAt || !question.provenance.reviewedBy)) {
+        errors.push(`${label}: verificada sem reviewedAt/reviewedBy`);
+      }
+
+      const proofReceipt = receiptsBySourceId.get(question?.sourceId);
+      const answerReceipt = receiptsBySourceId.get(question?.answerSourceId);
+      if (!proofReceipt) errors.push(`${label}: prova sem recibo de aquisição`);
+      if (!answerReceipt) errors.push(`${label}: gabarito sem recibo de aquisição`);
+      if (proofReceipt && (proofReceipt.materialized?.sha256 !== question?.provenance?.sourceSha256 ||
+          proofReceipt.materialized?.filename !== question?.provenance?.sourceFile)) {
+        errors.push(`${label}: proveniência da prova diverge do recibo`);
+      }
+      if (answerReceipt && (answerReceipt.materialized?.sha256 !== question?.provenance?.answerSourceSha256 ||
+          answerReceipt.materialized?.filename !== question?.provenance?.answerSourceFile)) {
+        errors.push(`${label}: proveniência do gabarito diverge do recibo`);
+      }
     }
   }
 

@@ -6,5 +6,9 @@ Cada arquivo JSON contém um array de registros compatíveis com `../schema/ques
 Antes de entrar aqui, prova e gabarito oficiais devem ser capturados com checksum; a extração precisa
 preservar arquivo e página; e o gabarito deve passar por revisão. Rode `pnpm run validate:enem`.
 
+`verified` significa que enunciado, cinco alternativas e gabarito foram conferidos contra as páginas
+renderizadas dos PDFs indicados. `reviewedBy` torna explícito quem ou o que fez a conferência. O
+validador também exige que os dois checksums coincidam com recibos de aquisição versionados.
+
 Questões geradas ou parafraseadas não podem se apresentar como itens oficiais. Quando o produto
 adotar itens autorais, eles terão outro schema, licença, autoria e fluxo de revisão.
