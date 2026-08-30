@@ -79,15 +79,54 @@ bloqueada: `health` ainda exige `config`, e `vault-contract-v1` ainda exige `plu
 e `node-contract-v1`, quatro pacotes ausentes da unidade pública. O gate do Refarm acusa esse
 fechamento antes de permitir que o dry-run seja confundido com uma release instalável.
 
+## Atualização do packet — 30 de agosto de 2026
+
+O ENEM realinhou os quatro tarballs vendorizados ao packet `2026-08-30` regenerado no source SHA
+`50539198782b5d1d396337a31520bf7e022c95ec`, em que a seleção completa `consumer-ready` passou a
+constar como aceita (27 pacotes, 0 bloqueadores, 88 checks obrigatórios). O registro canônico é
+[`vendor/manifest.json`](../vendor/manifest.json), conferido por
+`scripts/enem_vendor_manifest.test.mjs` (SHA-256 dos bytes, integridade no lockfile, override no
+workspace e fechamento das dependências transitivas):
+
+- `@refarm.dev/ds@0.1.0`, SHA-256
+  `ec5e4978adf5b63c4c866200c23bb2cae69ae3ba6cfa2006456f297093f7e847` (depende de
+  `quality-contract-v1`);
+- `@refarm.dev/quality-contract-v1@0.1.0`, SHA-256
+  `36049781cfb763b524a2f4b6cb7156d4031bcd7b9224cbc80c21c600afc73868`;
+- `@refarm.dev/source-web@0.1.0`, SHA-256
+  `a0484881937d26ff836a8cbfa0f2ae32927c9954fb5bf622a635b6b9be4b17a2` (depende de
+  `source-contract-v1`);
+- `@refarm.dev/source-contract-v1@0.1.0`, SHA-256
+  `10c33c815def0120e83fae2dc9348db4f09e5acb7756ac16469da8d9063c78a8`.
+
+`source-web` e `source-contract-v1` deixaram de ser cópias de julho do vendor do `vault-seed` e
+passaram a vir do mesmo packet que o DS. A instalação com lockfile congelado, os testes ENEM e a
+resolução do subpath público do tema foram reexecutados sobre os novos bytes.
+
 ## Seam local temporário
 
 A aquisição oficial consome `downloadAttachment` do handoff `@refarm.dev/source-web@0.1.0`: política
 de tipo/tamanho e SHA-256 permanecem no refarm. Enquanto não há release no registry, os dois
-tarballs estritamente necessários (`source-web` e `source-contract-v1`) são importados do handoff
-do `vault-seed`, com versão fixa. O consumidor ainda precisa manter cerca de uma chamada HTTPS
+tarballs estritamente necessários (`source-web` e `source-contract-v1`) vêm do packet do refarm
+registrado em `vendor/manifest.json`, com versão fixa. O consumidor ainda precisa manter cerca de uma chamada HTTPS
 específica porque o pacote injeta `BinaryFetchDriver`, mas não fornece uma implementação HTTP; o
 contrato de sessão também só modela `fixture` ou `authenticated`, não uma fonte pública anônima.
 O teste de aquisição e os recibos deste vault são a prova de consumo para essas releases.
+
+## Troca para o registry após o publish
+
+Quando o refarm publicar a lane `consumer-ready` como `0.1.0` no npm, o seam local acaba em quatro
+passos, sem mudar nenhum import:
+
+1. `pnpm add @refarm.dev/ds@^0.1.0 @refarm.dev/source-web@^0.1.0` — substitui os `file:vendor/*.tgz`
+   em `package.json`; `quality-contract-v1` e `source-contract-v1` passam a resolver como
+   dependências transitivas publicadas.
+2. Remover o bloco `overrides` e a exclusão `@refarm.dev/*` de `minimumReleaseAgeExclude` em
+   `pnpm-workspace.yaml`, e rodar `pnpm install` para regravar o lockfile.
+3. Apagar `vendor/` (tarballs e `manifest.json`) e as regras `!vendor/...` do `.gitignore`.
+4. Apagar `scripts/enem_vendor_manifest.test.mjs` e a leitura do manifesto em
+   `scripts/enem_refarm_ds_consumer.test.mjs`; as provas que restam são o subpath público do tema e
+   o `downloadAttachment` da aquisição, que já não dependem dos bytes vendorizados.
 
 A calculadora de média ponderada vive em `.site/lib/enem-score.mjs` porque a fórmula e os rótulos são
 domínio do produto. O formulário Astro é temporário: quando o DS oferecer a primitiva acessível, o
