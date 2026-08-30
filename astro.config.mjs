@@ -111,12 +111,14 @@ function buildSidebarItems(entries) {
 function notebookAnchor(output) {
   return `notebook-${String(output).replace(/\.html$/, '').replace(/[^A-Za-z0-9_-]+/g, '-')}`;
 }
-const labBaseHref = `${base.replace(/\/$/, '')}/lab`;
+// Starlight prefixes sidebar `link`s with `base` itself; prefixing here too
+// produced `/enem/enem/lab/#…` on GitHub Pages (base='/enem').
+const labBaseHref = '/lab';
 const labSidebarSection = {
   label: 'Lab',
   collapsed: true,
   items: [
-    { label: 'Índice do Lab', link: `${base.replace(/\/$/, '')}/lab/` },
+    { label: 'Índice do Lab', link: '/lab/' },
     ...labNotebooksManifest
       .filter((notebook) => notebook.publish)
       .map((notebook) => ({
