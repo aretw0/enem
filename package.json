@@ -73,6 +73,7 @@
   "dependencies": {
     "@aretw0/dgk-astro-plugins": "workspace:^",
     "@aretw0/enem-domain": "workspace:^",
+    "@refarm.dev/ds": "file:vendor/refarm.dev-ds-0.1.0.tgz",
     "@refarm.dev/source-web": "file:vendor/refarm.dev-source-web-0.1.0.tgz"
   }
 }

@@ -5,6 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
+  '@refarm.dev/ds': file:vendor/refarm.dev-ds-0.1.0.tgz
+  '@refarm.dev/quality-contract-v1': file:vendor/refarm.dev-quality-contract-v1-0.1.0.tgz
   '@refarm.dev/source-contract-v1': file:vendor/refarm.dev-source-contract-v1-0.1.0.tgz
   '@refarm.dev/source-web': file:vendor/refarm.dev-source-web-0.1.0.tgz
 
@@ -18,6 +20,9 @@ importers:
       '@aretw0/enem-domain':
         specifier: workspace:^
         version: link:packages/enem-domain
+      '@refarm.dev/ds':
+        specifier: file:vendor/refarm.dev-ds-0.1.0.tgz
+        version: file:vendor/refarm.dev-ds-0.1.0.tgz
       '@refarm.dev/source-web':
         specifier: file:vendor/refarm.dev-source-web-0.1.0.tgz
         version: file:vendor/refarm.dev-source-web-0.1.0.tgz
@@ -558,6 +563,14 @@ packages:
     resolution: {integrity: sha512-O71yZIbAh/PxDMNGns37GHBIfrVkEVyn+AXyIa5dOTfb4/xNvRWV+Vv/NMbNCtODB/pO7vLlF2OTmMVLhmr7Ag==}
     engines: {node: '>=18'}
     hasBin: true
+
+  '@refarm.dev/ds@file:vendor/refarm.dev-ds-0.1.0.tgz':
+    resolution: {integrity: sha512-QeUS8X+NGMm//Mp8mJiZcYzgm1vQFHAvDvD/kla0sZ7WvYguRrdeCUKl2jFfGNrfBtBqqLat3DLzr20tXon79A==, tarball: file:vendor/refarm.dev-ds-0.1.0.tgz}
+    version: 0.1.0
+
+  '@refarm.dev/quality-contract-v1@file:vendor/refarm.dev-quality-contract-v1-0.1.0.tgz':
+    resolution: {integrity: sha512-o6vvpsCeOT2qUbtRbhF9pjYA1qeTZrr6nXmkDZ2PTNdSyETpJpIvgWvrUhu7wq6ym+uo7rQnBTmrDqbh3zsB2g==, tarball: file:vendor/refarm.dev-quality-contract-v1-0.1.0.tgz}
+    version: 0.1.0
 
   '@refarm.dev/source-contract-v1@file:vendor/refarm.dev-source-contract-v1-0.1.0.tgz':
     resolution: {integrity: sha512-YrZBl29cO78k1Ie6eavGdIeU8QI9LWzX1H7PAmR3UK2/rLRTg56p/+qikGWNs8n9NjPp3q+o/zxr1dStIH+u5A==, tarball: file:vendor/refarm.dev-source-contract-v1-0.1.0.tgz}
@@ -2635,6 +2648,12 @@ snapshots:
   '@playwright/test@1.60.0':
     dependencies:
       playwright: 1.60.0
+
+  '@refarm.dev/ds@file:vendor/refarm.dev-ds-0.1.0.tgz':
+    dependencies:
+      '@refarm.dev/quality-contract-v1': file:vendor/refarm.dev-quality-contract-v1-0.1.0.tgz
+
+  '@refarm.dev/quality-contract-v1@file:vendor/refarm.dev-quality-contract-v1-0.1.0.tgz': {}
 
   '@refarm.dev/source-contract-v1@file:vendor/refarm.dev-source-contract-v1-0.1.0.tgz': {}
 
