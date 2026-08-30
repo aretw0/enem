@@ -101,8 +101,16 @@ function isExternalNetworkError(message) {
   );
 }
 
+// No GitHub Pages sem CNAME o site vive sob /<repo>/ (ASTRO_BASE) e todo
+// asset vem prefixado; servir dist/ na raiz sem tirar o prefixo dava 404 em
+// cada CSS/JS e o smoke media uma página sem estilo. Mesmo strip do smoke_site.
+const astroBase = (process.env.ASTRO_BASE || "").replace(/\/$/, "");
+
 async function resolveDistPath(urlPath) {
-  const pathname = decodeURIComponent(new URL(urlPath, "http://localhost").pathname);
+  let pathname = decodeURIComponent(new URL(urlPath, "http://localhost").pathname);
+  if (astroBase && pathname.startsWith(`${astroBase}/`)) {
+    pathname = pathname.slice(astroBase.length);
+  }
   const relativePath = pathname.replace(/^\/+/, "");
   const candidates = [];
 
