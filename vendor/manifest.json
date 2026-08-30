@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "packet": "2026-08-30",
+  "selection": "consumer-ready",
+  "source": "vault-seed-ready-handoff",
+  "sourceGitSha": "50539198782b5d1d396337a31520bf7e022c95ec",
+  "generatedAt": "2026-08-30T15:41:23.820Z",
+  "copiedFrom": ".refarm/handoff/vault-seed/2026-08-30",
+  "packages": {
+    "@refarm.dev/ds": {
+      "version": "0.1.0",
+      "tarball": "refarm.dev-ds-0.1.0.tgz",
+      "sha256": "ec5e4978adf5b63c4c866200c23bb2cae69ae3ba6cfa2006456f297093f7e847",
+      "sizeBytes": 45545,
+      "dependencies": {
+        "@refarm.dev/quality-contract-v1": "0.1.0"
+      }
+    },
+    "@refarm.dev/quality-contract-v1": {
+      "version": "0.1.0",
+      "tarball": "refarm.dev-quality-contract-v1-0.1.0.tgz",
+      "sha256": "36049781cfb763b524a2f4b6cb7156d4031bcd7b9224cbc80c21c600afc73868",
+      "sizeBytes": 40708,
+      "dependencies": {}
+    },
+    "@refarm.dev/source-contract-v1": {
+      "version": "0.1.0",
+      "tarball": "refarm.dev-source-contract-v1-0.1.0.tgz",
+      "sha256": "10c33c815def0120e83fae2dc9348db4f09e5acb7756ac16469da8d9063c78a8",
+      "sizeBytes": 18781,
+      "dependencies": {}
+    },
+    "@refarm.dev/source-web": {
+      "version": "0.1.0",
+      "tarball": "refarm.dev-source-web-0.1.0.tgz",
+      "sha256": "a0484881937d26ff836a8cbfa0f2ae32927c9954fb5bf622a635b6b9be4b17a2",
+      "sizeBytes": 49600,
+      "dependencies": {
+        "@refarm.dev/source-contract-v1": "0.1.0"
+      }
+    }
+  }
+}

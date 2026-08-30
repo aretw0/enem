@@ -141,3 +141,4 @@ vendor/*
 !vendor/refarm.dev-source-web-0.1.0.tgz
 !vendor/refarm.dev-ds-0.1.0.tgz
 !vendor/refarm.dev-quality-contract-v1-0.1.0.tgz
+!vendor/manifest.json

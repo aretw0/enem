@@ -6,16 +6,14 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 
-const candidateTarballs = {
-  '@refarm.dev/ds': {
-    path: 'vendor/refarm.dev-ds-0.1.0.tgz',
-    sha256: '317978d2d2633190b241b2a5bc6e2bec50fbe123b4ad12929983f4062d7ecbc1',
-  },
-  '@refarm.dev/quality-contract-v1': {
-    path: 'vendor/refarm.dev-quality-contract-v1-0.1.0.tgz',
-    sha256: '839a61fad73e2056a67f4d3d39991917a226f92f4538bc47a21aedd65be61574',
-  },
-};
+// Hashes vivem em vendor/manifest.json (fonte única do packet); aqui só a unidade DS + quality.
+const manifest = JSON.parse(readFileSync(`${root}/vendor/manifest.json`, 'utf8'));
+const candidateTarballs = Object.fromEntries(
+  ['@refarm.dev/ds', '@refarm.dev/quality-contract-v1'].map((name) => [
+    name,
+    { path: `vendor/${manifest.packages[name].tarball}`, sha256: manifest.packages[name].sha256 },
+  ]),
+);
 
 function digest(path, algorithm, encoding) {
   return createHash(algorithm).update(readFileSync(`${root}/${path}`)).digest(encoding);
