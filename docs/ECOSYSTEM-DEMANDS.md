@@ -16,6 +16,7 @@ auditoria de arquitetura de informação, Lab, RSS, frontmatter e scripts de qua
 | Prioridade | Dono | Bloco esperado | Prova que o ENEM fornecerá |
 |---|---|---|---|
 | P0 | vault-seed | perfil de produto que exclua a documentação operacional da superfície pública | build sem rotas meta e teste de navegação estudantil |
+| P0 | refarm | release pública de `@refarm.dev/quality-contract-v1` + `@refarm.dev/ds` | instalação congelada, export público do tema, notebooks e 64 jornadas responsivas sobre os tarballs candidatos |
 | P0 | refarm | release pública de `source-web` com driver binário HTTP seguro e sessão anônima | prova e gabarito oficiais viram snapshots reproduzíveis sem adaptador de transporte privado |
 | P0 | refarm | records para itens de avaliação e relações item→habilidade→fonte | fixture ENEM validada sem extensão privada do envelope |
 | P1 | vault-seed | componente de calculadora/formulário acessível no DS Astro | calculadora de média sem CSS/JS duplicado |
@@ -48,10 +49,34 @@ auditoria de arquitetura de informação, Lab, RSS, frontmatter e scripts de qua
 - O exportador de notebooks materializado lê diretamente
   `node_modules/@refarm.dev/ds/src/themes/verde-jardim.css`, mas o payload não inclui esse pacote nem
   declara o handoff correspondente. `site:responsive` para antes do browser em um clone instalado;
-  temas consumidos pelo exportador precisam vir no payload ou por uma release declarada.
+  temas consumidos pelo exportador precisam vir no payload ou por uma release declarada. O ENEM
+  corrigiu o consumo para o export público `@refarm.dev/ds/themes/verde-jardim.css` e mantém o
+  tarball candidato apenas até a primeira publicação pública.
 
 Esses pontos devem ser corrigidos no gerador/manifesto e cobertos por um `pnpm install
 --frozen-lockfile` executado sobre o vault gerado, não apenas sobre fixtures mínimas.
+
+## Prova de release puxada pelo ENEM — 29 de agosto de 2026
+
+O ENEM consumiu o handoff `consumer-ready` produzido pelo Refarm no source SHA
+`e2f8968c87b254543003dfec195754b438e018bd`, limitado à unidade mínima necessária:
+
+- `@refarm.dev/quality-contract-v1@0.1.0`, SHA-256
+  `c6738cb03d8c59facc54b2fd8d66649356f2ab5d7fa4bc12391f3debe6de2d48`;
+- `@refarm.dev/ds@0.1.0`, SHA-256
+  `0bbce56d5da5efe310543b88f84941c48d05ae733395ee29de191b4ded6eddaf`.
+
+As provas executadas foram: verificação do manifesto e das cópias pelo próprio Refarm, instalação
+pnpm com lockfile congelado, resolução do subpath público do tema, testes ENEM, validação de
+conteúdo/proveniência, auditoria de IA e `site:responsive` em 16 páginas por quatro viewports com
+hidratação externa verificada. No Refarm, os dois pacotes também passaram lint, type-check, 128
+testes, build, publish dry-run e um consumidor temporário `pack → install → import`.
+
+A unidade DS + quality está fechada e o plano de first publish resolve os dois pacotes na ordem
+correta. A seleção completa `consumer-ready`, porém, deve continuar bloqueada: `health` ainda exige
+`config`, e `vault-contract-v1` ainda exige `plugin-manifest`, `std` e `node-contract-v1`, quatro
+pacotes ausentes da unidade pública. O gate do Refarm agora acusa esse fechamento antes de permitir
+que o dry-run seja confundido com uma release instalável.
 
 ## Seam local temporário
 
