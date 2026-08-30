@@ -25,8 +25,8 @@ const pages = [
   { path: "/explorar/intencoes/", label: "explorar-intencoes", type: "site" },
   { path: "/simulado/?seed=smoke-responsive&size=5", label: "simulado", type: "site", simulator: true },
   {
-    path: "/meta-e-anexos/workflows/usando-o-lab-notebooks-marimo/",
-    label: "lab-doc",
+    path: "/recursos/enem/metodos/metodos-de-estudo-que-orientam-este-vault/",
+    label: "guia-metodos",
     type: "site",
   },
   { path: `/${notebooksPath}/publishing.html`, label: "notebook-publicacao", type: "notebook" },
