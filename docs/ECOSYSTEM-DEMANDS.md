@@ -134,3 +134,5 @@ ENEM deve manter apenas configuração e funções de domínio.
 
 A troca de `VAULT_FOLDERS` por `PUBLISHED_VAULT_FOLDERS` na coleta do site é uma adoção de seam já
 exportada pelo vault-seed, não uma nova política local. Ela demonstra a demanda P0 acima.
+
+| P1 | vault-seed | atualizações do template chegarem por release/`initialize`, não por cópia manual de `.site/` — o enem publicou a marca "VS", o rodapé e os links do vault-seed, e o `markdown.processor` que o Astro 6.3 ignora em silêncio (wikilinks crus `[[...]]` no site no ar) porque os arquivos foram copiados uma vez e derivaram | zero menções a `vault-seed` no HTML publicado do enem; wikilinks resolvidos (2026-08-30) |
