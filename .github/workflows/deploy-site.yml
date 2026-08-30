@@ -37,7 +37,9 @@ jobs:
   build:
     name: Build Astro site
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 15 min matava o passo "Smoke responsive site and Lab" a meio: são ~15
+    # páginas × 4 viewports com hidratação Pyodide via CDN por notebook.
+    timeout-minutes: 30
     outputs:
       pages-enabled: ${{ steps.pages-url.outputs.enabled }}
 
