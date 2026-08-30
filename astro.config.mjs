@@ -410,14 +410,15 @@ export default defineConfig({
   site,
   base,
   markdown: {
-    processor: unified({
-      remarkPlugins: [
-        remarkDirective,
-        remarkCallouts,
-        [remarkWikiImages, { base }],
-        [remarkWikiLinks, { publishedSlugs, base }],
-      ],
-    }),
+    // A API estável é `markdown.remarkPlugins`; o `processor` custom não é
+    // aplicado pelo renderMarkdown do Content Layer (o loader do vault), então
+    // wikilinks/callouts nunca rodavam nos corpos das notas publicadas.
+    remarkPlugins: [
+      remarkDirective,
+      remarkCallouts,
+      [remarkWikiImages, { base }],
+      [remarkWikiLinks, { publishedSlugs, base }],
+    ],
   },
   integrations: [
     copyVaultAttachments(),
