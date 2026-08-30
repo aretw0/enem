@@ -275,10 +275,9 @@ if (requirePublishedNotebooks) {
       `dist/${relPath} missing — published notebook was not exported before site smoke.`,
     );
   }
-  requireCondition(
-    fs.existsSync(path.join(distDir, notebooksPath, "vault-seed-slides-lite.html")),
-    `dist/${notebooksPath}/vault-seed-slides-lite.html missing — mobile-safe slide fallback was not exported.`,
-  );
+  // O fallback "-lite" dos slides é do vault-seed: o export_notebooks.mjs daqui
+  // nunca o produz, e nenhuma entrada de .site/lab.notebooks.json o declara.
+  // Exigir um ficheiro que o exportador não gera só derruba o deploy.
 }
 
 if (requirePublishedNotebooks && notebooksPath !== "lab") {
