@@ -38,6 +38,8 @@ jobs:
     name: Build Astro site
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      pages-enabled: ${{ steps.pages-url.outputs.enabled }}
 
     steps:
       - name: Checkout
@@ -60,7 +62,17 @@ jobs:
       - name: Detect site URL and base path
         id: pages-url
         run: |
-          CNAME=$(gh api "repos/${{ github.repository }}/pages" --jq '.cname // ""' 2>/dev/null || echo "")
+          # Sem Pages habilitado a API devolve 404 e `gh api` imprime o corpo do erro no
+          # stdout — capturá-lo virava ASTRO_SITE="https://{"message":"Not Found"...}".
+          if gh api "repos/${{ github.repository }}/pages" > pages.json 2>/dev/null; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+            CNAME=$(jq -r '.cname // ""' pages.json)
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::GitHub Pages não está habilitado neste repositório; o site é construído mas não publicado."
+            CNAME=""
+          fi
+          rm -f pages.json
           if [ -n "$CNAME" ]; then
             echo "site=https://$CNAME" >> "$GITHUB_OUTPUT"
             echo "base=/" >> "$GITHUB_OUTPUT"
@@ -117,6 +129,8 @@ jobs:
   deploy:
     name: Deploy to GitHub Pages
     needs: build
+    # Habilitar Pages (Settings → Pages → Source: GitHub Actions) é decisão do dono do repo.
+    if: needs.build.outputs.pages-enabled == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
