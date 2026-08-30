@@ -565,11 +565,11 @@ packages:
     hasBin: true
 
   '@refarm.dev/ds@file:vendor/refarm.dev-ds-0.1.0.tgz':
-    resolution: {integrity: sha512-QeUS8X+NGMm//Mp8mJiZcYzgm1vQFHAvDvD/kla0sZ7WvYguRrdeCUKl2jFfGNrfBtBqqLat3DLzr20tXon79A==, tarball: file:vendor/refarm.dev-ds-0.1.0.tgz}
+    resolution: {integrity: sha512-hATH93JFvNyMxoewT+TqSuAbuwpOwt9b+04x+PFitAKBKs93WPSgkDfTkWWOR0AHDLbqoKz0UwgjQ+NYlK9g6Q==, tarball: file:vendor/refarm.dev-ds-0.1.0.tgz}
     version: 0.1.0
 
   '@refarm.dev/quality-contract-v1@file:vendor/refarm.dev-quality-contract-v1-0.1.0.tgz':
-    resolution: {integrity: sha512-o6vvpsCeOT2qUbtRbhF9pjYA1qeTZrr6nXmkDZ2PTNdSyETpJpIvgWvrUhu7wq6ym+uo7rQnBTmrDqbh3zsB2g==, tarball: file:vendor/refarm.dev-quality-contract-v1-0.1.0.tgz}
+    resolution: {integrity: sha512-5ctr3GTP5hinGtAZnN4Q4Qp2y8Z/VsVnnmmJFoeH2AHT/ieKVqM0YTixkj7dxCXvUABFFR1jJpNEKxWCeWaTiA==, tarball: file:vendor/refarm.dev-quality-contract-v1-0.1.0.tgz}
     version: 0.1.0
 
   '@refarm.dev/source-contract-v1@file:vendor/refarm.dev-source-contract-v1-0.1.0.tgz':

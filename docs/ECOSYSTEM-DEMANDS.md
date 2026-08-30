@@ -58,25 +58,26 @@ Esses pontos devem ser corrigidos no gerador/manifesto e cobertos por um `pnpm i
 
 ## Prova de release puxada pelo ENEM — 29 de agosto de 2026
 
-O ENEM consumiu o handoff `consumer-ready` produzido pelo Refarm no source SHA
-`e2f8968c87b254543003dfec195754b438e018bd`, limitado à unidade mínima necessária:
+O ENEM consumiu o packet `2026-08-30` do handoff `consumer-ready`, produzido pelo Refarm no source SHA
+`aaa3b6cc87f82da5b4354e5f2453911299b140cd`, limitado à unidade mínima necessária:
 
 - `@refarm.dev/quality-contract-v1@0.1.0`, SHA-256
-  `c6738cb03d8c59facc54b2fd8d66649356f2ab5d7fa4bc12391f3debe6de2d48`;
+  `839a61fad73e2056a67f4d3d39991917a226f92f4538bc47a21aedd65be61574`;
 - `@refarm.dev/ds@0.1.0`, SHA-256
-  `0bbce56d5da5efe310543b88f84941c48d05ae733395ee29de191b4ded6eddaf`.
+  `317978d2d2633190b241b2a5bc6e2bec50fbe123b4ad12929983f4062d7ecbc1`.
 
 As provas executadas foram: verificação do manifesto e das cópias pelo próprio Refarm, instalação
 pnpm com lockfile congelado, resolução do subpath público do tema, testes ENEM, validação de
 conteúdo/proveniência, auditoria de IA e `site:responsive` em 16 páginas por quatro viewports com
-hidratação externa verificada. No Refarm, os dois pacotes também passaram lint, type-check, 128
+hidratação externa verificada. No Refarm, os dois pacotes também passaram lint, type-check, 133
 testes, build, publish dry-run e um consumidor temporário `pack → install → import`.
 
-A unidade DS + quality está fechada e o plano de first publish resolve os dois pacotes na ordem
-correta. A seleção completa `consumer-ready`, porém, deve continuar bloqueada: `health` ainda exige
-`config`, e `vault-contract-v1` ainda exige `plugin-manifest`, `std` e `node-contract-v1`, quatro
-pacotes ausentes da unidade pública. O gate do Refarm agora acusa esse fechamento antes de permitir
-que o dry-run seja confundido com uma release instalável.
+A unidade DS + quality está fechada como a seleção `design-system-ready`; o plano de first publish
+resolve os dois pacotes na ordem correta e o workflow exige o smoke de instalação dessa seleção
+antes de qualquer dry-run ou publicação. A seleção completa `consumer-ready`, porém, deve continuar
+bloqueada: `health` ainda exige `config`, e `vault-contract-v1` ainda exige `plugin-manifest`, `std`
+e `node-contract-v1`, quatro pacotes ausentes da unidade pública. O gate do Refarm acusa esse
+fechamento antes de permitir que o dry-run seja confundido com uma release instalável.
 
 ## Seam local temporário
 
